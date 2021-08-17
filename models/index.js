@@ -10,7 +10,7 @@ mongoose.connect(MONGO_URL || "mongodb://localhost", {
   useCreateIndex: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  dbName: "WebProject"
+  dbName: "PersonalCRM"
 })
 
 const db = mongoose.connection
