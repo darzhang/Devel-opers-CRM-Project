@@ -20,6 +20,10 @@ const eventSchema = new mongoose.Schema({
     participants: {
         type: Array,
         required: true
+    },
+    status: {
+        type: String,
+        required: true
     }
 }, { versionKey: false , timestamps: false });
 
