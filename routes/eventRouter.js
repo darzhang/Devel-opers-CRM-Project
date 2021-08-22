@@ -17,7 +17,7 @@ eventRouter.get('/:id', (req, res) => eventController.getOneEvent(req, res));
 eventRouter.post('/', (req, res) => eventController.createEvent(req, res));
 
 // handle POST requests to update a contact
-eventRouter.post('/edit', (req, res) => eventController.editEvent(req, res));
+eventRouter.post('/edit/:id', (req, res) => eventController.editEvent(req, res));
 
 // handle DELETE requests to delete a contact
 eventRouter.delete('/:id', (req, res) => eventController.deleteEvent(req, res));
