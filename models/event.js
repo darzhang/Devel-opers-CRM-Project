@@ -19,7 +19,8 @@ const eventSchema = new mongoose.Schema({
     },
     participants: {
         type: Array,
-        required: true
+        required: true,
+        default: void 0
     },
     status: {
         type: String,
