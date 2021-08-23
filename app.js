@@ -5,9 +5,11 @@ const port =  process.env.PORT || 3000
 
 require('./models')
 
-// set up contact routes
+// set up routes
 const contactRouter = require('./routes/contactRouter');
 const eventRouter = require('./routes/eventRouter');
+const departmentRouter = require('./routes/departmentRouter');
+const organisationRouter = require('./routes/organisationRouter'); 
 
 // handler for GET home page
 app.get('/', (req, res) => {
@@ -18,6 +20,8 @@ app.get('/', (req, res) => {
 // the contact routes are added onto the end of '/contact'
 app.use('/contact', contactRouter)
 app.use('/event', eventRouter)
+app.use('/department', departmentRouter)
+app.use('/organisation', organisationRouter)
 
 app.listen(port, () => {
     console.log(`The personal CRM app is listening on port ${port}!`)

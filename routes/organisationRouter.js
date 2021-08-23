@@ -5,16 +5,16 @@ const organisationRouter = express.Router();
 var organisationController = require('../controllers/organisationController');
 
 //GET request to get one organisation
-organisationRouter.get('/organisation/:id', organisationController.getOne)
+organisationRouter.get('/:id', organisationController.getOne)
 
 //GET request to get all organisation
-organisationRouter.get('/organisation/all', organisationController.getAll)
+organisationRouter.get('/', organisationController.getAll)
 
 //POST request to create a new organisation
-organisationRouter.post('/organisation/create', organisationController.createOne)
+organisationRouter.post('/create', organisationController.createOne)
 
 //POST request to delete a organisation
-organisationRouter.post('/organisation/delete/:id', organisationController.deleteOne)
+organisationRouter.post('/delete/:id', organisationController.deleteOne)
 
 // export the router
 module.exports = organisationRouter;

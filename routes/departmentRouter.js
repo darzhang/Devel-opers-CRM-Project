@@ -5,16 +5,16 @@ const departmentRouter = express.Router();
 var departmentController = require('../controllers/departmentController');
 
 //GET request to get one department
-departmentRouter.get('/department/:id', departmentController.getOne)
+departmentRouter.get('/:id', departmentController.getOne)
 
 //GET request to get all department
-departmentRouter.get('/department/all', departmentController.getAll)
+departmentRouter.get('/', departmentController.getAll)
 
 //POST request to create a new department
-departmentRouter.post('/department/create', departmentController.createOne)
+departmentRouter.post('/create', departmentController.createOne)
 
 //POST request to delete a department
-departmentRouter.post('/department/delete/:id', departmentController.deleteOne)
+departmentRouter.post('/delete/:id', departmentController.deleteOne)
 
 // export the router
 module.exports = departmentRouter;
