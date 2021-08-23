@@ -4,7 +4,7 @@ module.exports = {
     createOne: async (req, res) => {
         try {
             let department = new Department(req.body)
-            await department.save(function(err) {
+            department.save(function(err) {
                 if (err) return res.status(500).json(err)
                 res.json(department)
             })
@@ -16,7 +16,7 @@ module.exports = {
     },
     deleteOne: async (req, res) => {
         try {
-            await Department.findOneAndRemove({ name: req.params.name }, function (err) {
+            await Department.findOneAndRemove({ departmentName: req.params.name }, function (err) {
                 if (err) return res.status(400).json(err);
                 res.status(204).json({});
             });
@@ -28,7 +28,7 @@ module.exports = {
     },
     getOne: async (req, res) => {
         try {
-            await Department.find({ name: req.params.name})
+            await Department.find({ departmentName: req.params.name})
             .exec(function (err, department) {
                 if (err) return res.status(404).json(err);
                 res.json(department);
