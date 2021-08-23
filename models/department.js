@@ -7,11 +7,11 @@ const departmentSchema = new mongoose.Schema({
         unique : true
     },
     orgID : {
-        type : Schema.Types.ObjectID,
+        type : mongoose.Schema.Types.ObjectId,
         ref : 'organisation'
     }
 });
 
-const Department = mongoose.model("Contact", departmentSchema);
+const Department = mongoose.model("Department", departmentSchema);
 
 module.exports = Department;
