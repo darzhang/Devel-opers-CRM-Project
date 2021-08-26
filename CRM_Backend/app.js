@@ -41,7 +41,7 @@ app.engine('hbs', exphbs({
 app.use(express.json())
 app.use(cors({
     credentials: true,
-    origin: "http://localhost:3000/",
+    origin: "http://localhost:5000/",
     methods: ['GET', 'POST']
     })
 );
@@ -68,9 +68,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.enable('trust proxy');
 app.set('trust proxy', true);
 
-const port =  process.env.PORT || 3000
-
-
+const port =  process.env.PORT || 5000
 
 // set up routes
 const contactRouter = require('./routes/contactRouter');
