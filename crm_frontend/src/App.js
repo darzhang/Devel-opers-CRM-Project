@@ -9,6 +9,8 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import { LoginForm, Logout  } from "./pages/Users";
 import Contacts from "./pages/Contacts";
+import ContactProfile from "./pages/ContactProfile";
+import CreateContact from "./pages/CreateContact";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/contact" component={Contacts} />
+          <Route exact path="/contact/create" component={CreateContact} />
+          <Route exact path="/contact/profile/:id" component={ContactProfile} />
         </Switch>
       </Router>
     </div>

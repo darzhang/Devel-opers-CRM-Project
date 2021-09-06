@@ -1,5 +1,7 @@
 // import contact model
 const Contact = require('../models/contact');
+const Department = require('../models/department');
+const Organisation = require('../models/organisation');
 
 // turn string into objectId
 const objectId = require('mongodb').ObjectID;
@@ -32,7 +34,47 @@ const getOneContact = async (req, res) => {
 
 // add a contact (POST)
 const createContact = async (req, res) => {
-    const contact = new Contact(req.body);
+    // get the data sent from the frontend
+    const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = req.body;
+    // check if a department with that name exist
+    const department = await Department.findOne({departmentName: departmentName}).lean()
+    let departmentId = ""
+    // if it exist, just take the id
+    if (department !== null) {
+        departmentId = objectId(department._id);
+    } else { // it doesn't exist so create a new department with that name and save it to the database
+        const newDepartment = new Department({departmentName: departmentName});
+        await newDepartment.save();
+        departmentId = objectId(newDepartment._id);
+    }
+    // check if an organisation with that name exist
+    const organisation = await Organisation.findOne({orgName: organisationName}).lean()
+    let organisationId = ""
+    // if it exist, just take the id
+    if (organisation !== null) {
+        organisationId = objectId(organisation._id);
+    } else { // it doesn't exist so create a new organisation with that name and save it to the database
+        const newOrganisation = new Organisation({orgName: organisationName});
+        await newOrganisation.save();
+        organisationId = objectId(newOrganisation._id);
+    }
+    // save the contact info
+    const contactInfo = {
+        contactName: contactName,
+        phoneNumbers: {
+            home: phoneHome,
+            work: phoneWork,
+            mobile: phoneMobile
+        },
+        email: email,
+        label: contactLabel,
+        departmentId: departmentId,
+        organisationId: organisationId,
+        description: description,
+        dateCreated: new Date()
+    }
+    // create a new contact based on the info
+    const contact = new Contact(contactInfo);
 
     try { // save the new contact to the database
         let result = await contact.save();
@@ -45,16 +87,54 @@ const createContact = async (req, res) => {
 
 // update a contact (POST)
 const editContact = async (req, res) => {
-    const newContact = req.body; // construct changed Contact object from body of POST
+    // get the data sent from the frontend
+    const { _id, contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = req.body;
+    // check if a department with that name exist
+    const department = await Department.findOne({departmentName: departmentName}).lean()
+    let departmentId = ""
+    // if it exist, just take the id
+    if (department !== null) {
+        departmentId = objectId(department._id);
+    } else { // it doesn't exist so create a new department with that name and save it to the database
+        const newDepartment = new Department({departmentName: departmentName});
+        await newDepartment.save();
+        departmentId = objectId(newDepartment._id);
+    }
+    // check if an organisation with that name exist
+    const organisation = await Organisation.findOne({orgName: organisationName}).lean()
+    let organisationId = ""
+    // if it exist, just take the id
+    if (organisation !== null) {
+        organisationId = objectId(organisation._id);
+    } else { // it doesn't exist so create a new organisation with that name and save it to the database
+        const newOrganisation = new Organisation({orgName: organisationName});
+        await newOrganisation.save();
+        organisationId = objectId(newOrganisation._id);
+    }
+    // save the contact info
+    const contactInfo = {
+        contactName: contactName,
+        phoneNumbers: {
+            home: phoneHome,
+            work: phoneWork,
+            mobile: phoneMobile
+        },
+        email: email,
+        label: contactLabel,
+        departmentId: departmentId,
+        organisationId: organisationId,
+        description: description,
+        dateCreated: new Date()
+    }
 
     try {
-        const contact = await Contact.findOne({"_id": req.body._id});
+        const contact = await Contact.findOne({"_id": objectId(_id)});
         if (!contact) { // if contact is not already in database, return an error
             res.status(400);
             return res.send("Contact not found in database");
         }
 
-        Object.assign(contact, newContact); // replace properties that are listed in the POST body
+        Object.assign(contact, contactInfo); // replace properties that are listed in the POST body
         let result = await contact.save();  // save update contact to database
         return res.send(result);            // return saved contact to sender
     } catch (err) { // error detected
