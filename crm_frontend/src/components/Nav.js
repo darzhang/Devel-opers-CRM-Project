@@ -1,20 +1,31 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+} from '@material-ui/core';
 
 export default function Nav() {
+
+  const history = useHistory();
+
   return (
-    <nav>
-      <NavLink exact to="/">
-        Home
-      </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/login">Login</NavLink>
-      &nbsp;|&nbsp;  
-      <NavLink to="/logout">Logout</NavLink>
-      &nbsp;|&nbsp;  
-      <NavLink to="/contact">Contacts</NavLink>
-      <br></br>
-      <hr></hr>
-    </nav>
+    <AppBar>
+      <Toolbar>
+        <IconButton color="inherit" onClick={() => history.push('/')}>
+          Home
+        </IconButton>
+        <IconButton color="inherit" onClick={() => history.push('/login')}>
+          Login
+        </IconButton>
+        <IconButton color="inherit" onClick={() => history.push('/logout')}>
+          Logout
+        </IconButton>
+        <IconButton color="inherit" onClick={() => history.push('/contact')}>
+          Contacts
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 }

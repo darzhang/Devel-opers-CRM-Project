@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // import our components
-import Nav from "./components/Nav";
+// import Nav from "./components/Nav";
+import SideBar from "./components/sidebar";
 import Home from "./pages/Home";
 import { LoginForm, Logout  } from "./pages/Users";
 import Contacts from "./pages/Contacts";
@@ -13,10 +14,13 @@ import ContactProfile from "./pages/ContactProfile";
 import CreateContact from "./pages/CreateContact";
 
 function App() {
-  return (
+  
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const mainComponent = (
     <div className="App">
       <Router>
-        <Nav />
+        <SideBar />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -29,7 +33,11 @@ function App() {
         </Switch>
       </Router>
     </div>
-  );
+  )
+
+  const loginPage = <LoginForm setLoggedIn={setLoggedIn}/>
+
+  return mainComponent;
 }
 
 export default App;
