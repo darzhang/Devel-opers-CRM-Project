@@ -18,7 +18,7 @@ export function Logout() {
 /*
   Generate a login form
 */
-export function LoginForm() {
+export function LoginForm({setLoggedIn}) {
   // state hook functions   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,16 +32,16 @@ export function LoginForm() {
   
   // submit form
   function onSubmit(e) {
-      e.preventDefault();
-      // using API function to submit data to Personal CRM API
-      loginUser({
-          email: email,
-          password: password
-      });
+    e.preventDefault();
+    // using API function to submit data to Personal CRM API
+    loginUser({
+        email: email,
+        password: password
+    });
 
-      // redirect to homepage
-      const state = { redirect: "/" };
-      return <Redirect to={state.redirect} />
+    // redirect to homepage
+    const state = { redirect: "/" };
+    return <Redirect to={state.redirect} />
   }
   return (
       <div>
