@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-CRM_Backend/node_modules
-crm_frontend/node_modules
+/CRM_Backend/node_modules/
+/crm_frontend/node_modules/
 /node_modules
 .env
 .DS_Store
