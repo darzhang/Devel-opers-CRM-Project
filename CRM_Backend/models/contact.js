@@ -13,17 +13,20 @@ const contactSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    positionId: {
-        type: Number
+    label: {
+        type: String
     },
     departmentId: {
-        type: Number
+        type: mongoose.Schema.Types.ObjectId
     },
     organisationId: {
-        type: Number
+        type: mongoose.Schema.Types.ObjectId
     },
     description: {
         type: String
+    },
+    dateCreated: {
+        type: Date
     }
 }, { versionKey: false , timestamps: false });
 
