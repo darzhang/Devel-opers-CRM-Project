@@ -22,8 +22,8 @@ const eventSchema = new mongoose.Schema({
         required: true,
         default: void 0
     },
-    status: {
-        type: String,
+    dateAdded: {
+        type: Date,
         required: true
     }
 }, { versionKey: false , timestamps: false });

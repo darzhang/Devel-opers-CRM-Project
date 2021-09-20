@@ -39,12 +39,7 @@ app.engine('hbs', exphbs({
   }))
 
 app.use(express.json())
-app.use(cors({
-    credentials: true,
-    origin: "http://localhost:5000/",
-    methods: ['GET', 'POST']
-    })
-);
+app.use(cors());
 
 app.use(session({
   secret: "test",
