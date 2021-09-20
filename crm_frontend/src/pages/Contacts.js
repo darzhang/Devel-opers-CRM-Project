@@ -1,5 +1,5 @@
 import axios from "axios";
-// import React, { Component } from "react";
+import React, { Component } from "react";
 
 export default class Contacts extends Component {
   constructor(props) {

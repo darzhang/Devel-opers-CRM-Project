@@ -12,6 +12,8 @@ import { LoginForm, Logout  } from "./pages/Users";
 import Contacts from "./pages/Contacts";
 import ContactProfile from "./pages/ContactProfile";
 import CreateContact from "./pages/CreateContact";
+import Events from './pages/Event/Events';
+import EventDetails from './pages/Event/EventDetails';
 
 function App() {
   
@@ -20,7 +22,7 @@ function App() {
   const mainComponent = (
     <div className="App">
       <Router>
-        <SideBar />
+        {/* <SideBar /> */}
         <Switch>
           <Route exact path="/">
             <Home />
@@ -30,6 +32,8 @@ function App() {
           <Route exact path="/contact" component={Contacts} />
           <Route exact path="/contact/create" component={CreateContact} />
           <Route exact path="/contact/profile/:id" component={ContactProfile} />
+          <Route exact path="/event/" component={Events} />
+          <Route exact path="/event/:id" component={EventDetails} />
         </Switch>
       </Router>
     </div>
