@@ -1,189 +1,204 @@
 import axios from "axios";
-// import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
-export default class Contacts extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      contactList: [],
-      departmentList: [],
-      searchInput: "",
-      labelInput: "",
-      selectedDepartmentName: "",
-      selectedDepartmentId: null,
-      showFilters: false,
-      isLoading: true
-    };
-  }
+export default function Contacts() {
+  // useState hooks
+  const [contactList, setContactList] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [labelInput, setLabelInput] = useState("");
+  const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // load the data when loading the page
-  componentDidMount = () => {
-    this.getContacts();
-    this.getDepartments();
-    this.setState({
-      isLoading: false
-    });
-  }
+  useEffect(() => {
+    getContacts();
+    getDepartments();
+    setIsLoading(false);
+  }, [])
 
   // get list of contacts from the database and display them in an alphabetically sorted order
-  async getContacts() {
+  const getContacts = async () => {
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/contact").then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
-        this.setState({
-          contactList: sortedList
-        });
-        console.log(this.state.contactList);
+        setContactList(sortedList);
     })
   }
 
   // get list of departments from the database
-  async getDepartments() {
+  const getDepartments = async () => {
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/department").then(res => {
-      this.setState({
-        departmentList: res.data
-      });
+      setDepartmentList(res.data);
     })
   }
 
   // toggle function for filter button
-  toggleFilters() {
-    this.setState({
-      showFilters: !this.state.showFilters
-    });
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
   }
 
   // change search result based on contact name
-  updateSearch(e) {
-    this.setState({
-      searchInput: e.target.value.substr(0)
-    });
+  const updateSearch = (e) => {
+    setSearchInput(e.target.value.substr(0));
   }
 
   // change search result based on label
-  updateLabel(e) {
-    this.setState({
-      labelInput: e.target.value.substr(0)
-    });
+  const updateLabel = (e) => {
+    setLabelInput(e.target.value.substr(0));
   }
 
   // change search result based on the selected department
-  updateDepartment(e) {
-    this.setState({
-      selectedDepartmentId: e.target.value,
-      selectedDepartmentName: e.target.text
-    });
+  const updateDepartment = (e) => {
+    setSelectedDepartmentId(e.target.value);
+    setSelectedDepartmentName(e.target.text);
   }
 
-  render() {
-    // Filter by name
-    let filteredContacts = this.state.contactList.filter(contact => {
-      return contact.contactName.toLowerCase().indexOf(this.state.searchInput.toLowerCase()) !== -1;
-    });
-    // Filter by label
-    filteredContacts = filteredContacts.filter(contact => {
-      return contact.label.toLowerCase().indexOf(this.state.labelInput.toLowerCase()) !== -1;
-    })
-    // Filter by department
-    filteredContacts = filteredContacts.filter(contact => {
-      if (this.state.selectedDepartmentName === "" || this.state.selectedDepartmentId === "") {
-        return true
-      }
-      return contact.departmentId === this.state.selectedDepartmentId;
-    })
-    const searchBarStyle = {width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem"};
-    const filtersStyle = { textAlign: "left", marginLeft: "43px" };
-    const buttonDivStyle = { textAlign: "right", marginRight: "43px" };
-    const buttonStyle = { padding: "10px", fontSize: "16px", borderRadius: "4px", width: "120px" }
-    const loadingStyle = { fontSize: "36px" };
-    return (
+  // reset the filters
+  const clearFilters = () => {
+    setSearchInput("");
+    setLabelInput("");
+    setSelectedDepartmentId(null);
+    setSelectedDepartmentName("");
+  }
+
+  // Filter by name
+  let filteredContacts = contactList.filter(contact => {
+    return contact.contactName.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
+  });
+
+  // Filter by label
+  filteredContacts = filteredContacts.filter(contact => {
+    return contact.label.toLowerCase().indexOf(labelInput.toLowerCase()) !== -1;
+  })
+
+  // Filter by department
+  filteredContacts = filteredContacts.filter(contact => {
+    if (selectedDepartmentName === "" || selectedDepartmentId === "") {
+      return true
+    }
+    return contact.departmentId === selectedDepartmentId;
+  })
+
+  // Display a contact
+  const row = (contact, i) => (
+    <TableRow key={i}>
+      <TableCell>{contact.contactName}</TableCell>
+      <TableCell>{contact.email}</TableCell>
+      <TableCell>{contact.phoneNumbers.mobile}</TableCell>
+      <TableCell align="center">
+        <a href={"/contact/profile/" + contact._id} style={{textDecoration: "none"}}>
+          <Button variant="contained" style={{textTransform: "none"}}>
+            View Contact
+          </Button>
+        </a>
+      </TableCell>
+    </TableRow>
+  )
+
+  // styles
+  const filtersStyle = { textAlign: "left" };
+  const buttonDivStyle = { textAlign: "right", marginRight: "5%" };
+  const loadingStyle = { fontSize: "36px" };
+  const marginStyle = { marginTop: "6%", marginLeft: "10%" };
+
+  return (
+    <div style={marginStyle}>
+      {isLoading &&
+      <div style={loadingStyle}>
+          Loading...
+      </div>}
+      {!isLoading &&
       <div>
-        {this.state.isLoading &&
-        <div style={loadingStyle}>
-            Loading...
-        </div>}
-        {!this.state.isLoading &&
-        <div>
-          <h1>Contact List</h1>
-          <div style={buttonDivStyle}>
-            <a href="/contact/create"><button style={buttonStyle}>
+        <h1 style={{marginRight: "12%"}}>Contact List</h1>
+        <div style={buttonDivStyle}>
+          <a href="/contact/create" style={{textDecoration: "none"}}>
+            <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}}>
               Add Contact
-            </button></a>
-            <button onClick={this.toggleFilters.bind(this)} style={buttonStyle}>
-              {this.state.showFilters ? "Hide" : "Filters"}
-            </button>
+            </Button>
+          </a>
+          <Button variant="contained" onClick={toggleFilters} style={{textTransform: "none", minWidth: "80px"}}>
+            {showFilters ? "Hide" : "Filters"}
+          </Button>
+        </div><br />
+        {showFilters &&
+        <div style={filtersStyle}>
+          <div>
+            <div>Search by name:</div>
+            <TextField
+              type="text"
+              variant="outlined"
+              size="small"
+              style={{marginTop: "1%", minWidth: "250px"}}
+              value={searchInput}
+              placeholder="search by name"
+              onChange={updateSearch}>
+            </TextField>
+          </div><br />
+          <div>
+            <div>Search by label:</div>
+            <TextField
+              type="text"
+              variant="outlined"
+              size="small"
+              style={{marginTop: "1%", minWidth: "250px"}}
+              value={labelInput}
+              placeholder="search by label"
+              onChange={updateLabel}>
+            </TextField>
+          </div><br />
+          <div>
+            <div>Filter by department: </div>
+            <FormControl variant="outlined" size="small" style={{marginTop: "1%", minWidth: "150px"}}>
+              <Select
+                value={selectedDepartmentId}
+                onChange={updateDepartment}>
+                <MenuItem value="">All</MenuItem>
+                {departmentList.map(department => (
+                  <MenuItem value={department._id}>{department.departmentName}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
-          {this.state.showFilters &&
-          <div style={filtersStyle}>
-            <div>
-              <div>Search by name:</div>
-              <input
-                type="text"
-                style={searchBarStyle}
-                value={this.state.searchInput}
-                placeholder="search by name"
-                onChange={this.updateSearch.bind(this)}>
-              </input>
-            </div><br />
-            <div>
-              <div>Search by label:</div>
-              <input
-                type="text"
-                style={searchBarStyle}
-                value={this.state.labelInput}
-                placeholder="search by label"
-                onChange={this.updateLabel.bind(this)}>
-              </input>
-            </div><br />
-            <div>
-              <span>Filter by department: </span>
-              <select
-                value={this.state.selectedDepartmentName}
-                onChange={this.updateDepartment.bind(this)}>
-                  <option value="">All</option>
-                  {this.state.departmentList.map(department => (
-                    <Department {...department} />
-                  ))}
-              </select>
-            </div>
-          </div>
-          }
-          <ul>
-          {filteredContacts
-          .map(contact => (
-              <div>
-                <Contact {...contact} /><br />
-              </div>
-          ))}
-          </ul>
-        </div>}
-      </div>
-    );
-  }
-}
-
-// Display a contact
-function Contact(contact) {
-  const { _id, contactName, email, phoneNumbers } = contact;
-  const tdStyle = { textAlign: "left" };
-  return (
-    <div>
-      <table>
-        <tr><td style={tdStyle}>Name: {contactName}</td></tr>
-        <tr><td style={tdStyle}>Email: {email}</td></tr>
-        <tr><td style={tdStyle}>Phone Number: {phoneNumbers.mobile}</td></tr>
-      </table>
-      <a href={"/contact/profile/" + _id}><button>View Profile</button></a>
+          <div style={buttonDivStyle}>
+            <Button variant="contained" onClick={clearFilters} style={{textTransform: "none"}}>
+              Clear Filters
+            </Button>
+          </div><br />
+        </div>
+        }
+        <TableContainer component={Paper} style={{width: "95%"}}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
+                <TableCell style={{fontWeight: "bold"}}>Email</TableCell>
+                <TableCell style={{fontWeight: "bold"}}>Phone Number</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredContacts.map((contact, i) => row(contact, i))}
+            </TableBody>
+          </Table>
+        </TableContainer><br />
+      </div>}
     </div>
-  );
-}
-
-// Display a department for dropdown option
-function Department(department) {
-  const { _id, departmentName } = department;
-  return (
-    <option value={_id}>{departmentName}</option>
   )
 }
