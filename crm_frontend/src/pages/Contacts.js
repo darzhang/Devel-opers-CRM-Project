@@ -1,5 +1,17 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
 export default function Contacts() {
   // useState hooks
@@ -84,13 +96,27 @@ export default function Contacts() {
     return contact.departmentId === selectedDepartmentId;
   })
 
+  // Display a contact
+  const row = (contact, i) => (
+    <TableRow key={i}>
+      <TableCell>{contact.contactName}</TableCell>
+      <TableCell>{contact.email}</TableCell>
+      <TableCell>{contact.phoneNumbers.mobile}</TableCell>
+      <TableCell align="center">
+        <a href={"/contact/profile/" + contact._id} style={{textDecoration: "none"}}>
+          <Button variant="contained" style={{textTransform: "none"}}>
+            View Contact
+          </Button>
+        </a>
+      </TableCell>
+    </TableRow>
+  )
+
   // styles
-  const searchBarStyle = {width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem"};
-  const filtersStyle = { textAlign: "left", marginLeft: "43px" };
-  const buttonDivStyle = { textAlign: "right", marginRight: "43px" };
-  const buttonStyle = { padding: "10px", fontSize: "16px", borderRadius: "4px", width: "120px" }
+  const filtersStyle = { textAlign: "left" };
+  const buttonDivStyle = { textAlign: "right", marginRight: "5%" };
   const loadingStyle = { fontSize: "36px" };
-  const marginStyle = { marginTop: "100px", marginLeft: "80px" };
+  const marginStyle = { marginTop: "6%", marginLeft: "10%" };
 
   return (
     <div style={marginStyle}>
@@ -100,90 +126,79 @@ export default function Contacts() {
       </div>}
       {!isLoading &&
       <div>
-        <h1>Contact List</h1>
+        <h1 style={{marginRight: "12%"}}>Contact List</h1>
         <div style={buttonDivStyle}>
-          <a href="/contact/create"><button style={buttonStyle}>
-            Add Contact
-          </button></a>
-          <button onClick={toggleFilters} style={buttonStyle}>
+          <a href="/contact/create" style={{textDecoration: "none"}}>
+            <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}}>
+              Add Contact
+            </Button>
+          </a>
+          <Button variant="contained" onClick={toggleFilters} style={{textTransform: "none", minWidth: "80px"}}>
             {showFilters ? "Hide" : "Filters"}
-          </button>
-        </div>
+          </Button>
+        </div><br />
         {showFilters &&
         <div style={filtersStyle}>
           <div>
             <div>Search by name:</div>
-            <input
+            <TextField
               type="text"
-              style={searchBarStyle}
+              variant="outlined"
+              size="small"
+              style={{marginTop: "1%", minWidth: "250px"}}
               value={searchInput}
               placeholder="search by name"
               onChange={updateSearch}>
-            </input>
+            </TextField>
           </div><br />
           <div>
             <div>Search by label:</div>
-            <input
+            <TextField
               type="text"
-              style={searchBarStyle}
+              variant="outlined"
+              size="small"
+              style={{marginTop: "1%", minWidth: "250px"}}
               value={labelInput}
               placeholder="search by label"
               onChange={updateLabel}>
-            </input>
+            </TextField>
           </div><br />
           <div>
-            <span>Filter by department: </span>
-            <select
-              value={selectedDepartmentName}
-              onChange={updateDepartment}>
-                <option value="">All</option>
+            <div>Filter by department: </div>
+            <FormControl variant="outlined" size="small" style={{marginTop: "1%", minWidth: "150px"}}>
+              <Select
+                value={selectedDepartmentId}
+                onChange={updateDepartment}>
+                <MenuItem value="">All</MenuItem>
                 {departmentList.map(department => (
-                  <Department {...department} />
+                  <MenuItem value={department._id}>{department.departmentName}</MenuItem>
                 ))}
-            </select>
+              </Select>
+            </FormControl>
           </div>
           <div style={buttonDivStyle}>
-            <button onClick={clearFilters} style={buttonStyle}>
+            <Button variant="contained" onClick={clearFilters} style={{textTransform: "none"}}>
               Clear Filters
-            </button>
-          </div>
+            </Button>
+          </div><br />
         </div>
         }
-        <ul>
-        {filteredContacts
-        .map((contact, i) => (
-            <div key={i}>
-              <Contact {...contact} /><br />
-            </div>
-        ))}
-        </ul>
+        <TableContainer component={Paper} style={{width: "95%"}}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
+                <TableCell style={{fontWeight: "bold"}}>Email</TableCell>
+                <TableCell style={{fontWeight: "bold"}}>Phone Number</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredContacts.map((contact, i) => row(contact, i))}
+            </TableBody>
+          </Table>
+        </TableContainer><br />
       </div>}
     </div>
-  )
-}
-
-// Display a contact
-function Contact(contact) {
-  const { _id, contactName, email, phoneNumbers } = contact;
-  const tdStyle = { textAlign: "left" };
-  return (
-    <div>
-      <table>
-        <tbody>
-          <tr><td style={tdStyle}>Name: {contactName}</td></tr>
-          <tr><td style={tdStyle}>Email: {email}</td></tr>
-          <tr><td style={tdStyle}>Phone Number: {phoneNumbers.mobile}</td></tr>
-        </tbody>
-      </table>
-      <a href={"/contact/profile/" + _id}><button>View Profile</button></a>
-    </div>
-  );
-}
-
-// Display a department for dropdown option
-function Department(department) {
-  const { _id, departmentName } = department;
-  return (
-    <option value={_id}>{departmentName}</option>
   )
 }

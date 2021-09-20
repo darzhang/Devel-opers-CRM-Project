@@ -1,5 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
+import swal from 'sweetalert';
 
 export default function ContactProfile(props) {
   // initial values
@@ -97,18 +101,25 @@ export default function ContactProfile(props) {
     const _id = props.match.params.id;
     axios.post(url, { _id, ...values, departmentName, organisationName })
     .then(() => {
+      swal({
+        title: "Success!",
+        text: "Contact has been successfully updated!",
+        icon: "success",
+      });
       props.history.push("/contact/profile/" + _id);
       setShowEdit(true);
-      alert("Contact was successfully updated!")
     });
   }
 
   // styles
   const loadingStyle = { fontSize: "36px" };
-  const backStyle = { fontSize: "16px", textDecoration: "none" };
-  const backDivStyle = { textAlign: "left", marginLeft: "20px" };
-  const buttonStyle = { padding: "10px", fontSize: "16px", borderRadius: "4px", width: "120px" };
+  const backDivStyle = { textAlign: "left", marginLeft: "2%" };
+  const buttonStyle = { textTransform: "none" };
   const marginStyle = { marginTop: "100px", marginLeft: "80px" };
+  const linkStyle = { textDecoration: "none" };
+  const profileStyle = { width: "500px", margin: "auto" };
+  const labelStyle = { textAlign: "left", marginLeft: "12%" };
+  const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
 
   return (
     <div style={marginStyle}>
@@ -118,97 +129,155 @@ export default function ContactProfile(props) {
       </div>}
       {!isLoading &&
       <div>
-        <div style={backDivStyle}><a href="/contact"><span style={backStyle}>Back</span></a></div>
+        <div style={backDivStyle}>
+          <a href="/contact" style={linkStyle}>
+            <Button variant="contained" color="action" style={buttonStyle}>Back</Button>
+          </a>
+        </div>
         {showEdit &&
-        <Profile state={values} departmentName={departmentName} organisationName={organisationName} />}
+        <div style={profileStyle}>
+          <Profile state={values} departmentName={departmentName} organisationName={organisationName} />
+        </div>}
         {!showEdit &&
-        <div>
+        <div style={profileStyle}>
+          <h1>Edit Contact</h1><br />
           <form onSubmit={onSubmit}>
-            <label>Name </label>
-            <input
-              type="text"
-              name="contactName"
-              value={values.contactName}
-              onChange={onChange}
-              required
-            /><br />
+            <div>
+              <div style={labelStyle}>Name <span style={{color: "red"}}>*</span></div>
+              <TextField
+                name="contactName"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={values.contactName}
+                onChange={onChange}
+                required
+              />
+            </div><br />
 
-            <label>Home Phone Number </label>
-            <input
-              type="text"
-              name="phoneHome"
-              value={values.phoneHome}
-              onChange={onChange}
-            /><br />
+            <div>
+              <div style={labelStyle}>Phone Numbers</div>
+              <div style={{marginTop: "3%"}}>
+                <TextField
+                  label="Home"
+                  name="phoneHome"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                  style={{minWidth: "400px"}}
+                  value={values.phoneHome}
+                  onChange={onChange}
+                />
+              </div><br />
+              <div>
+                <TextField
+                  label="Work"
+                  name="phoneWork"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                  style={{minWidth: "400px"}}
+                  value={values.phoneWork}
+                  onChange={onChange}
+                />
+              </div><br />
+              <div>
+                <TextField
+                  label="Mobile"
+                  name="phoneMobile"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                  style={{minWidth: "400px"}}
+                  value={values.phoneMobile}
+                  onChange={onChange}
+                  required
+                />
+              </div>
+            </div><br />
 
-            <label>Work Phone Number </label>
-            <input
-              type="text"
-              name="phoneWork"
-              value={values.phoneWork}
-              onChange={onChange}
-            /><br />
+            <div>
+              <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div>
+              <TextField
+                name="email"
+                type="email"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={values.email}
+                onChange={onChange}
+                required
+              />
+            </div><br />
 
-            <label>Mobile Phone Number </label>
-            <input
-              type="text"
-              name="phoneMobile"
-              value={values.phoneMobile}
-              onChange={onChange}
-              required
-            /><br />
+            <div>
+              <div style={labelStyle}>Label <span style={{color: "red"}}>*</span></div>
+              <TextField
+                name="contactLabel"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={values.contactLabel}
+                onChange={onChange}
+                required
+              />
+            </div><br />
 
-            <label>Email </label>
-            <input
-              type="text"
-              name="email"
-              value={values.email}
-              onChange={onChange}
-              required
-            /><br />
+            <div>
+              <div style={labelStyle}>Department Name <span style={{color: "red"}}>*</span></div>
+              <TextField
+                name="departmentName"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={departmentName}
+                onChange={onDepartmentNameChange}
+                required
+              />
+            </div><br />
 
-            <label>Label </label>
-            <input
-              type="text"
-              name="contactLabel"
-              value={values.contactLabel}
-              onChange={onChange}
-              required
-            /><br />
+            <div>
+              <div style={labelStyle}>Organisation Name <span style={{color: "red"}}>*</span></div>
+              <TextField
+                name="organisationName"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={organisationName}
+                onChange={onOrganisationNameChange}
+                required
+              />
+            </div><br />
 
-            <label>Department Name </label>
-            <input
-              type="text"
-              name="departmentName"
-              value={departmentName}
-              onChange={onDepartmentNameChange}
-              required
-            /><br />
+            <div>
+              <div style={labelStyle}>Description</div>
+              <TextField
+                name="description"
+                type="text"
+                variant="outlined"
+                multiline
+                rows={3}
+                rowsMax={5}
+                style={textFieldStyle}
+                value={values.description}
+                onChange={onChange}
+              />
+            </div><br />
 
-            <label>Organisation Name </label>
-            <input
-              type="text"
-              name="organisationName"
-              value={organisationName}
-              onChange={onOrganisationNameChange}
-              required
-            /><br />
-
-            <label>Description </label>
-            <textarea
-              name="description"
-              value={values.description}
-              onChange={onChange}
-            /><br />
-
-            <button type="submit">Save Changes</button>
+            <Button type="submit" variant="contained" color="action" style={buttonStyle}>Save Changes</Button>
           </form>
+          <div><br /></div>
         </div>}
         {showEdit &&
         <div>
-          <button onClick={toggleEdit} style={buttonStyle}>
-            {showEdit ? "Edit Contact" : "Save Changes"}
-          </button>
+          <Button variant="contained" color="primary" onClick={toggleEdit} style={buttonStyle}>
+            <EditIcon />&nbsp;Edit Contact
+          </Button>
+          <div><br /></div>
         </div>}
       </div>}
     </div>
@@ -217,37 +286,127 @@ export default function ContactProfile(props) {
 
 // Display the contact's profile info
 function Profile(props) {
+  const labelStyle = { textAlign: "left", marginLeft: "12%" };
+  const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
   return (
     <div>
       <h1>{props.state.contactName}</h1><br />
       <div>
-        <div>Phone Numbers:</div>
-        <div>Home</div>
-        <div>{props.state.phoneHome}</div>
-        <div>Work</div>
-        <div>{props.state.phoneWork}</div>
-        <div>Mobile</div>
-        <div>{props.state.phoneMobile}</div>
+        <div style={labelStyle}>Phone Numbers</div>
+        <div style={{marginTop: "3%"}}>
+          <TextField
+            label="Home"
+            type="text"
+            variant="outlined"
+            size="small"
+            style={{minWidth: "400px"}}
+            value={props.state.phoneHome}
+            placeholder="-"
+            inputProps={
+              { readOnly: true }
+            }
+          />
+        </div><br />
+        <div>
+          <TextField
+            label="Work"
+            type="text"
+            variant="outlined"
+            size="small"
+            style={{minWidth: "400px"}}
+            value={props.state.phoneWork}
+            placeholder="-"
+            inputProps={
+              { readOnly: true }
+            }
+          />
+        </div><br />
+        <div>
+          <TextField
+            label="Mobile"
+            type="text"
+            variant="outlined"
+            size="small"
+            style={{minWidth: "400px"}}
+            value={props.state.phoneMobile}
+            placeholder="-"
+            inputProps={
+              { readOnly: true }
+            }
+          />
+        </div>
       </div><br />
       <div>
-        <div>Email:</div>
-        <div>{props.state.email}</div>
+        <div style={labelStyle}>Email</div>
+        <TextField
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.state.email}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
       </div><br />
       <div>
-        <div>Department:</div>
-        <div>{props.departmentName}</div>
+        <div style={labelStyle}>Department</div>
+        <TextField
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.departmentName}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
       </div><br />
       <div>
-        <div>Organisation:</div>
-        <div>{props.organisationName}</div>
+        <div style={labelStyle}>Organisation</div>
+        <TextField
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.organisationName}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
       </div><br />
       <div>
-        <div>Label:</div>
-        <div>{props.state.contactLabel}</div>
+        <div style={labelStyle}>Label</div>
+        <TextField
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.state.contactLabel}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
       </div><br />
       <div>
-        <div>Description:</div>
-        <div>{props.state.description}</div>
+        <div style={labelStyle}>Description</div>
+        <TextField
+          type="text"
+          variant="outlined"
+          multiline
+          rows={3}
+          rowsMax={5}
+          style={textFieldStyle}
+          value={props.state.description}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
       </div><br />
     </div>
   )
