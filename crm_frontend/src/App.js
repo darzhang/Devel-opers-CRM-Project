@@ -14,6 +14,7 @@ import ContactProfile from "./pages/ContactProfile";
 import CreateContact from "./pages/CreateContact";
 import Events from './pages/Event/Events';
 import EventDetails from './pages/Event/EventDetails';
+import Calendar from './pages/Event/Calendar';
 
 function App() {
   
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/contact/profile/:id" component={ContactProfile} />
           <Route exact path="/event/" component={Events} />
           <Route exact path="/event/:id" component={EventDetails} />
+          <Route exact path="/calendar" component={Calendar} />
         </Switch>
       </Router>
     </div>
