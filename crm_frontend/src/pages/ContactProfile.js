@@ -131,7 +131,7 @@ export default function ContactProfile(props) {
       <div>
         <div style={backDivStyle}>
           <a href="/contact" style={linkStyle}>
-            <Button variant="contained" color="action" style={buttonStyle}>Back</Button>
+            <Button variant="contained" style={buttonStyle}>Back</Button>
           </a>
         </div>
         {showEdit &&
@@ -260,15 +260,15 @@ export default function ContactProfile(props) {
                 type="text"
                 variant="outlined"
                 multiline
-                rows={3}
-                rowsMax={5}
+                minRows={3}
+                maxRows={5}
                 style={textFieldStyle}
                 value={values.description}
                 onChange={onChange}
               />
             </div><br />
 
-            <Button type="submit" variant="contained" color="action" style={buttonStyle}>Save Changes</Button>
+            <Button type="submit" variant="contained" style={buttonStyle}>Save Changes</Button>
           </form>
           <div><br /></div>
         </div>}
@@ -398,8 +398,8 @@ function Profile(props) {
           type="text"
           variant="outlined"
           multiline
-          rows={3}
-          rowsMax={5}
+          minRows={3}
+          maxRows={5}
           style={textFieldStyle}
           value={props.state.description}
           placeholder="-"
