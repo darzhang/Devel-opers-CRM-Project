@@ -20,6 +20,8 @@ code {
 }
 
 .event {
+  display: flex;
+  flex-direction: column;
   text-align: left;
   border: solid black;
   border-width: 2px;
@@ -29,7 +31,7 @@ code {
 
 .btn {
   display: inline-block;
-  background: #000;
+  background: blue;
   color: #fff;
   border: none;
   padding: 10px 20px;

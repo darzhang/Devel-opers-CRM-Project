@@ -1,11 +1,11 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import moment from 'moment'
-import { useEffect } from 'react'
 import SuggestionDropDown from './SuggestionDropDown'
+import swal from 'sweetalert'
 
-const AddEvent = ({event, onAdd, closeForm, onEdit, id}) => {
+const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
   const [eventName, setEventName] = useState(event.eventName)
   const [dateTime, setDateTime] = useState(moment(new Date(event.dateTime)).format("yyyy-MM-DDTHH:mm"))
   const [participants, setParticipants] = useState(event.participants)
@@ -35,17 +35,9 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id}) => {
   const onSubmit = (e) => {
     e.preventDefault()
 
-    const dateAdded = moment(new Date()).format("yyyy-MM-DDTHH:mm")
+    const dateAdded = new Date()
 
     const data = {eventName, dateTime, participants, description, location, dateAdded: dateAdded}
-
-    // ceheck if all field has been filled
-    for(const prop in data){
-      if(!data[prop]){
-        alert('You have to fill all the fields')
-        return
-      }
-    }
 
     if(onEdit===null){
       onAdd(data)
@@ -65,6 +57,7 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id}) => {
       <div className='form-control'>
         <TextField
           fullWidth
+          multiline
           label="Event Name"
           placeholder="Add Event Name"
           value={eventName}
@@ -89,11 +82,12 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id}) => {
         /> 
       </div>
       <div className='form-control'>
-        <SuggestionDropDown initialValue={participants} items={contacts} onChange={(value) => setParticipants(value)} />
+        <SuggestionDropDown participants={participants} items={contacts} onChange={(value) => setParticipants(value)} readOnly={false}/>
       </div>
       <div className='form-control'>
         <TextField
           fullWidth
+          multiline
           label="Description"
           placeholder="Add Description"
           value={description}
@@ -107,6 +101,7 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id}) => {
       <div className='form-control'>
       <TextField
           fullWidth
+          multiline
           label="Location"
           placeholder="Add Location"
           value={location}
@@ -117,7 +112,7 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id}) => {
           }}
         />
       </div>
-      <input type='submit' value='Add Event' className='btn btn-block'/>
+      <input type='submit' value={text} className='btn btn-block'/>
     </form>
   )
 }

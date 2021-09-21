@@ -2,29 +2,23 @@ const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
     eventName: {
-        type: String,
-        required: true
+        type: String
     },
     dateTime: {
-        type: Date,
-        required: true
+        type: Date
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     location: {
-        type: String,
-        required: true
+        type: String
     },
     participants: {
         type: Array,
-        required: true,
         default: void 0
     },
     dateAdded: {
-        type: Date,
-        required: true
+        type: Date
     }
 }, { versionKey: false , timestamps: false });
 
