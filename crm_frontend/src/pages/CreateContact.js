@@ -1,63 +1,67 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React, { useState, useEffect} from "react";
+import { useHistory } from "react-router-dom";
 
-export default class CreateContact extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      contactName: "",
-      phoneHome: "",
-      phoneWork: "",
-      phoneMobile: "",
-      email: "",
-      contactLabel: "",
-      departmentName: "",
-      organisationName: "",
-      description: ""
-    };
-  }
+export default function CreateContact ({props}) {
 
+  const [state, setState] = useState({
+    contactName: "",
+    phoneHome: "",
+    phoneWork: "",
+    phoneMobile: "",
+    email: "",
+    contactLabel: "",
+    departmentName: "",
+    organisationName: "",
+    description: ""
+  });
+  const [isLoading, setisLoading] = useState(false);
+
+  // constants
+  const loadingStyle = { fontSize: "36px" };
+  const backStyle = { fontSize: "16px", textDecoration: "none" };
+  const backDivStyle = { textAlign: "left", marginLeft: "20px" };
+  let history = useHistory();
+  
   // handle the change for the states
-  onChange(e) {
-    this.setState({
+  const onChange = (e) => {
+    setState({
+      ...state,
       [e.target.name]: e.target.value
     });
   }
 
   // handle submitting the data to the backend
-  onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
     const BASE_URL = "http://localhost:5000";
     const url = BASE_URL + "/contact";
-    const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = this.state;
+    const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = state;
     axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description })
     .then(() => {
-      this.props.history.push("/contact");
+      history.push("/contact");
       alert("Contact was successfully created!")
     });
-  }
+  };
 
-  render() {
-    const loadingStyle = { fontSize: "36px" };
-    const backStyle = { fontSize: "16px", textDecoration: "none" };
-    const backDivStyle = { textAlign: "left", marginLeft: "20px" };
-    return (
-      <div>
-        {this.state.isLoading &&
+  return (
+    <>
+      {isLoading &&
         <div style={loadingStyle}>
           Loading...
-        </div>}
-        {!this.state.isLoading &&
+        </div>
+      }
+      {!isLoading &&
         <div>
         <div style={backDivStyle}><a href="/contact"><span style={backStyle}>Back</span></a></div>
         <h1>Create Contact</h1>
-        <form onSubmit={this.onSubmit.bind(this)}>
+        <form onSubmit={onSubmit}>
             <label>Name </label>
             <input
               type="text"
               name="contactName"
-              value={this.state.contactName}
-              onChange={this.onChange.bind(this)}
+              value={state.contactName}
+              onChange={onChange}
               required
             /><br />
 
@@ -65,24 +69,24 @@ export default class CreateContact extends Component {
             <input
               type="text"
               name="phoneHome"
-              value={this.state.phoneHome}
-              onChange={this.onChange.bind(this)}
+              value={state.phoneHome}
+              onChange={onChange}
             /><br />
 
             <label>Work Phone Number </label>
             <input
               type="text"
               name="phoneWork"
-              value={this.state.phoneWork}
-              onChange={this.onChange.bind(this)}
+              value={state.phoneWork}
+              onChange={onChange}
             /><br />
 
             <label>Mobile Phone Number </label>
             <input
               type="text"
               name="phoneMobile"
-              value={this.state.phoneMobile}
-              onChange={this.onChange.bind(this)}
+              value={state.phoneMobile}
+              onChange={onChange}
               required
             /><br />
 
@@ -90,8 +94,8 @@ export default class CreateContact extends Component {
             <input
               type="text"
               name="email"
-              value={this.state.email}
-              onChange={this.onChange.bind(this)}
+              value={state.email}
+              onChange={onChange}
               required
             /><br />
 
@@ -99,8 +103,8 @@ export default class CreateContact extends Component {
             <input
               type="text"
               name="contactLabel"
-              value={this.state.contactLabel}
-              onChange={this.onChange.bind(this)}
+              value={state.contactLabel}
+              onChange={onChange}
               required
             /><br />
 
@@ -108,8 +112,8 @@ export default class CreateContact extends Component {
             <input
               type="text"
               name="departmentName"
-              value={this.state.departmentName}
-              onChange={this.onChange.bind(this)}
+              value={state.departmentName}
+              onChange={onChange}
               required
             /><br />
 
@@ -117,22 +121,22 @@ export default class CreateContact extends Component {
             <input
               type="text"
               name="organisationName"
-              value={this.state.organisationName}
-              onChange={this.onChange.bind(this)}
+              value={state.organisationName}
+              onChange={onChange}
               required
             /><br />
 
             <label>Description </label>
             <textarea
               name="description"
-              value={this.state.description}
-              onChange={this.onChange.bind(this)}
+              value={state.description}
+              onChange={onChange}
             /><br />
 
             <button type="submit">Submit</button>
         </form>
-        </div>}
-      </div>
-    )
-  }
+        </div>
+      }
+    </>
+  )
 }

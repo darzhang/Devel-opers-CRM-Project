@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import our components
 // import Nav from "./components/Nav";
 import SideBar from "./components/sidebar";
+import Organisation from './pages/Organisation';
 import Home from "./pages/Home";
 import { LoginForm, Logout  } from "./pages/Users";
 import Contacts from "./pages/Contacts";
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/contact" component={Contacts} />
+          <Route exact path="/organisation" component={Organisation} />
           <Route exact path="/contact/create" component={CreateContact} />
           <Route exact path="/contact/profile/:id" component={ContactProfile} />
           <Route exact path="/event/" component={Events} />
