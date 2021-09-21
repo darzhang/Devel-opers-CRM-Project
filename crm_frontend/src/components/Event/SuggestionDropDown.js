@@ -1,9 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import { TextField } from '@mui/material'
 
-function SuggestionDropDown({initialValue, items, onChange}) {
-  const [selected, setSelected] = useState(initialValue)
+function SuggestionDropDown({participants, items, onChange}) {
 
   return (
     <div>
@@ -11,9 +10,8 @@ function SuggestionDropDown({initialValue, items, onChange}) {
         multiple
         id="tags-standard"
         options={items}
-        value={selected}
+        value={participants}
         onChange ={(event, value) => {
-          setSelected(value)
           onChange(value)
         }}
         getOptionLabel={(option) => option.name}

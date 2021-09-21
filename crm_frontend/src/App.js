@@ -22,7 +22,7 @@ function App() {
   const mainComponent = (
     <div className="App">
       <Router>
-        {/* <SideBar /> */}
+        <SideBar />
         <Switch>
           <Route exact path="/">
             <Home />

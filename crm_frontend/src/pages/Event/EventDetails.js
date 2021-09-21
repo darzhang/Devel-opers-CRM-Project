@@ -4,12 +4,24 @@ import { useState, useEffect } from 'react'
 import EventDetail from '../../components/Event/EventDetail'
 import AddEvent from '../../components/Event/AddEvent'
 import EventHeader from '../../components/Event/EventHeader'
+import swal from 'sweetalert'
 
 const EventDetails = () => {
-  //Fetch Particular Event
+
+  const defaultEvent = {
+    eventName: '',
+    dateTime: new Date(),
+    participants: [],
+    description: '',
+    location: '',
+    dateAdded: new Date()
+  }
+  
   const {id} = useParams()
-  const [event, setEvent] = useState('')
+  const [event, setEvent] = useState(defaultEvent)
   const [edit, setEdit] = useState(false)
+
+  
 
   // Fetch one Event
   const fetchOneEvent = async (id) => {
@@ -30,7 +42,21 @@ const EventDetails = () => {
 
     const data = await res.json()
 
-    setEvent(data)
+    if(res.status !== 400){
+      swal({
+        title: "Successful",
+        text: "You have successfully edit the event!",
+        icon: "success",
+      });
+  
+      setEvent(data)
+    }else {
+      swal({
+        title: "Failure",
+        text: "You have failed to edit the event!",
+        icon: "error",
+      });
+    }
   }
 
   // Re render page when the id in the params change
@@ -46,9 +72,9 @@ const EventDetails = () => {
 
 
   return (
-    <div>
+    <div style={{marginLeft:'75px'}}>
       <EventHeader onAdd={()=>setEdit(!edit)} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'red' : 'green'}/>
-      {edit ? <AddEvent event={event} onEdit={editEvent} onAdd={null} id={id} closeForm={()=> setEdit(!edit)} /> :
+      {edit ? <AddEvent event={event} onEdit={editEvent} onAdd={null} id={id} closeForm={()=> setEdit(!edit)} text={'Edit Event'}/> :
       <EventDetail event={event} />}
     </div>
   )
