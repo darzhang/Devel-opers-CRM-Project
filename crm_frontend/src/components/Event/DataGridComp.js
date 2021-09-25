@@ -44,7 +44,8 @@ function DataGridComp({events, onDelete}) {
 
   const columns = [
     { field: 'eventName', headerName: 'Event Name', width: 160 },
-    { field: 'dateTime', headerName: 'Date & Time', width: 160},
+    { field: 'startTime', headerName: 'Start Time', width: 160},
+    {field: 'endTime', headerName: 'End Time', width: 160},
     // { field: 'description', headerName: 'Description', width: 180},
     { field: 'location', headerName: 'Location', width: 160},
     { field: 'participants', headerName: 'Participants', width: 160},
@@ -60,9 +61,6 @@ function DataGridComp({events, onDelete}) {
       </GridToolbarContainer>
     );
   }
-
-  
-
 
   return (
     <div>
