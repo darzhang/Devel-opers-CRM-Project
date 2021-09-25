@@ -130,7 +130,7 @@ export default function Contacts() {
   const filtersStyle = { textAlign: "left" };
   const buttonDivStyle = { textAlign: "right", marginRight: "5%" };
   const loadingStyle = { fontSize: "36px" };
-  const marginStyle = { marginTop: "6%", marginLeft: "10%" };
+  const marginStyle = { marginTop: "2%", marginLeft: "10%" };
 
   return (
     <div style={marginStyle}>
