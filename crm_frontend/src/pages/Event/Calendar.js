@@ -39,8 +39,8 @@ export default function Contacts() {
     let eventsList = data;
     for (let i = 0; i < eventsList.length; i++){
       eventsList[i].title = eventsList[i].eventName
-      eventsList[i].start = new Date(eventsList[i].dateTime)
-      eventsList[i].end = new Date(eventsList[i].dateTime)
+      eventsList[i].start = new Date(eventsList[i].startTime)
+      eventsList[i].end = new Date(eventsList[i].endTime)
       eventsList[i].eventsListID = eventsList[i]._id;
     }
 
