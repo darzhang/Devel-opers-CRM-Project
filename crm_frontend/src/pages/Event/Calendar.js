@@ -57,18 +57,22 @@ export default function Contacts() {
     history.push(getEventID());
   }
 
+  const marginStyle = { marginTop: "6%", marginLeft: "10%", marginRight: "10%"};
+
   return (
-     <div className="Calendar" style={{marginLeft:"75px"}}>
-            <h1>Calendar</h1>
-            <Calendar 
-              localizer={localizer} 
-              events={events} 
-              startAccessor="start"
-              endAccessor="end"
-              onSelectEvent={event => (eventID = event._id)}
-              onDoubleClickEvent={redirectEvent}
-              style={{ height: 500, margin: "50px" }} />
+    <div style={marginStyle}>
+      <div className="Calendar" style={{marginLeft:"75px"}}>
+              <h1 marginRight = "12%">Calendar</h1>
+              <Calendar 
+                localizer={localizer} 
+                events={events} 
+                startAccessor="start"
+                endAccessor="end"
+                onSelectEvent={event => (eventID = event._id)}
+                onDoubleClickEvent={redirectEvent}
+                style={{ height: 500}} />
         </div>
+      </div>
   )
 
 }
