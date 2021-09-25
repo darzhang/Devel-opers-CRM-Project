@@ -8,10 +8,12 @@ import startOfWeek from "date-fns/startOfWeek";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-export default function Contacts() {
+export default function CalendarPage() {
+  
   const locales = {
     "en-AU": require("date-fns/locale/en-AU"),
   };
+
   const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -37,10 +39,10 @@ export default function Contacts() {
 
     let eventsList = data;
     for (let i = 0; i < eventsList.length; i++){
+      eventsList[i].eventsListID = eventsList[i]._id
       eventsList[i].title = eventsList[i].eventName
       eventsList[i].start = new Date(eventsList[i].startTime)
       eventsList[i].end = new Date(eventsList[i].endTime)
-      eventsList[i].eventsListID = eventsList[i]._id;
     }
 
     return data
