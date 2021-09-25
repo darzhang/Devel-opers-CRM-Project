@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
-
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";

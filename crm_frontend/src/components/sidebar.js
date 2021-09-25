@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
@@ -17,9 +18,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HomeIcon from '@material-ui/icons/Home';
-import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LanguageIcon from '@mui/icons-material/Language';
+import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -98,6 +101,29 @@ export default function SideBar() {
     setOpen(false);
   };
 
+  
+  const history = useHistory();
+  function redirectHome() {
+    history.push('/');
+  }
+  function redirectProfile() {
+    history.push('/');
+  }
+  function redirectContact() {
+    history.push('/contact');
+  }
+  function redirectEvent() {
+    history.push('/event');
+  }
+  function redirectCalendar() {
+    history.push('/calendar');
+  }
+  function redirectOrganisation() {
+    history.push('/');
+  }
+  function redirectLogout() {
+    history.push('/');
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -144,32 +170,44 @@ export default function SideBar() {
         </div>
         <Divider />
         <List>
-            <ListItem button key={'Profile'}>
+            <ListItem button key={'Profile'} onClick={redirectProfile}>
                 <ListItemIcon><AccountCircleIcon /></ListItemIcon>
                 <ListItemText primary={'Profile'} />
             </ListItem>
         </List>
         <Divider />
         <List>
-            <ListItem button key={'Home'}>
+            <ListItem button key={'Home'} onClick={redirectHome}>
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary={'Home'} />
             </ListItem>
         </List>
         <List>
-            <ListItem button key={'Notification'}>
-                <ListItemIcon><NotificationsActiveIcon /></ListItemIcon>
-                <ListItemText primary={'Notification'} />
-            </ListItem>
-        </List>
-        <List>
-            <ListItem button key={'Trait'}>
+            <ListItem button key={'Contacts'} onClick={redirectContact}>
                 <ListItemIcon><PeopleAltIcon /></ListItemIcon>
-                <ListItemText primary={'Trait'} />
+                <ListItemText primary={'Contacts'} />
             </ListItem>
         </List>
         <List>
-            <ListItem button key={'Logout'}>
+            <ListItem button key={'Events'} onClick={redirectEvent}>
+                <ListItemIcon><ScheduleIcon /></ListItemIcon>
+                <ListItemText primary={'Events'} />
+            </ListItem>
+        </List>
+        <List>
+            <ListItem button key={'Calendar'} onClick={redirectCalendar}>
+                <ListItemIcon><DateRangeIcon /></ListItemIcon>
+                <ListItemText primary={'Calendar'} />
+            </ListItem>
+        </List>
+        <List>
+            <ListItem button key={'Organisation'} onClick={redirectOrganisation}>
+                <ListItemIcon><LanguageIcon /></ListItemIcon>
+                <ListItemText primary={'Organisation'} />
+            </ListItem>
+        </List> 
+        <List>
+            <ListItem button key={'Logout'} onClick={redirectLogout}>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText primary={'Logout'} />
             </ListItem>
