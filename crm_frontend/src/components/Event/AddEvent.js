@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import moment from 'moment'
 import SuggestionDropDown from './SuggestionDropDown'
-import swal from 'sweetalert'
 
 const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
   const [eventName, setEventName] = useState(event.eventName)
-  const [dateTime, setDateTime] = useState(moment(new Date(event.dateTime)).format("yyyy-MM-DDTHH:mm"))
+  const [startTime, setStartTime] = useState(moment(new Date(event.startTime)).format("yyyy-MM-DDTHH:mm"))
+  const [endTime, setEndTime] = useState(moment(new Date(event.endTime)).format("yyyy-MM-DDTHH:mm"))
   const [participants, setParticipants] = useState(event.participants)
   const [description, setDescription] = useState(event.description)
   const [location, setLocation] = useState(event.location)
@@ -37,7 +37,7 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
 
     const dateAdded = new Date()
 
-    const data = {eventName, dateTime, participants, description, location, dateAdded: dateAdded}
+    const data = {eventName, startTime, endTime, participants, description, location, dateAdded: dateAdded}
 
     if(onEdit===null){
       onAdd(data)
@@ -47,7 +47,8 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
       closeForm()
     }
     setEventName('')
-    setDateTime('')
+    setStartTime('')
+    setEndTime('')
     setParticipants('')
     setDescription('')
     setLocation('')
@@ -72,9 +73,22 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
         <TextField
           fullWidth
           type="datetime-local"
-          label="Date & Time"
-          value={dateTime}
-          onChange={(e)=> setDateTime(e.target.value)}
+          label="Start Time"
+          value={startTime}
+          onChange={(e)=> setStartTime(e.target.value)}
+          variant="outlined"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        /> 
+      </div>
+      <div className='form-control'>
+        <TextField
+          fullWidth
+          type="datetime-local"
+          label="End Time"
+          value={endTime}
+          onChange={(e)=> setEndTime(e.target.value)}
           variant="outlined"
           InputLabelProps={{
             shrink: true,

@@ -4,7 +4,10 @@ const eventSchema = new mongoose.Schema({
     eventName: {
         type: String
     },
-    dateTime: {
+    startTime: {
+        type: Date
+    },
+    endTime: {
         type: Date
     },
     description: {

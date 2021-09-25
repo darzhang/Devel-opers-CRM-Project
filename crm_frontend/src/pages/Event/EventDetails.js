@@ -10,7 +10,8 @@ const EventDetails = () => {
 
   const defaultEvent = {
     eventName: '',
-    dateTime: new Date(),
+    startTime: new Date(),
+    endTime: new Date(),
     participants: [],
     description: '',
     location: '',

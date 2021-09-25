@@ -25,8 +25,17 @@ function EventDetail({event}) {
       <div className="form-control"><TextField
         fullWidth
         multiline
-        label="Date & Time"
-        value={moment(event.dateTime).format(timeFormat)}
+        label="Start Time"
+        value={moment(event.startTime).format(timeFormat)}
+        variant="outlined"
+        InputLabelProps={{shrink: true,}}
+        InputProps={{readOnly: true}}
+      /></div>
+      <div className="form-control"><TextField
+        fullWidth
+        multiline
+        label="End Time"
+        value={moment(event.endTime).format(timeFormat)}
         variant="outlined"
         InputLabelProps={{shrink: true,}}
         InputProps={{readOnly: true}}

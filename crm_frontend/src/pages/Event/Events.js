@@ -11,9 +11,11 @@ const Events = () => {
   const timeFormat = "DD/MM/YY, hh:mm a"
   const [events, setEvents] = useState([])
   const [showAddEvent, setShowAddEvent] = useState(false)
+
   const defaultEvent = {
     eventName: '',
-    dateTime: new Date(),
+    startTime: new Date(),
+    endTime: new Date(),
     participants: [],
     description: '',
     location: '',
@@ -27,10 +29,12 @@ const Events = () => {
       eventsFromBackEnd.forEach((event) => {
         event.id = event._id; 
         delete event._id; 
-        event.dateTime = moment(event.dateTime).format(timeFormat); 
+        event.startTime = moment(event.startTime).format(timeFormat);
+        event.endTime = moment(event.endTime).format(timeFormat) 
         event.dateAdded = moment(event.dateAdded).format(timeFormat);
         event.participants = event.participants.map((participant)=>participant.name).join(", ")
       })
+      console.log(eventsFromBackEnd)
       setEvents(eventsFromBackEnd)
     }
 
@@ -67,8 +71,9 @@ const Events = () => {
       delete data._id
 
       //preprocessing data for display in grid
-      data.dateTime = moment(data.dateTime).format(timeFormat)
+      data.startTime = moment(data.startTime).format(timeFormat)
       data.dateAdded = moment(data.dateAdded).format(timeFormat)
+      data.endTime = moment(data.endTime).format(timeFormat)
       data.participants = data.participants.map((participant)=>participant.name).join(", ")
 
 
