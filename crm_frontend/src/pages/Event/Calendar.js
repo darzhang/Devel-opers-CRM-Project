@@ -1,28 +1,18 @@
 import React from "react";
 import { useState, useEffect } from 'react'
-
-import AddEvent from '../../components/Event/AddEvent'
-import Event from '../../components/Event/Event'
-import EventHeader from '../../components/Event/EventHeader'
-   
 import { useHistory } from 'react-router-dom';
 
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
-import { Redirect } from 'react-router-dom'
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
-export default function Contacts(props) {
-
+export default function Contacts() {
   const locales = {
     "en-AU": require("date-fns/locale/en-AU"),
   };
-
   const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -38,7 +28,6 @@ export default function Contacts(props) {
       const eventsFromBackEnd = await fetchEvents()
       setEvents(eventsFromBackEnd)
     }
-
     getEvents()
   }, [])
 
@@ -52,18 +41,22 @@ export default function Contacts(props) {
       eventsList[i].title = eventsList[i].eventName
       eventsList[i].start = new Date(eventsList[i].dateTime)
       eventsList[i].end = new Date(eventsList[i].dateTime)
+      eventsList[i].eventsListID = eventsList[i]._id;
     }
 
     return data
   }
 
-  function redirectToEvent() {
+  const history = useHistory();
+  let eventID = '';
+  function getEventID(){
+    const newURL = '/event/' + eventID;
+    return newURL
   }
-  //let history = useHistory();
+  function redirectEvent() {
+    history.push(getEventID());
+  }
 
-  //function redirect(eventID){
-  //  history.push('/event')
-  //}
   return (
      <div className="Calendar">
             <h1>Calendar</h1>
@@ -72,11 +65,10 @@ export default function Contacts(props) {
               events={events} 
               startAccessor="start"
               endAccessor="end"
-              onDoubleClickEvent={redirectToEvent()}
+              onSelectEvent={event => (eventID = event._id)}
+              onDoubleClickEvent={redirectEvent}
               style={{ height: 500, margin: "50px" }} />
         </div>
   )
 
-};
-
-	
+}
