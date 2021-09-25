@@ -58,7 +58,7 @@ export default function Contacts() {
   }
 
   return (
-     <div className="Calendar">
+     <div className="Calendar" style={{marginLeft:"75px"}}>
             <h1>Calendar</h1>
             <Calendar 
               localizer={localizer} 
