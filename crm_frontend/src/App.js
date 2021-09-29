@@ -8,11 +8,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import Nav from "./components/Nav";
 import SideBar from "./components/sidebar";
 import Organisation from './pages/Organisation';
+import OrganisationDetail from './pages/OrganisationDetail';
 import Home from "./pages/Home";
 import { LoginForm, Logout  } from "./pages/Users";
 import Contacts from "./pages/Contacts";
 import ContactProfile from "./pages/ContactProfile";
-import CreateContact from "./pages/CreateContact";
 import Events from './pages/Event/Events';
 import EventDetails from './pages/Event/EventDetails';
 import Calendar from './pages/Event/Calendar';
@@ -33,7 +33,7 @@ function App() {
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/contact" component={Contacts} />
           <Route exact path="/organisation" component={Organisation} />
-          <Route exact path="/contact/create" component={CreateContact} />
+          <Route exact path="/organisation/:id" component={OrganisationDetail} />
           <Route exact path="/contact/profile/:id" component={ContactProfile} />
           <Route exact path="/event/" component={Events} />
           <Route exact path="/event/:id" component={EventDetails} />
