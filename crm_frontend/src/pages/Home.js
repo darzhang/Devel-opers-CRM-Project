@@ -21,14 +21,14 @@ import Button from '@material-ui/core/Button';
 // import Grid from '@material-ui/core/Grid';
 
 export default function Home() {
-
   const [events, setEvents] = useState([])
   const [contactList, setContactList] = useState([]);
   
   useEffect(() => {
     getEvents()
     getContacts()
-  })
+  }, [])
+
   const getEvents = async () =>{
     // const eventsFromBackEnd = await fetchEvents()
     await axios.get("http://localhost:5000/event").then(res => {
@@ -258,7 +258,6 @@ export default function Home() {
         <h3 style={{marginLeft:"21%", textAlign:'left'}}>Recently Added</h3>
         <ContactTable/> <EventTable/>
       </div>
-
       <div style={eventMarginStyle}>
        <h3 style={{marginLeft:"21%", textAlign:'left'}}>Recently</h3>
         <EventTable/>

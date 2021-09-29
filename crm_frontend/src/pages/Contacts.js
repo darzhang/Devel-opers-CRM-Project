@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import TablePagination from "@material-ui/core/TablePagination";
 
+/* Display a contact list page
+ */
 export default function Contacts() {
   // useState hooks
   const [contactList, setContactList] = useState([]);
@@ -21,20 +23,21 @@ export default function Contacts() {
   const [searchInput, setSearchInput] = useState("");
   const [labelInput, setLabelInput] = useState("");
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // load the data when loading the page
+  // Load data from the Backend when loading the page
   useEffect(() => {
     getContacts();
     getDepartments();
     setIsLoading(false);
   }, [])
 
-  // get list of contacts from the database and display them in an alphabetically sorted order
+  /* Get list of contacts from the Backend and display them in an alphabetically sorted order
+   */
   const getContacts = async () => {
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/contact").then(res => {
@@ -44,7 +47,8 @@ export default function Contacts() {
     })
   }
 
-  // get list of departments from the database
+  /* Get list of departments from the Backend
+   */
   const getDepartments = async () => {
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/department").then(res => {
@@ -52,28 +56,38 @@ export default function Contacts() {
     })
   }
 
-  // toggle function for filter button
+  /* Toggle show or hide filters when the button is clicked
+   */
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   }
 
-  // change search result based on contact name
+  /* Change search result based on the letters typed in the search by name text field
+   *
+   * @param e Event
+   */
   const updateSearch = (e) => {
     setSearchInput(e.target.value.substr(0));
   }
 
-  // change search result based on label
+  /* Change search result based on the letters typed in the search by label text field
+   * @param e Event
+   */
   const updateLabel = (e) => {
     setLabelInput(e.target.value.substr(0));
   }
 
-  // change search result based on the selected department
+  /* Change search result based on the selected department from the filter by department dropdown
+   *
+   * @param e Event
+   */
   const updateDepartment = (e) => {
     setSelectedDepartmentId(e.target.value);
     setSelectedDepartmentName(e.target.text);
   }
 
-  // reset the filters
+  /* Reset all filters (search by name and label to empty string, and selected department to null)
+   */
   const clearFilters = () => {
     setSearchInput("");
     setLabelInput("");
@@ -115,18 +129,28 @@ export default function Contacts() {
     </TableRow>
   )
 
+  /* Set page to the new page when page changes
+   *
+   * @param event Event
+   * @param newPage The newly selected page
+   */
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  /* Change the number of rows of the page
+   *
+   * @param event Event
+   */
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
+  // Adds empty rows for the last page to make sure the height stays the same
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, contactList.length - page * rowsPerPage);
 
-  // styles
+  // Styles
   const filtersStyle = { textAlign: "left" };
   const buttonDivStyle = { textAlign: "right", marginRight: "5%" };
   const loadingStyle = { fontSize: "36px" };
