@@ -28,7 +28,7 @@ module.exports = {
     },
     getOne: async (req, res) => {
         try {
-            await Organisation.find({ orgName: req.params.name})
+            await Organisation.find({ _id: req.params.id})
             .exec(function (err, org) {
                 if (err) return res.status(404).json(err);
                 res.json(org);
