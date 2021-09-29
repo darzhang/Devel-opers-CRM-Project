@@ -1,62 +1,48 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { 
   DataGrid, 
   GridToolbarContainer,
-  // GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  // GridToolbarExport,
-  // GridToolbarDensitySelector 
 } from '@mui/x-data-grid'
-import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import { Link } from 'react-router-dom';
-import Button from './Button'
 
-function DataGridComp({events, onDelete}) {
-  const showDetailColumn = {
-    width: 120,
-    field:'showDetail',
-    headerName: 'Detail',
-    renderCell: (cellValues) => {
-      return (
-        <Link to={`/event/${cellValues.row.id}`}>
-        <Button color={'blue'} text={'Detail'} onClick={null}/>
-        </Link>
-      );
-    }
-  }
+function DataGridComp({events, columns}) {
+  const initialHeaderFooter = 36 + 56 + 54
+  const rowHeight = 52
+  const [pageSize, setPageSize] = useState(5)
+  const [dataGridHeight, setDataGridHeight] = useState(rowHeight*5 + initialHeaderFooter)
 
-  const deleteColumn = {
-    width: 120,
-    field:'deleteEvent',
-    headerName: 'Delete',
-    renderCell: (cellValues) => {
-      return (
-        <Tooltip title="Delete Event">
-          <IconButton onClick={() => onDelete(cellValues.row.id)}>
-            <DeleteIcon/>
-          </IconButton>
-        </Tooltip>
-      )
-    }
-  }
+  // const requestSearch = (searchValue) => {
+  //   setSearchText(searchValue)
+  //   console.log(searchValue)
+  //   const newEvents = events.filter((event) => (event.eventName.toUpperCase()).includes(searchValue.toUpperCase()))
+  //   // console.log(events.filter((event) => console.log(event.eventName.includes())))
+  //   setShownEvents(newEvents)
+  // }
 
-  const columns = [
-    { field: 'eventName', headerName: 'Event Name', width: 160 },
-    { field: 'startTime', headerName: 'Start Time', width: 160},
-    {field: 'endTime', headerName: 'End Time', width: 160},
-    // { field: 'description', headerName: 'Description', width: 180},
-    { field: 'location', headerName: 'Location', width: 160},
-    { field: 'participants', headerName: 'Participants', width: 160},
-    // { field: 'dateAdded', headerName: 'Date Added', width: 180},
-    showDetailColumn,
-    deleteColumn
-  ];
-
-  function CustomToolbar() {
+  function CustomToolbar(props) {
     return (
       <GridToolbarContainer>
+        {/* <TextField 
+          variant="standard"
+          value={props.value}
+          onChange={props.onChange}
+          placeholder="Search…"
+          // className={classes.textField}
+          InputProps={{
+            startAdornment: <SearchIcon fontSize="small" />,
+            endAdornment: (
+              <IconButton
+                title="Clear"
+                aria-label="Clear"
+                size="small"
+                style={{ visibility: props.value ? 'visible' : 'hidden' }}
+                onClick={props.clearSearch}
+              >
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            ),
+          }}
+        /> */}
         <GridToolbarFilterButton />
       </GridToolbarContainer>
     );
@@ -65,12 +51,22 @@ function DataGridComp({events, onDelete}) {
   return (
     <div>
       <DataGrid
-          autoHeight
-          autoPageSize
-          columns={columns}
-          rows={events}
-          components={{Toolbar: CustomToolbar}}
-        />
+        style={{height: `${dataGridHeight}px`, width: '100%'}}
+        pageSize={pageSize}
+        onPageSizeChange={(newPageSize)=> {setPageSize(newPageSize); setDataGridHeight(newPageSize*rowHeight + initialHeaderFooter)}}
+        rowsPerPageOptions={[5,10,25]}
+        columns={columns}
+        rows={events}
+        components={{Toolbar: CustomToolbar}}
+        // componentsProps = {{
+        //   toolbar: {
+        //     value: searchText,
+        //     onChange: (event) => requestSearch(event.target.value),
+        //     clearSearch: () => requestSearch(''),
+        //   }
+        // }}
+        disableColumnSelector
+      />
     </div>
   )
 }

@@ -5,21 +5,22 @@ import EventDetail from '../../components/Event/EventDetail'
 import AddEvent from '../../components/Event/AddEvent'
 import EventHeader from '../../components/Event/EventHeader'
 import swal from 'sweetalert'
+import { CircularProgress } from '@mui/material'
 
 const EventDetails = () => {
 
-  const defaultEvent = {
-    eventName: '',
-    startTime: new Date(),
-    endTime: new Date(),
-    participants: [],
-    description: '',
-    location: '',
-    dateAdded: new Date()
-  }
+  // const defaultEvent = {
+  //   eventName: '',
+  //   startTime: new Date(),
+  //   endTime: new Date(),
+  //   participants: [],
+  //   description: '',
+  //   location: '',
+  //   dateAdded: new Date()
+  // }
   
   const {id} = useParams()
-  const [event, setEvent] = useState(defaultEvent)
+  const [event, setEvent] = useState('')
   const [edit, setEdit] = useState(false)
 
   
@@ -75,8 +76,9 @@ const EventDetails = () => {
   return (
     <div style={{marginLeft:'75px'}}>
       <EventHeader onAdd={()=>setEdit(!edit)} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'red' : 'green'}/>
-      {edit ? <AddEvent event={event} onEdit={editEvent} onAdd={null} id={id} closeForm={()=> setEdit(!edit)} text={'Edit Event'}/> :
-      <EventDetail event={event} />}
+      {edit ? 
+      (event ? <AddEvent event={event} onEdit={editEvent} onAdd={null} id={id} closeForm={()=> setEdit(!edit)} text={'Edit Event'}/> : <CircularProgress/> )
+      : (event ? <EventDetail event={event} /> : <CircularProgress/>)}
     </div>
   )
 }

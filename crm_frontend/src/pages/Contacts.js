@@ -13,13 +13,17 @@ import Select from '@mui/material/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import TablePagination from "@material-ui/core/TablePagination";
+import DataGridComp from '../components/Event/DataGridComp';
+import CircularProgress from '@mui/material/CircularProgress';
 
 /* Display a contact list page
  */
 export default function Contacts() {
   // useState hooks
   const [contactList, setContactList] = useState([]);
+  const [departmentName, setDepartmentName] = useState("");
   const [departmentList, setDepartmentList] = useState([]);
+  const [organisationList, setOrganisationList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [labelInput, setLabelInput] = useState("");
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
@@ -32,28 +36,50 @@ export default function Contacts() {
   // Load data from the Backend when loading the page
   useEffect(() => {
     getContacts();
-    getDepartments();
     setIsLoading(false);
   }, [])
 
   /* Get list of contacts from the Backend and display them in an alphabetically sorted order
    */
   const getContacts = async () => {
+    const deps = await getDepartments();
+    const orgs = await getOrganisations();
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/contact").then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
+        sortedList.forEach(async (contact) => {
+          contact.id = contact._id;
+          contact.phoneMobile = contact.phoneNumbers.mobile;
+          const department = deps.filter(department => department._id === contact.departmentId);
+          contact.departmentName = department[0].departmentName;
+          const organisation = orgs.filter(organisation => organisation._id === contact.organisationId);
+          contact.organisationName = organisation[0].orgName;
+        })
         setContactList(sortedList);
     })
   }
 
+  let depList = []
   /* Get list of departments from the Backend
    */
   const getDepartments = async () => {
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/department").then(res => {
-      setDepartmentList(res.data);
-    })
+    const res = await axios.get(BASE_URL + "/department")
+    setDepartmentList(res.data);
+    depList = res.data;
+    return depList;
+  }
+
+  let orgList = []
+  /* Get list of organisations from the Backend
+   */
+  const getOrganisations = async () => {
+    const BASE_URL = "http://localhost:5000";
+    const res = await axios.get(BASE_URL + "/organisation")
+    setOrganisationList(res.data);
+    orgList = res.data;
+    return orgList;
   }
 
   /* Toggle show or hide filters when the button is clicked
@@ -129,6 +155,33 @@ export default function Contacts() {
     </TableRow>
   )
 
+  const showDetailColumn = {
+    width: 120,
+    field:'showDetail',
+    headerName: 'Detail',
+    filterable:false,
+    flex: 1,
+    renderCell: (contact) => {
+      return (
+        <a href={"/contact/profile/" + contact.id} style={{textDecoration: "none", textAlign: "center"}}>
+          <Button variant="contained" style={{textTransform: "none"}}>
+            View Contact
+          </Button>
+        </a>
+      );
+    }
+  }
+
+  const columns =[
+    { field: 'contactName', headerName: 'Contact Name', minWidth: 160, flex: 1},
+    { field: 'email', headerName: 'Email', minWidth: 160, flex: 1, filterable:false},
+    { field: 'phoneMobile', headerName: 'Phone Number', minWidth: 160, flex: 1, filterable:false},
+    { field: 'label', headerName: 'Label', minWidth: 160, flex: 1},
+    { field: 'departmentName', headerName: 'Department Name', minWidth: 160, flex: 1},
+    { field: 'organisationName', headerName: 'Organisation Name', minWidth: 160, flex: 1},
+    showDetailColumn
+  ];
+
   /* Set page to the new page when page changes
    *
    * @param event Event
@@ -154,7 +207,7 @@ export default function Contacts() {
   const filtersStyle = { textAlign: "left" };
   const buttonDivStyle = { textAlign: "right", marginRight: "5%" };
   const loadingStyle = { fontSize: "36px" };
-  const marginStyle = { marginTop: "2%", marginLeft: "10%" };
+  const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
   return (
     <div style={marginStyle}>
@@ -221,7 +274,10 @@ export default function Contacts() {
           </div><br />
         </div>
         }
-        <TableContainer component={Paper} style={{width: "95%"}}>
+        <div className="listOfEvents">
+          {filteredContacts.length > 0 ? <DataGridComp events={contactList} columns={columns}></DataGridComp> : <CircularProgress />}
+        </div><br />
+        {/* <TableContainer component={Paper} style={{width: "95%"}}>
           <Table>
             <TableHead>
               <TableRow>
@@ -252,7 +308,7 @@ export default function Contacts() {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />}
-        </TableContainer><br />
+        </TableContainer><br /> */}
       </div>}
     </div>
   )
