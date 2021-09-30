@@ -1,19 +1,12 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import TablePagination from "@material-ui/core/TablePagination";
 import DataGridComp from '../components/Event/DataGridComp';
+import { getGridNumericColumnOperators } from "@mui/x-data-grid";
 import CircularProgress from '@mui/material/CircularProgress';
 
 /* Display a contact list page
@@ -21,17 +14,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 export default function Contacts() {
   // useState hooks
   const [contactList, setContactList] = useState([]);
-  const [departmentName, setDepartmentName] = useState("");
   const [departmentList, setDepartmentList] = useState([]);
-  const [organisationList, setOrganisationList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [labelInput, setLabelInput] = useState("");
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
   const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Load data from the Backend when loading the page
   useEffect(() => {
@@ -77,7 +66,6 @@ export default function Contacts() {
   const getOrganisations = async () => {
     const BASE_URL = "http://localhost:5000";
     const res = await axios.get(BASE_URL + "/organisation")
-    setOrganisationList(res.data);
     orgList = res.data;
     return orgList;
   }
@@ -108,6 +96,9 @@ export default function Contacts() {
    * @param e Event
    */
   const updateDepartment = (e) => {
+    if (e.target.nodeName === 'BODY' && e.type === 'click') {
+      return;
+    }
     setSelectedDepartmentId(e.target.value);
     setSelectedDepartmentName(e.target.text);
   }
@@ -139,22 +130,6 @@ export default function Contacts() {
     return contact.departmentId === selectedDepartmentId;
   })
 
-  // Display a contact
-  const row = (contact, i) => (
-    <TableRow key={i}>
-      <TableCell>{contact.contactName}</TableCell>
-      <TableCell>{contact.email}</TableCell>
-      <TableCell>{contact.phoneNumbers.mobile}</TableCell>
-      <TableCell align="center">
-        <a href={"/contact/profile/" + contact._id} style={{textDecoration: "none"}}>
-          <Button variant="contained" style={{textTransform: "none"}}>
-            View Contact
-          </Button>
-        </a>
-      </TableCell>
-    </TableRow>
-  )
-
   const showDetailColumn = {
     width: 120,
     field:'showDetail',
@@ -172,7 +147,7 @@ export default function Contacts() {
     }
   }
 
-  const columns =[
+  const columns = [
     { field: 'contactName', headerName: 'Contact Name', minWidth: 160, flex: 1},
     { field: 'email', headerName: 'Email', minWidth: 160, flex: 1, filterable:false},
     { field: 'phoneMobile', headerName: 'Phone Number', minWidth: 160, flex: 1, filterable:false},
@@ -182,30 +157,39 @@ export default function Contacts() {
     showDetailColumn
   ];
 
-  /* Set page to the new page when page changes
-   *
-   * @param event Event
-   * @param newPage The newly selected page
-   */
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const departmentDropdown = () => (
+    <FormControl variant="standard">
+      <Select
+        value={selectedDepartmentId}
+        onChange={updateDepartment}>
+        <MenuItem value="">All</MenuItem>
+        {departmentList.map((department, i) => (
+          <MenuItem value={department._id} key={i}>{department.departmentName}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
 
-  /* Change the number of rows of the page
-   *
-   * @param event Event
-   */
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  if (columns.length > 0) {
+    const departmentColumn = columns.find((column) => column.field === 'departmentName');
+    const departmentColIndex = columns.findIndex((col) => col.field === 'departmentName');
 
-  // Adds empty rows for the last page to make sure the height stays the same
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, contactList.length - page * rowsPerPage);
+    const departmentFilterOperators = getGridNumericColumnOperators().map(
+      (operator) => ({
+        ...operator,
+        InputComponent: departmentDropdown
+      }),
+    );
+
+    columns[departmentColIndex] = {
+      ...departmentColumn,
+      filterOperators: departmentFilterOperators,
+    };
+  }
 
   // Styles
   const filtersStyle = { textAlign: "left" };
-  const buttonDivStyle = { textAlign: "right", marginRight: "5%" };
+  const buttonDivStyle = { textAlign: "right", marginRight: "2%" };
   const loadingStyle = { fontSize: "36px" };
   const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
@@ -217,7 +201,7 @@ export default function Contacts() {
       </div>}
       {!isLoading &&
       <div>
-        <h1 style={{marginRight: "12%"}}>Contact List</h1>
+        <h1 style={{marginRight: "6%"}}>Contact List</h1>
         <div style={buttonDivStyle}>
           <a href="/contact/create" style={{textDecoration: "none"}}>
             <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}}>
@@ -277,38 +261,6 @@ export default function Contacts() {
         <div className="listOfEvents">
           {filteredContacts.length > 0 ? <DataGridComp events={contactList} columns={columns}></DataGridComp> : <CircularProgress />}
         </div><br />
-        {/* <TableContainer component={Paper} style={{width: "95%"}}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
-                <TableCell style={{fontWeight: "bold"}}>Email</TableCell>
-                <TableCell style={{fontWeight: "bold"}}>Phone Number</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredContacts
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((contact, i) => row(contact, i))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 69.4 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          {filteredContacts.length === contactList.length &&
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={contactList.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />}
-        </TableContainer><br /> */}
       </div>}
     </div>
   )
