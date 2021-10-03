@@ -2,16 +2,17 @@ import React from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import { TextField } from '@mui/material'
 
-function SuggestionDropDown({participants, items, onChange}) {
+const SuggestionDropDownDisabled = ({participants, items, onChange}) => {
   return (
     <div>
       <Autocomplete
         multiple
+        open={false}
         id="tags-standard"
         options={items}
         value={participants}
         onChange ={(event, value) => {
-          onChange(value)
+          void(0)
         }}
         getOptionLabel={(option) => option.name}
         isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -19,10 +20,11 @@ function SuggestionDropDown({participants, items, onChange}) {
           <TextField
             {...params}
             label="Participants"
-            placeholder="Add Participant"
+            placeholder=""
             InputLabelProps={{
               shrink: true,
             }}
+            inputProps={{ ...params.inputProps, readOnly:true }}
           />
         )}
       />
@@ -30,6 +32,4 @@ function SuggestionDropDown({participants, items, onChange}) {
   )
 }
 
-export default SuggestionDropDown
-
-
+export default SuggestionDropDownDisabled

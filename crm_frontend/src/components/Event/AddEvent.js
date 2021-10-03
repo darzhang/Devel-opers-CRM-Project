@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import moment from 'moment'
 import SuggestionDropDown from './SuggestionDropDown'
+import SuggestionDropDownDisabled from './SuggestionDropDownDisabled'
 
-const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
+const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}) => {
   const [eventName, setEventName] = useState(event.eventName)
   const [startTime, setStartTime] = useState(moment(new Date(event.startTime)).format("yyyy-MM-DDTHH:mm"))
   const [endTime, setEndTime] = useState(moment(new Date(event.endTime)).format("yyyy-MM-DDTHH:mm"))
-  const [participants, setParticipants] = useState(event.participants)
+  const [participants, setParticipants] = useState(event.participantsArray)
   const [description, setDescription] = useState(event.description)
   const [location, setLocation] = useState(event.location)
   const [contacts, setContacts] = useState([])
@@ -28,34 +29,31 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
     const returnedData = []
 
     data.map((contact) => returnedData.push({name: contact.contactName, id: contact._id}))
-
+    
     return returnedData
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
 
     const dateAdded = new Date()
 
-    const data = {eventName, startTime, endTime, participants, description, location, dateAdded: dateAdded}
+    //extract the participantsId from the participant list
+    const participantsIdArray = []
+    participants.map((participant) => participantsIdArray.push(participant.id))
+
+    const data = {eventName, startTime, endTime, participants:participantsIdArray, description, location, dateAdded: dateAdded}
 
     if(onEdit===null){
       onAdd(data)
-      closeForm()
+      closeForm() 
     }else if(onAdd===null){
-      onEdit(data,id)
-      closeForm()
+      onEdit(data)
     }
-    setEventName('')
-    setStartTime('')
-    setEndTime('')
-    setParticipants('')
-    setDescription('')
-    setLocation('')
   }
   return (
     <form className='add-form' onSubmit={onSubmit}>
-      <div className='form-control'>
+      <div style={{display: ((readOnly===false )? 'block' : 'none')}}className='form-control'>
         <TextField
           fullWidth
           multiline
@@ -64,9 +62,8 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
           value={eventName}
           onChange={(e)=> setEventName(e.target.value)}
           variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{shrink: true,}}
+          // InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>
       <div className='form-control'>
@@ -77,9 +74,8 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
           value={startTime}
           onChange={(e)=> setStartTime(e.target.value)}
           variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{shrink: true,}}
+          InputProps={{readOnly: (readOnly ? true : false)}}
         /> 
       </div>
       <div className='form-control'>
@@ -90,13 +86,15 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
           value={endTime}
           onChange={(e)=> setEndTime(e.target.value)}
           variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{shrink: true,}}
+          InputProps={{readOnly: (readOnly ? true : false)}}
         /> 
       </div>
       <div className='form-control'>
-        <SuggestionDropDown participants={participants} items={contacts} onChange={(value) => setParticipants(value)} readOnly={false}/>
+        {readOnly 
+          ? <SuggestionDropDownDisabled participants={participants} items={contacts} onChange={(value) => setParticipants(value)}/>
+          : <SuggestionDropDown participants={participants} items={contacts} onChange={(value) => setParticipants(value)}/>
+        }
       </div>
       <div className='form-control'>
         <TextField
@@ -107,9 +105,8 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
           value={description}
           onChange={(e)=> setDescription(e.target.value)}
           variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{shrink: true,}}
+          InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>
       <div className='form-control'>
@@ -121,12 +118,11 @@ const AddEvent = ({event, onAdd, closeForm, onEdit, id, text}) => {
           value={location}
           onChange={(e)=> setLocation(e.target.value)}
           variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{shrink: true,}}
+          InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>
-      <input type='submit' value={text} className='btn btn-block'/>
+      {enableSubmit && <input type='submit' value={text} className='btn btn-block'/>}
     </form>
   )
 }

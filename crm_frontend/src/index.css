@@ -68,3 +68,7 @@ code {
   margin-top: 2%;
   margin-bottom: 10%;
 }
+
+.MuiGridFilterForm-operatorSelect { 
+  display: none !important;
+} 
