@@ -102,19 +102,22 @@ export default function Home() {
   let index = 0;
   for (let i = contactList.length - 1; i >= 0; i--){
     lastFiveContacts[index++] = contactList[i];
-    if (i === contactList.length - 5){
+    if (i === contactList.length - 4){
       break
     }
   }
 
   let upcomingEvents = []
   index = 0;
-  for (let i = events.length - 1; i >= 0; i--){
-    upcomingEvents[index++] = events[i];
-    if (i === events.length - 5){
+  for (let i = 0; i < events.length; i++){
+    if (events[i].startTime > (new Date()).toISOString()) {
+      upcomingEvents[index++] = events[i];
+    }
+    if (index === 4){
       break
     }
   }
+  upcomingEvents.reverse()
   
   const contactString = 'Profile'
   const contactRow = (contact, i) => (
@@ -133,8 +136,8 @@ export default function Home() {
   )
   function ContactTable(){
     return(
-      <TableContainer component={Paper} style={{width: "100%"}}>
-        <Table>
+      <TableContainer component={Paper} style={{width: "100%", maxHeight: "270px"}}>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
@@ -171,8 +174,8 @@ export default function Home() {
 
   function EventTable(){
     return(
-      <TableContainer component={Paper} style={{width: "100%"}}>
-          <Table >
+      <TableContainer component={Paper} style={{width: "100%", maxHeight: "270px"}}>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell style={{fontWeight: "bold"}}>Event Name</TableCell>

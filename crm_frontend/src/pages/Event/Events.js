@@ -237,7 +237,7 @@ const Events = () => {
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
       {events.length > 0 && <div style={{float:'right', marginRight: '2%', display: 'flex', flexDirection: 'row'}}>
         <Button color={showAddEvent ? 'red' : 'blue'} text={showAddEvent ? 'Close' : 'Add'} onClick = {() => setShowAddEvent(!showAddEvent)} />
-        <Button color='blue' text={isUpcoming ? 'Show Past Events' : 'Show Upcoming Events'} onClick = {() => setIsUpcoming(!isUpcoming)} />
+        <Button color='blue' text={isUpcoming ? 'Show Past Events' : 'Show Current Events'} onClick = {() => setIsUpcoming(!isUpcoming)} />
       </div>}
       {/* {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>} */}
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>

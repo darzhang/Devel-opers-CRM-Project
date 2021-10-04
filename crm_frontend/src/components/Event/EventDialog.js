@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import SuggestionDropDown from "./SuggestionDropDown";
+import Swal from 'sweetalert2'
 
 export default function EventDialog({ isOpen, setDialog, onAdd}) {
 
@@ -69,6 +70,17 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
       location: state.location, 
       dateAdded}
 
+    if (data.startTime > data.endTime) {
+      Swal.fire({
+        title: "Error!",
+        text: "End time must be after start time!",
+        icon: "error",
+        customClass: {
+          container: 'my-swal'
+      }
+      })
+      return;
+    }
     onAdd(data)
     handleClose()
     

@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import moment from 'moment'
 import SuggestionDropDown from './SuggestionDropDown'
 import SuggestionDropDownDisabled from './SuggestionDropDownDisabled'
+import Swal from 'sweetalert2'
 
 const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}) => {
   const [eventName, setEventName] = useState(event.eventName)
@@ -43,6 +44,18 @@ const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}
     participants.map((participant) => participantsIdArray.push(participant.id))
 
     const data = {eventName, startTime, endTime, participants:participantsIdArray, description, location, dateAdded: dateAdded}
+
+    if (data.startTime > data.endTime) {
+      Swal.fire({
+        title: "Error!",
+        text: "End time must be after start time!",
+        icon: "error",
+        customClass: {
+          container: 'my-swal'
+      }
+      })
+      return;
+    }
 
     if(onEdit===null){
       onAdd(data)

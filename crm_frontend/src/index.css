@@ -99,3 +99,7 @@ html, body {
   flex: 50%;
   padding: 5px;
 }
+
+.my-swal {
+  z-index: 1400 !important;
+}
