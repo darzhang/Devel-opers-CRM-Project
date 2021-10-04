@@ -18,7 +18,7 @@ export default function Contacts() {
   const [searchInput, setSearchInput] = useState("");
   const [labelInput, setLabelInput] = useState("");
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -157,35 +157,62 @@ export default function Contacts() {
     showDetailColumn
   ];
 
-  const departmentDropdown = () => (
-    <FormControl variant="standard">
-      <Select
-        value={selectedDepartmentId}
-        onChange={updateDepartment}>
-        <MenuItem value="">All</MenuItem>
-        {departmentList.map((department, i) => (
-          <MenuItem value={department._id} key={i}>{department.departmentName}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  )
+  // const departmentDropdown = () => (
+  //   <FormControl variant="standard">
+  //     <Select
+  //       value={selectedDepartmentId}
+  //       onChange={updateDepartment}>
+  //       <MenuItem value="">All</MenuItem>
+  //       {departmentList.map((department, i) => (
+  //         <MenuItem value={department._id} key={i}>{department.departmentName}</MenuItem>
+  //       ))}
+  //     </Select>
+  //   </FormControl>
+  // )
 
-  if (columns.length > 0) {
-    const departmentColumn = columns.find((column) => column.field === 'departmentName');
-    const departmentColIndex = columns.findIndex((col) => col.field === 'departmentName');
+  // const labelTextField = () => (
+  //   <TextField
+  //     type="text"
+  //     variant="standard"
+  //     size="small"
+  //     style={{marginTop: "1%", minWidth: "250px"}}
+  //     value={labelInput}
+  //     placeholder="search by label"
+  //     onChange={updateLabel}>
+  //   </TextField>
+  // )
 
-    const departmentFilterOperators = getGridNumericColumnOperators().map(
-      (operator) => ({
-        ...operator,
-        InputComponent: departmentDropdown
-      }),
-    );
+  // if (columns.length > 0) {
+  //   const departmentColumn = columns.find((column) => column.field === 'departmentName');
+  //   const departmentColIndex = columns.findIndex((col) => col.field === 'departmentName');
 
-    columns[departmentColIndex] = {
-      ...departmentColumn,
-      filterOperators: departmentFilterOperators,
-    };
-  }
+  //   const departmentFilterOperators = getGridNumericColumnOperators().map(
+  //     (operator) => ({
+  //       ...operator,
+  //       InputComponent: departmentDropdown
+  //     }),
+  //   );
+
+  //   columns[departmentColIndex] = {
+  //     ...departmentColumn,
+  //     filterOperators: departmentFilterOperators,
+  //   };
+
+  //   const labelColumn = columns.find((column) => column.field === 'label');
+  //   const labelColIndex = columns.findIndex((col) => col.field === 'label');
+
+  //   const labelFilterOperators = getGridNumericColumnOperators().map(
+  //     (operator) => ({
+  //       ...operator,
+  //       InputComponent: labelTextField
+  //     }),
+  //   );
+
+  //   columns[labelColIndex] = {
+  //     ...labelColumn,
+  //     filterOperators: labelFilterOperators,
+  //   };
+  // }
 
   // Styles
   const filtersStyle = { textAlign: "left" };

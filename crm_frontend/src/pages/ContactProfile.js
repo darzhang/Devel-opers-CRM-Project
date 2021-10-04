@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Autocomplete from '@mui/material/Autocomplete';
 import swal from 'sweetalert';
 
@@ -104,6 +105,34 @@ export default function ContactProfile(props) {
     })
   }
 
+  const deleteContact = () => {
+    const BASE_URL = "http://localhost:5000";
+    const id = props.match.params.id;
+    swal({
+      title: "Warning!",
+      text: "Are you sure you want to delete this contact?",
+      icon: "warning",
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    }).then(async (isConfirm) => {
+      if (isConfirm) {
+        await axios.delete(BASE_URL + "/contact/" + id).then(() => {
+          swal({
+            title: "Success!",
+            text: "Contact has been successfully deleted!",
+            icon: "success",
+            showClass: {
+              icon: ''
+            }
+          });
+          props.history.push("/contact");
+        })
+      }
+    })
+  }
+
   /* Change the contact profile page to edit contact profile page when the 'Edit Contact' button is clicked
    */
   const toggleEdit = () => {
@@ -171,6 +200,9 @@ export default function ContactProfile(props) {
         title: "Success!",
         text: "Contact has been successfully updated!",
         icon: "success",
+        showClass: {
+          icon: ''
+        }
       });
       props.history.push("/contact/profile/" + _id);
       setShowEdit(true);
@@ -179,11 +211,11 @@ export default function ContactProfile(props) {
 
   // Styles
   const loadingStyle = { fontSize: "36px" };
-  const backDivStyle = { textAlign: "left", marginLeft: "2%" };
+  const deleteDivStyle = { textAlign: "right", marginRight: "2%" };
+  const cancelDivStyle = { textAlign: "left", marginLeft: "2%" };
   const buttonStyle = { textTransform: "none" };
   const marginStyle = { marginTop: "2%", marginLeft: "80px" };
-  const linkStyle = { textDecoration: "none" };
-  const profileStyle = { width: "500px", margin: "auto" };
+  const profileStyle = { width: "500px", marginLeft: "32%" };
   const labelStyle = { textAlign: "left", marginLeft: "12%" };
   const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
   const autoCompleteStyle = { width: "400px", marginLeft: "10%", marginTop: "2%" }
@@ -195,11 +227,16 @@ export default function ContactProfile(props) {
       </div>}
       {!isLoading &&
       <div>
-        <div style={backDivStyle}>
-          <a href="/contact" style={linkStyle}>
-            <Button variant="contained" color="action" style={buttonStyle}>Back</Button>
-          </a>
+        {showEdit &&
+        <div style={deleteDivStyle}>
+          <Button variant="contained" color="secondary" style={buttonStyle} onClick={deleteContact}><DeleteIcon />&nbsp;Delete&nbsp;</Button>
         </div>
+        }
+        {!showEdit &&
+        <div style={cancelDivStyle}>
+          <Button variant="contained" style={buttonStyle} onClick={toggleEdit}>Cancel</Button>
+        </div>
+        }
         {showEdit &&
         <div style={profileStyle}>
           <Profile state={values} departmentName={departmentName} organisationName={organisationName} />
@@ -342,14 +379,14 @@ export default function ContactProfile(props) {
                 type="text"
                 variant="outlined"
                 multiline
-                rows={3}
-                rowsMax={5}
+                minRows={3}
+                maxRows={5}
                 style={textFieldStyle}
                 value={values.description}
                 onChange={onChange}
               />
             </div><br />
-            <Button type="submit" variant="contained" color="action" style={buttonStyle}>Save Changes</Button>
+            <Button type="submit" variant="contained" color="primary" style={buttonStyle}>Save Changes</Button>
           </form>
           <div><br /></div>
         </div>}
@@ -482,8 +519,8 @@ function Profile(props) {
           type="text"
           variant="outlined"
           multiline
-          rows={3}
-          rowsMax={5}
+          minRows={3}
+          maxRows={5}
           style={textFieldStyle}
           value={props.state.description}
           placeholder="-"
