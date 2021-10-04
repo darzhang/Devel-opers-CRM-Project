@@ -103,6 +103,13 @@ const EventDetails = () => {
 
 
   return (
+    <div style={{marginLeft:'75px'}}>
+      <EventHeader onAdd={()=>setEdit(!edit)} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'red' : 'green'}/>
+      {edit ? 
+      (event ? <AddEvent event={event} onEdit={editEvent} onAdd={null} id={id} closeForm={()=> setEdit(!edit)} text={'Edit Event'}/> : <CircularProgress/> )
+      : (event ? <EventDetail event={event} /> : <CircularProgress/>)}
+    </div>
+=======
     <>
     {event
       ? (<div style={{marginLeft:'75px'}}>
@@ -117,7 +124,6 @@ const EventDetails = () => {
       : <CircularProgress /> 
     }
     </>
-    
   )
 }
 

@@ -3,10 +3,16 @@ import React, { useState, useEffect } from "react";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Autocomplete from '@mui/material/Autocomplete';
 import swal from 'sweetalert';
 
+/* Display a contact profile page and can be switched to an edit contact profile page
+ *
+ * @param props Data passed on from a parent component
+ */
 export default function ContactProfile(props) {
-  // initial values
+  // Initial values
   const initialValues = {
     contactName: "",
     phoneHome: "",
@@ -23,10 +29,12 @@ export default function ContactProfile(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(true);
   const [values, setValues] = useState(initialValues);
+  const [departmentNameList, setDepartmentNameList] = useState([]);
+  const [organisationNameList, setOrganisationNameList] = useState([]);
 
-  // load the data when loading the page
+  // Load data from the Backend when loading the page
   useEffect(() => {
-    // get contact based on the id
+    // Get contact based on the id
     const getContact = async () => {
       const BASE_URL = "http://localhost:5000";
       const id = props.match.params.id;
@@ -47,9 +55,14 @@ export default function ContactProfile(props) {
       })
     }
     getContact();
+    getDepartmentNames();
+    getOrganisationNames();
   }, [props.match.params.id])
 
-  // get the department name the contact is in
+  /* Get the department name of the contact
+   *
+   * @param departmentId The department ID of the contact
+   */
   const getDepartmentName = async (departmentId) => {
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/department").then(res => {
@@ -59,7 +72,10 @@ export default function ContactProfile(props) {
     })
   }
 
-  // get the organisation name the contact is in
+  /* Get the organisation name the contact is in
+   *
+   * @param organisationId The organisation ID of the contact
+   */
   const getOrganisationName = async (organisationId) => {
     const BASE_URL = "http://localhost:5000";
     await axios.get(BASE_URL + "/organisation").then(res => {
@@ -69,12 +85,64 @@ export default function ContactProfile(props) {
     })
   }
 
-  // when the edit button is clicked, the profile will become editable
+  /* Get list of department names from the Backend
+   */
+  const getDepartmentNames = async () => {
+    const BASE_URL = "http://localhost:5000";
+    await axios.get(BASE_URL + "/department").then(res => {
+      const departmentNames = res.data.map(x => x.departmentName)
+      setDepartmentNameList(departmentNames);
+    })
+  }
+
+  /* Get list of organisation names from the Backend
+   */
+  const getOrganisationNames = async () => {
+    const BASE_URL = "http://localhost:5000";
+    await axios.get(BASE_URL + "/organisation").then(res => {
+      const organisationNames = res.data.map(x => x.orgName)
+      setOrganisationNameList(organisationNames);
+    })
+  }
+
+  const deleteContact = () => {
+    const BASE_URL = "http://localhost:5000";
+    const id = props.match.params.id;
+    swal({
+      title: "Warning!",
+      text: "Are you sure you want to delete this contact?",
+      icon: "warning",
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    }).then(async (isConfirm) => {
+      if (isConfirm) {
+        await axios.delete(BASE_URL + "/contact/" + id).then(() => {
+          swal({
+            title: "Success!",
+            text: "Contact has been successfully deleted!",
+            icon: "success",
+            showClass: {
+              icon: ''
+            }
+          });
+          props.history.push("/contact");
+        })
+      }
+    })
+  }
+
+  /* Change the contact profile page to edit contact profile page when the 'Edit Contact' button is clicked
+   */
   const toggleEdit = () => {
     setShowEdit(!showEdit);
   }
 
-  // handle the change for the states
+  /* Handle any changes to the input text fields
+   *
+   * @param e Event
+   */
   const onChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -83,17 +151,44 @@ export default function ContactProfile(props) {
     });
   }
 
-  // handle the change for the states
+  /* Handle any changes to the department name text field
+   *
+   * @param e Event
+   */
   const onDepartmentNameChange = (e) => {
     setDepartmentName(e.target.value);
   }
 
-  // handle the change for the states
+  /* Handle any changes to the organisation name text field
+   *
+   * @param e Event
+   */
   const onOrganisationNameChange = (e) => {
     setOrganisationName(e.target.value);
   }
 
-  // handle saving the changes to the data to the backend
+  /* Handle changing value when choosing department suggestion from autocomplete
+   *
+   * @param e Event
+   * @param value The department name from the chosen suggestion
+   */
+  const onChooseDepartmentSuggestion = (e, value) => {
+    setDepartmentName(value)
+  }
+
+  /* Handle changing value when choosing organisation suggestion from autocomplete
+   *
+   * @param e Event
+   * @param value The organisation name from the chosen suggestion
+   */
+  const onChooseOrganisationSuggestion = (e, value) => {
+    setOrganisationName(value)
+  }
+
+  /* Handle saving the changes to text field and sending it to the Backend
+   *
+   * @param e Event
+   */
   const onSubmit = (e) => {
     e.preventDefault();
     const BASE_URL = "http://localhost:5000";
@@ -105,22 +200,25 @@ export default function ContactProfile(props) {
         title: "Success!",
         text: "Contact has been successfully updated!",
         icon: "success",
+        showClass: {
+          icon: ''
+        }
       });
       props.history.push("/contact/profile/" + _id);
       setShowEdit(true);
     });
   }
 
-  // styles
+  // Styles
   const loadingStyle = { fontSize: "36px" };
-  const backDivStyle = { textAlign: "left", marginLeft: "2%" };
+  const deleteDivStyle = { textAlign: "right", marginRight: "2%" };
+  const cancelDivStyle = { textAlign: "left", marginLeft: "2%" };
   const buttonStyle = { textTransform: "none" };
-  const marginStyle = { marginTop: "100px", marginLeft: "80px" };
-  const linkStyle = { textDecoration: "none" };
-  const profileStyle = { width: "500px", margin: "auto" };
+  const marginStyle = { marginTop: "2%", marginLeft: "80px" };
+  const profileStyle = { width: "500px", marginLeft: "32%" };
   const labelStyle = { textAlign: "left", marginLeft: "12%" };
   const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
-
+  const autoCompleteStyle = { width: "400px", marginLeft: "10%", marginTop: "2%" }
   return (
     <div style={marginStyle}>
       {isLoading &&
@@ -129,11 +227,16 @@ export default function ContactProfile(props) {
       </div>}
       {!isLoading &&
       <div>
-        <div style={backDivStyle}>
-          <a href="/contact" style={linkStyle}>
-            <Button variant="contained" style={buttonStyle}>Back</Button>
-          </a>
+        {showEdit &&
+        <div style={deleteDivStyle}>
+          <Button variant="contained" color="secondary" style={buttonStyle} onClick={deleteContact}><DeleteIcon />&nbsp;Delete&nbsp;</Button>
         </div>
+        }
+        {!showEdit &&
+        <div style={cancelDivStyle}>
+          <Button variant="contained" style={buttonStyle} onClick={toggleEdit}>Cancel</Button>
+        </div>
+        }
         {showEdit &&
         <div style={profileStyle}>
           <Profile state={values} departmentName={departmentName} organisationName={organisationName} />
@@ -155,7 +258,6 @@ export default function ContactProfile(props) {
                 required
               />
             </div><br />
-
             <div>
               <div style={labelStyle}>Phone Numbers</div>
               <div style={{marginTop: "3%"}}>
@@ -196,7 +298,6 @@ export default function ContactProfile(props) {
                 />
               </div>
             </div><br />
-
             <div>
               <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div>
               <TextField
@@ -210,7 +311,6 @@ export default function ContactProfile(props) {
                 required
               />
             </div><br />
-
             <div>
               <div style={labelStyle}>Label <span style={{color: "red"}}>*</span></div>
               <TextField
@@ -224,35 +324,54 @@ export default function ContactProfile(props) {
                 required
               />
             </div><br />
-
             <div>
               <div style={labelStyle}>Department Name <span style={{color: "red"}}>*</span></div>
-              <TextField
-                name="departmentName"
-                type="text"
-                variant="outlined"
-                size="small"
-                style={textFieldStyle}
+              <Autocomplete 
+                freeSolo
+                options={departmentNameList}
                 value={departmentName}
-                onChange={onDepartmentNameChange}
-                required
+                style={autoCompleteStyle}
+                onChange={onChooseDepartmentSuggestion}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    InputProps={{
+                      ...params.InputProps,
+                      style: { paddingLeft: "7px", paddingTop: "3px", paddingBottom: "3px" }
+                    }}
+                    name="departmentName"
+                    type="text"
+                    variant="outlined"
+                    onChange={onDepartmentNameChange}
+                    required
+                  />
+                )}
               />
             </div><br />
-
             <div>
               <div style={labelStyle}>Organisation Name <span style={{color: "red"}}>*</span></div>
-              <TextField
-                name="organisationName"
-                type="text"
-                variant="outlined"
-                size="small"
-                style={textFieldStyle}
+              <Autocomplete 
+                freeSolo
+                options={organisationNameList}
                 value={organisationName}
-                onChange={onOrganisationNameChange}
-                required
+                style={autoCompleteStyle}
+                onChange={onChooseOrganisationSuggestion}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    InputProps={{
+                      ...params.InputProps,
+                      style: { paddingLeft: "7px", paddingTop: "3px", paddingBottom: "3px" }
+                    }}
+                    name="organisationName"
+                    type="text"
+                    variant="outlined"
+                    onChange={onOrganisationNameChange}
+                    required
+                  />
+                )}
               />
             </div><br />
-
             <div>
               <div style={labelStyle}>Description</div>
               <TextField
@@ -267,8 +386,7 @@ export default function ContactProfile(props) {
                 onChange={onChange}
               />
             </div><br />
-
-            <Button type="submit" variant="contained" style={buttonStyle}>Save Changes</Button>
+            <Button type="submit" variant="contained" color="primary" style={buttonStyle}>Save Changes</Button>
           </form>
           <div><br /></div>
         </div>}
@@ -284,7 +402,10 @@ export default function ContactProfile(props) {
   )
 }
 
-// Display the contact's profile info
+/* Display a contact profile page
+ *
+ * @param props Data passed on from a parent component
+ */
 function Profile(props) {
   const labelStyle = { textAlign: "left", marginLeft: "12%" };
   const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
@@ -351,6 +472,20 @@ function Profile(props) {
         />
       </div><br />
       <div>
+        <div style={labelStyle}>Label</div>
+        <TextField
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.state.contactLabel}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
+      </div><br />
+      <div>
         <div style={labelStyle}>Department</div>
         <TextField
           type="text"
@@ -372,20 +507,6 @@ function Profile(props) {
           size="small"
           style={textFieldStyle}
           value={props.organisationName}
-          placeholder="-"
-          inputProps={
-            { readOnly: true }
-          }
-        />
-      </div><br />
-      <div>
-        <div style={labelStyle}>Label</div>
-        <TextField
-          type="text"
-          variant="outlined"
-          size="small"
-          style={textFieldStyle}
-          value={props.state.contactLabel}
           placeholder="-"
           inputProps={
             { readOnly: true }

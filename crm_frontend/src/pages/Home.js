@@ -20,7 +20,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
 export default function Home() {
-
   const [events, setEvents] = useState([])
   const [contactList, setContactList] = useState([]);
   
@@ -254,7 +253,10 @@ export default function Home() {
           <ContactTable></ContactTable>
         </div>
       </div>
-
+      <div style={eventMarginStyle}>
+       <h3 style={{marginLeft:"21%", textAlign:'left'}}>Recently</h3>
+        <EventTable/>
+      </div> */}
     </div>
   );
 }

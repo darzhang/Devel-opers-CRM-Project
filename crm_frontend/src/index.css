@@ -70,6 +70,10 @@ code {
   margin-bottom: 10%;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
 .MuiGridFilterForm-operatorSelect { 
   display: none !important;
@@ -95,22 +99,3 @@ code {
   flex: 50%;
   padding: 5px;
 }
-
-/* .trow {
-  margin-left:-5px;
-  margin-right:-5px;
-}
-  
-.tcolumn {
-  float: left;
-  width: 50%;
-  padding: 5px;
-}
-
-.tcolumn2 {
-  float: right;
-  width: 50%;
-  padding: 5px;
-  display: inline;
-} */
-

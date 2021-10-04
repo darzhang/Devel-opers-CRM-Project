@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 import Button from '../../components/Event/Button'
 import EventDialog from '../../components/Event/EventDialog'
 
-
 const Events = () => {
   const timeFormat = "DD/MM/YY, hh:mm a"
   const [events, setEvents] = useState([])
@@ -189,6 +188,20 @@ const Events = () => {
         }
       }
     })
+  }
+
+  const showDetailColumn = {
+    width: 120,
+    field:'showDetail',
+    headerName: 'Detail',
+    filterable:false,
+    renderCell: (cellValues) => {
+      return (
+        <Link to={`/event/${cellValues.row.id}`}>
+        <Button color={'blue'} text={'Detail'} onClick={null}/>
+        </Link>
+      );
+    }
   }
 
   const showDetailColumn = {
