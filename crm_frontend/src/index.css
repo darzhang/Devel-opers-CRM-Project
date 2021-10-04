@@ -68,3 +68,42 @@ code {
   margin-top: 2%;
   margin-bottom: 10%;
 }
+
+.table{
+  float: left;
+}
+
+.trow {
+  display: flex;
+  margin-left:-5px;
+  margin-right:-5px;
+  flex-direction: row;
+}
+
+.tcolumn {
+  flex: 50%;
+  padding: 5px;
+}
+
+.tcolumn2 {
+  flex: 50%;
+  padding: 5px;
+}
+
+/* .trow {
+  margin-left:-5px;
+  margin-right:-5px;
+}
+  
+.tcolumn {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+.tcolumn2 {
+  float: right;
+  width: 50%;
+  padding: 5px;
+  display: inline;
+} */

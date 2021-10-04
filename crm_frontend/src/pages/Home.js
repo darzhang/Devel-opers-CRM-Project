@@ -18,7 +18,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-// import Grid from '@material-ui/core/Grid';
 
 export default function Home() {
 
@@ -28,22 +27,25 @@ export default function Home() {
   useEffect(() => {
     getEvents()
     getContacts()
-  })
+  }, [])
+
   const getEvents = async () =>{
-    // const eventsFromBackEnd = await fetchEvents()
     await axios.get("http://localhost:5000/event").then(res => {
       const list = res.data;
       const sortedList = list.sort((a, b) => (a.startTime > b.startTime) ? 1 : -1)
       setEvents(sortedList);
-    })
+    }).catch((error) => {
+      console.error(error);
+    });
   }
   
   const getContacts = async () => {
-    const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/contact").then(res => {
+    await axios.get("http://localhost:5000/contact").then(res => {
         const list = res.data;
         setContactList(list);
-    })
+    }).catch((error) => {
+    console.error(error);
+  });
   }
 
   // Initial values for dates
@@ -114,9 +116,9 @@ export default function Home() {
       break
     }
   }
-
+  
   const contactString = 'Profile'
-  const row = (contact, i) => (
+  const contactRow = (contact, i) => (
     <TableRow key={i}>
       <TableCell>{contact.contactName}</TableCell>
       <TableCell>{contact.email}</TableCell>
@@ -132,8 +134,8 @@ export default function Home() {
   )
   function ContactTable(){
     return(
-      <TableContainer component={Paper} style={{width: "50%"}}>
-        <Table >
+      <TableContainer component={Paper} style={{width: "100%"}}>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
@@ -144,12 +146,7 @@ export default function Home() {
           </TableHead>
           <TableBody>
             {lastFiveContacts
-              .map((contact, i) => row(contact, i))}
-            {/* {emptyRows > 0 && (
-              <TableRow style={{ height: 69.4 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )} */}
+              .map((contact, i) => contactRow(contact, i))}
           </TableBody>
         </Table>
         
@@ -157,11 +154,12 @@ export default function Home() {
     );
   }
 
+  upcomingEvents.reverse();
   const eventString = "View"
   const eventRow = (event, i) => (
     <TableRow key={i}>
       <TableCell>{event.eventName}</TableCell>
-      <TableCell>{event.startTime}</TableCell>
+      <TableCell>{event.startTime.substr(0, 10)}</TableCell>
       <TableCell align="center">
         <a href={"/event/" + event._id} style={{textDecoration: "none"}}>
           <Button variant="contained" style={{textTransform: "none", maxWidth: '70px', maxHeight: '15px', minWidth: '70px', minHeight: '10px', fontSize: '12px'}}>
@@ -174,7 +172,7 @@ export default function Home() {
 
   function EventTable(){
     return(
-      <TableContainer component={Paper} style={{width: "50%"}}>
+      <TableContainer component={Paper} style={{width: "100%"}}>
           <Table >
             <TableHead>
               <TableRow>
@@ -186,11 +184,6 @@ export default function Home() {
             <TableBody>
               {upcomingEvents
                 .map((contact, i) => eventRow(contact, i))}
-              {/* {emptyRows > 0 && (
-                <TableRow style={{ height: 69.4 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
             </TableBody>
           </Table>
         </TableContainer>
@@ -198,18 +191,16 @@ export default function Home() {
   }
 
   const marginStyle = { marginTop: "2%", marginLeft: "3%", marginRight: "5%"};
-  const graphMarginStyle = { marginTop: "5%", marginLeft: "3%", marginRight: "8%"};
-  //const graphMarginStyle = { marginTop: "2%", marginLeft: "3%", marginRight: "8%"};
-  const contactMarginStyle = { marginTop: "0%", marginLeft: "6%", marginRight: "5%"};
-  const eventMarginStyle = { marginTop: "0%", marginLeft: "6%", marginRight: "5%"};
+  const graphMarginStyle = { marginTop: "2%", marginLeft: "3%", marginRight: "8%"};
+  const eventMarginStyle = { marginTop: "0%", marginLeft: "7%", marginRight: "0%"};
+  const contactMarginStyle = { marginTop: "0%", marginLeft: "2%", marginRight: "0%"};
 
   return (
     <div style={marginStyle}>
-      <h2 style={{marginLeft:"10%", marginTop:"5%"}}>Activity Graph</h2>
+
+      <h2 style={{marginLeft:"8%", marginTop:"0%"}}>Activity Graph</h2>
       <div style={graphMarginStyle}>
-        
-        {/* 260 */}
-        <ResponsiveContainer width="110%" height={400}>
+        <ResponsiveContainer width="110%" height={260}>
           <AreaChart data={graphData}>
 
             <defs>
@@ -221,8 +212,12 @@ export default function Home() {
 
             <Area dataKey="value" stroke="#2451B7" fill="url(#color)" />
 
-            <XAxis dataKey="date" tickLine={false} label={{ value: "Pages", position: "insideBottom", dy: 5}}/>
-            {/* label={{ value: "Pages", position: "insideBottom", dy: 15}} */}
+            <XAxis 
+              dataKey="date" 
+              tickLine={false}
+              tickFormatter={(str) => {
+                return str.toString().substr(3, 7);
+              }} />
 
             <YAxis
             dataKey="value"
@@ -233,36 +228,33 @@ export default function Home() {
               }
               return "";
             }} 
-            label={{ value: "Number of Events", position: "insideLeft", angle: -90,   dy: 0}}
-            />
+            label={{ value: "Number of Events", position: "insideLeft", angle: -90,   dy: 50}}/>
 
-            <Tooltip formatter={function(value, name) {
-              return [`${value}`, 'Number of Events'];
-            }}/>
-            <CartesianGrid opacity={0.5} vertical={false} />
+            <Tooltip 
+              formatter={function(value, name) {
+                return [`${value}`, 'Number of Events'];
+              }}/>
+
+            <CartesianGrid 
+              opacity={0.5} 
+              vertical={false} />
+
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      {/* <div style={contactMarginStyle}>
-        <Grid container spacing={5}>
-          <Grid container item xs={12} spacing={3}>
-            <ContactTable/>
-          </Grid>
-          <Grid container item xs={12} spacing={3}>
-            <EventTable/>
-          </Grid>
-        </Grid>
-      </div> */}
 
-      {/* <div style={contactMarginStyle}>
-        <h3 style={{marginLeft:"21%", textAlign:'left'}}>Recently Added</h3>
-        <ContactTable/> <EventTable/>
+      <div className='trow'>
+        <div style={eventMarginStyle} className='tcolumn'>
+          <h3 style={{marginLeft:"2%", marginTop:"2%"}}>Upcoming Events</h3>
+          <EventTable></EventTable>
+        </div>
+
+        <div style={contactMarginStyle} className='tcolumn2'>
+          <h3 style={{marginLeft:"2%", marginTop:"2%"}}>Recently Added</h3>
+          <ContactTable></ContactTable>
+        </div>
       </div>
 
-      <div style={eventMarginStyle}>
-       <h3 style={{marginLeft:"21%", textAlign:'left'}}>Recently</h3>
-        <EventTable/>
-      </div> */}
     </div>
   );
 }
