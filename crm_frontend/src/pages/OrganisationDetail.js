@@ -1,100 +1,99 @@
 import React, { useState, useEffect } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import DataGridComp from '../components/Event/DataGridComp';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 export default function OrganisationDetail(props) {
   const [organisation, setOrganisation] = useState([]);
   const [contact, setContact] = useState([]);
-  const [department, setDepartment] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
 
   useEffect(() => {
     /*get the organisation list from the database*/
-    const BASE_URL =
-      "http://localhost:5000/organisation/" + props.match.params.id;
+    const BASE_URL ="http://localhost:5000/organisation/" + props.match.params.id;
     fetch(BASE_URL)
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
         setOrganisation(data);
-      });
-    /*get the contact list from the database*/
-    fetch("http://localhost:5000/contact")
-      .then((data) => data.json())
-      .then((data) =>
-        data.filter((c) => c.organisationId === props.match.params.id)
-      )
-      .then((data) => {
-        console.log(data);
-        setContact(data);
-      });
-    /*get the department list from database */
-    fetch("http://localhost:5000/department")
-      .then((data) => data.json())
-      .then((data) => {
-        console.log(data);
-        setDepartment(data);
+        getContacts(data[0]);
       });
   }, []);
 
+  /* Get list of departments from the Backend
+   */
+  const getDepartments = async () => {
+    const BASE_URL = "http://localhost:5000";
+    const res = await axios.get(BASE_URL + "/department")
+    setDepartmentList(res.data);
+    let depList = res.data
+    return depList;
+  }
+
+  /* Get list of contacts from the Backend and display them in an alphabetically sorted order
+   */
+  const getContacts = async (org) => {
+    const deps = await getDepartments();
+    const BASE_URL = "http://localhost:5000";
+    await axios.get(BASE_URL + "/contact").then(res => {
+        const list = res.data;
+        const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
+        console.log(sortedList);
+        console.log(org);
+        const filteredList = sortedList.filter((c) => c.organisationId === org._id)
+        filteredList.forEach(async (contact) => {
+          contact.id = contact._id;
+          contact.phoneMobile = contact.phoneNumbers.mobile;
+          const department = deps.filter(department => department._id === contact.departmentId);
+          contact.departmentName = department[0].departmentName;
+          contact.organisationName = org.orgName;
+        })
+        setContact(filteredList);
+    })
+  }
+
+  const showDetailColumn = {
+    width: 120,
+    field:'showDetail',
+    headerName: 'Detail',
+    filterable:false,
+    flex: 1,
+    renderCell: (contact) => {
+      return (
+        <a href={"/contact/profile/" + contact.id} style={{textDecoration: "none", textAlign: "center"}}>
+          <Button variant="contained" style={{textTransform: "none"}}>
+            View Contact
+          </Button>
+        </a>
+      );
+    }
+  }
+
+  const columns = [
+    { field: 'contactName', headerName: 'Contact Name', minWidth: 160, flex: 1},
+    { field: 'email', headerName: 'Email', minWidth: 160, flex: 1, filterable:false},
+    { field: 'phoneMobile', headerName: 'Phone Number', minWidth: 160, flex: 1, filterable:false},
+    { field: 'label', headerName: 'Label', minWidth: 160, flex: 1},
+    { field: 'departmentName', headerName: 'Department Name', minWidth: 160, flex: 1},
+    { field: 'organisationName', headerName: 'Organisation Name', minWidth: 160, flex: 1},
+    showDetailColumn
+  ];
+
+  const marginStyle = { marginTop: "2%", marginLeft: "5%" };
+
   return (
-    <div>
+    <div style={marginStyle}>
       {organisation.map((org) => {
         return (
           <div>
             <h1>{org.orgName}</h1>
           </div>
-        );
+        ); 
       })}
       <h1>Contact List</h1>
-      <TableContainer
-        component={Paper}
-        style={{ width: "60%", marginLeft: "20%", marginTop: "2%" }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ fontWeight: "bold" }}>Name</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Email</TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>
-                Contact Number
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Department</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {contact.map((cont) => {
-              if (department.length > 0) {
-                const dept = department.find(
-                  (d) => cont.departmentId === d._id
-                );
-                return (
-                  <TableRow
-                    key={cont.contactName}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell key={`${cont.contactName}-table-cell`}>
-                      {cont.contactName}
-                    </TableCell>
-                    <TableCell key={cont.email}>{cont.email}</TableCell>
-                    <TableCell key={cont.phoneNumbers.mobile}>
-                      {cont.phoneNumbers.mobile}
-                    </TableCell>
-                    <TableCell key={dept.departmentName}>
-                      {dept.departmentName}
-                    </TableCell>
-                  </TableRow>
-                );
-              }
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div className="listOfEvents">
+          {contact.length > 0 ? <DataGridComp events={contact} columns={columns}></DataGridComp> : <CircularProgress />}
+      </div>
     </div>
   );
 }
