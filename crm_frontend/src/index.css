@@ -51,6 +51,7 @@ code {
   margin: auto;
   max-width: 300px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .form-control label {
@@ -69,11 +70,32 @@ code {
   margin-bottom: 10%;
 }
 
-.MuiGridFilterForm-operatorSelect { 
-  display: none !important;
-}
-
 html, body {
   max-width: 100%;
   overflow-x: hidden;
+}
+
+.MuiGridFilterForm-operatorSelect { 
+  display: none !important;
+} 
+
+.table{
+  float: left;
+}
+
+.trow {
+  display: flex;
+  margin-left:-5px;
+  margin-right:-5px;
+  flex-direction: row;
+}
+
+.tcolumn {
+  flex: 50%;
+  padding: 5px;
+}
+
+.tcolumn2 {
+  flex: 50%;
+  padding: 5px;
 }
