@@ -18,11 +18,12 @@ function SuggestionDropDown({participants, items, onChange}) {
         renderInput={(params) => (
           <TextField
             {...params}
+            size="small"
             label="Participants"
-            placeholder="Add Participant"
-            InputLabelProps={{
-              shrink: true,
-            }}
+            // placeholder="Add Participant"
+            // InputLabelProps={{
+            //   shrink: true,
+            // }}
           />
         )}
         ListboxProps={

@@ -253,10 +253,6 @@ export default function Home() {
           <ContactTable></ContactTable>
         </div>
       </div>
-      <div style={eventMarginStyle}>
-       <h3 style={{marginLeft:"21%", textAlign:'left'}}>Recently</h3>
-        <EventTable/>
-      </div> */}
     </div>
   );
 }

@@ -119,7 +119,7 @@ export default function SideBar() {
     history.push('/calendar');
   }
   function redirectOrganisation() {
-    history.push('/');
+    history.push('/organisation');
   }
   function redirectLogout() {
     history.push('/');

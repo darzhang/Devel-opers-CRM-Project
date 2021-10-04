@@ -57,36 +57,39 @@ const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}
         <TextField
           fullWidth
           multiline
+          size="small"
           label="Event Name"
-          placeholder="Add Event Name"
+          // placeholder="Add Event Name"
           value={eventName}
           onChange={(e)=> setEventName(e.target.value)}
           variant="outlined"
-          InputLabelProps={{shrink: true,}}
+          // InputLabelProps={{shrink: true,}}
           // InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>
       <div className='form-control'>
         <TextField
           fullWidth
+          size="small"
           type="datetime-local"
           label="Start Time"
           value={startTime}
           onChange={(e)=> setStartTime(e.target.value)}
           variant="outlined"
-          InputLabelProps={{shrink: true,}}
+          // InputLabelProps={{shrink: true,}}
           InputProps={{readOnly: (readOnly ? true : false)}}
         /> 
       </div>
       <div className='form-control'>
         <TextField
           fullWidth
+          size="small"
           type="datetime-local"
           label="End Time"
           value={endTime}
           onChange={(e)=> setEndTime(e.target.value)}
           variant="outlined"
-          InputLabelProps={{shrink: true,}}
+          // InputLabelProps={{shrink: true,}}
           InputProps={{readOnly: (readOnly ? true : false)}}
         /> 
       </div>
@@ -100,12 +103,13 @@ const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}
         <TextField
           fullWidth
           multiline
+          size="small"
           label="Description"
-          placeholder="Add Description"
+          // placeholder="Add Description"
           value={description}
           onChange={(e)=> setDescription(e.target.value)}
           variant="outlined"
-          InputLabelProps={{shrink: true,}}
+          // InputLabelProps={{shrink: true,}}
           InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>
@@ -113,12 +117,13 @@ const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}
       <TextField
           fullWidth
           multiline
+          size="small"
           label="Location"
-          placeholder="Add Location"
+          // placeholder="Add Location"
           value={location}
           onChange={(e)=> setLocation(e.target.value)}
           variant="outlined"
-          InputLabelProps={{shrink: true,}}
+          // InputLabelProps={{shrink: true,}}
           InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>

@@ -204,20 +204,6 @@ const Events = () => {
     }
   }
 
-  const showDetailColumn = {
-    width: 120,
-    field:'showDetail',
-    headerName: 'Detail',
-    filterable:false,
-    renderCell: (cellValues) => {
-      return (
-        <Link to={`/event/${cellValues.row.id}`}>
-        <Button color={'blue'} text={'Detail'} onClick={null}/>
-        </Link>
-      );
-    }
-  }
-
   const deleteColumn = {
     width: 120,
     filterable: false,

@@ -31,7 +31,7 @@ export default function Contacts() {
   useEffect(() => {
     getContacts();
     setIsLoading(false);
-  }, [])
+  }, [contactList])
 
   /* Get list of contacts from the Backend and display them in an alphabetically sorted order
    */
@@ -226,7 +226,7 @@ export default function Contacts() {
   const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
   return (
-    <>
+    <div>
       <CreateContactDialog 
         isOpen={createContactDialog}
         setContactDialog={setCreateContactDialog}
@@ -238,13 +238,10 @@ export default function Contacts() {
         </div>}
         {!isLoading &&
         <div>
-          <h1 style={{marginRight: "12%"}}>Contact List</h1>
+          <h1 style={{marginRight: "10%"}}>Contact List</h1>
           <div style={buttonDivStyle}>
             <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick={() => setCreateContactDialog(true)}>
               Add Contact
-            </Button>
-            <Button variant="contained" onClick={toggleFilters} style={{textTransform: "none", minWidth: "80px"}}>
-              {showFilters ? "Hide" : "Filters"}
             </Button>
           </div><br />
         </div>
@@ -252,88 +249,7 @@ export default function Contacts() {
         <div className="listOfEvents">
           {filteredContacts.length > 0 ? <DataGridComp events={contactList} columns={columns}></DataGridComp> : <CircularProgress />}
         </div><br />
-      </div>}
+      </div>
     </div>
-//           {showFilters &&
-//           <div style={filtersStyle}>
-//             <div>
-//               <div>Search by name:</div>
-//               <TextField
-//                 type="text"
-//                 variant="outlined"
-//                 size="small"
-//                 style={{marginTop: "1%", minWidth: "250px"}}
-//                 value={searchInput}
-//                 placeholder="search by name"
-//                 onChange={updateSearch}>
-//               </TextField>
-//             </div><br />
-//             <div>
-//               <div>Search by label:</div>
-//               <TextField
-//                 type="text"
-//                 variant="outlined"
-//                 size="small"
-//                 style={{marginTop: "1%", minWidth: "250px"}}
-//                 value={labelInput}
-//                 placeholder="search by label"
-//                 onChange={updateLabel}>
-//               </TextField>
-//             </div><br />
-//             <div>
-//               <div>Filter by department: </div>
-//               <FormControl variant="outlined" size="small" style={{marginTop: "1%", minWidth: "150px"}}>
-//                 <Select
-//                   value={selectedDepartmentId}
-//                   onChange={updateDepartment}>
-//                   <MenuItem value="">All</MenuItem>
-//                   {departmentList.map((department, i) => (
-//                     <MenuItem value={department._id} key={i}>{department.departmentName}</MenuItem>
-//                   ))}
-//                 </Select>
-//               </FormControl>
-//             </div>
-//             <div style={buttonDivStyle}>
-//               <Button variant="contained" onClick={clearFilters} style={{textTransform: "none"}}>
-//                 Clear Filters
-//               </Button>
-//             </div><br />
-//           </div>
-//           }
-//           <TableContainer component={Paper} style={{width: "95%"}}>
-//             <Table>
-//               <TableHead>
-//                 <TableRow>
-//                   <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
-//                   <TableCell style={{fontWeight: "bold"}}>Email</TableCell>
-//                   <TableCell style={{fontWeight: "bold"}}>Phone Number</TableCell>
-//                   <TableCell></TableCell>
-//                 </TableRow>
-//               </TableHead>
-//               <TableBody>
-//                 {filteredContacts
-//                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-//                   .map((contact, i) => row(contact, i))}
-//                 {emptyRows > 0 && (
-//                   <TableRow style={{ height: 69.4 * emptyRows }}>
-//                     <TableCell colSpan={6} />
-//                   </TableRow>
-//                 )}
-//               </TableBody>
-//             </Table>
-//             {filteredContacts.length === contactList.length &&
-//             <TablePagination
-//               rowsPerPageOptions={[5, 10, 25]}
-//               component="div"
-//               count={contactList.length}
-//               rowsPerPage={rowsPerPage}
-//               page={page}
-//               onPageChange={handleChangePage}
-//               onRowsPerPageChange={handleChangeRowsPerPage}
-//             />}
-//           </TableContainer><br />
-//         </div>}
-//       </div>
-//     </>
   )
 }

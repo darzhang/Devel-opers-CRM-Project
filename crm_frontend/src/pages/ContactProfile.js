@@ -4,8 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Autocomplete from '@mui/material/Autocomplete';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2'
 
 /* Display a contact profile page and can be switched to an edit contact profile page
  *
@@ -108,18 +109,21 @@ export default function ContactProfile(props) {
   const deleteContact = () => {
     const BASE_URL = "http://localhost:5000";
     const id = props.match.params.id;
-    swal({
+    Swal.fire({
       title: "Warning!",
       text: "Are you sure you want to delete this contact?",
       icon: "warning",
-      buttons: {
-        cancel: true,
-        confirm: true
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      showClass: {
+        icon: ''
       }
-    }).then(async (isConfirm) => {
-      if (isConfirm) {
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         await axios.delete(BASE_URL + "/contact/" + id).then(() => {
-          swal({
+          Swal.fire({
             title: "Success!",
             text: "Contact has been successfully deleted!",
             icon: "success",
@@ -196,7 +200,7 @@ export default function ContactProfile(props) {
     const _id = props.match.params.id;
     axios.post(url, { _id, ...values, departmentName, organisationName })
     .then(() => {
-      swal({
+      Swal.fire({
         title: "Success!",
         text: "Contact has been successfully updated!",
         icon: "success",
@@ -211,14 +215,14 @@ export default function ContactProfile(props) {
 
   // Styles
   const loadingStyle = { fontSize: "36px" };
-  const deleteDivStyle = { textAlign: "right", marginRight: "2%" };
-  const cancelDivStyle = { textAlign: "left", marginLeft: "2%" };
-  const buttonStyle = { textTransform: "none" };
+  // const deleteDivStyle = { textAlign: "right", marginRight: "2%" };
+  // const cancelDivStyle = { textAlign: "left", marginLeft: "2%" };
+  const buttonStyle = { textTransform: "none", width: "108px" };
   const marginStyle = { marginTop: "2%", marginLeft: "80px" };
   const profileStyle = { width: "500px", marginLeft: "32%" };
   const labelStyle = { textAlign: "left", marginLeft: "12%" };
-  const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
-  const autoCompleteStyle = { width: "400px", marginLeft: "10%", marginTop: "2%" }
+  const textFieldStyle = { minWidth: "400px" };
+  const autoCompleteStyle = { width: "400px", marginLeft: "10%" }
   return (
     <div style={marginStyle}>
       {isLoading &&
@@ -227,27 +231,28 @@ export default function ContactProfile(props) {
       </div>}
       {!isLoading &&
       <div>
-        {showEdit &&
+        {/* {showEdit &&
         <div style={deleteDivStyle}>
           <Button variant="contained" color="secondary" style={buttonStyle} onClick={deleteContact}><DeleteIcon />&nbsp;Delete&nbsp;</Button>
         </div>
-        }
-        {!showEdit &&
-        <div style={cancelDivStyle}>
+        } */}
+        {/* {!showEdit &&
+        <div style={cancelDivStyle} onClick={toggleEdit}>
           <Button variant="contained" style={buttonStyle} onClick={toggleEdit}>Cancel</Button>
         </div>
-        }
+        } */}
         {showEdit &&
         <div style={profileStyle}>
           <Profile state={values} departmentName={departmentName} organisationName={organisationName} />
         </div>}
         {!showEdit &&
         <div style={profileStyle}>
-          <h1>Edit Contact</h1><br />
+          <h1>Edit Contact</h1>
           <form onSubmit={onSubmit}>
             <div>
-              <div style={labelStyle}>Name <span style={{color: "red"}}>*</span></div>
+              {/* <div style={labelStyle}>Name <span style={{color: "red"}}>*</span></div> */}
               <TextField
+                label="Name"
                 name="contactName"
                 type="text"
                 variant="outlined"
@@ -259,48 +264,46 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              <div style={labelStyle}>Phone Numbers</div>
-              <div style={{marginTop: "3%"}}>
-                <TextField
-                  label="Home"
-                  name="phoneHome"
-                  type="text"
-                  variant="outlined"
-                  size="small"
-                  style={{minWidth: "400px"}}
-                  value={values.phoneHome}
-                  onChange={onChange}
-                />
-              </div><br />
-              <div>
-                <TextField
-                  label="Work"
-                  name="phoneWork"
-                  type="text"
-                  variant="outlined"
-                  size="small"
-                  style={{minWidth: "400px"}}
-                  value={values.phoneWork}
-                  onChange={onChange}
-                />
-              </div><br />
-              <div>
-                <TextField
-                  label="Mobile"
-                  name="phoneMobile"
-                  type="text"
-                  variant="outlined"
-                  size="small"
-                  style={{minWidth: "400px"}}
-                  value={values.phoneMobile}
-                  onChange={onChange}
-                  required
-                />
-              </div>
+              <TextField
+                label="Mobile Number"
+                name="phoneMobile"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={values.phoneMobile}
+                onChange={onChange}
+                required
+              />
             </div><br />
             <div>
-              <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div>
               <TextField
+                label="Home Number"
+                name="phoneHome"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={values.phoneHome}
+                onChange={onChange}
+              />
+            </div><br />
+            <div>
+              <TextField
+                label="Work Number"
+                name="phoneWork"
+                type="text"
+                variant="outlined"
+                size="small"
+                style={textFieldStyle}
+                value={values.phoneWork}
+                onChange={onChange}
+              />
+            </div><br />
+            <div>
+              {/* <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div> */}
+              <TextField
+                label="Email"
                 name="email"
                 type="email"
                 variant="outlined"
@@ -312,8 +315,9 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              <div style={labelStyle}>Label <span style={{color: "red"}}>*</span></div>
+              {/* <div style={labelStyle}>Label <span style={{color: "red"}}>*</span></div> */}
               <TextField
+                label="Label"
                 name="contactLabel"
                 type="text"
                 variant="outlined"
@@ -325,7 +329,7 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              <div style={labelStyle}>Department Name <span style={{color: "red"}}>*</span></div>
+              {/* <div style={labelStyle}>Department Name <span style={{color: "red"}}>*</span></div> */}
               <Autocomplete 
                 freeSolo
                 options={departmentNameList}
@@ -339,6 +343,7 @@ export default function ContactProfile(props) {
                       ...params.InputProps,
                       style: { paddingLeft: "7px", paddingTop: "3px", paddingBottom: "3px" }
                     }}
+                    label="Department"
                     name="departmentName"
                     type="text"
                     variant="outlined"
@@ -349,7 +354,7 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              <div style={labelStyle}>Organisation Name <span style={{color: "red"}}>*</span></div>
+              {/* <div style={labelStyle}>Organisation Name <span style={{color: "red"}}>*</span></div> */}
               <Autocomplete 
                 freeSolo
                 options={organisationNameList}
@@ -363,6 +368,7 @@ export default function ContactProfile(props) {
                       ...params.InputProps,
                       style: { paddingLeft: "7px", paddingTop: "3px", paddingBottom: "3px" }
                     }}
+                    label="Organisation"
                     name="organisationName"
                     type="text"
                     variant="outlined"
@@ -373,27 +379,31 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              <div style={labelStyle}>Description</div>
+              {/* <div style={labelStyle}>Description</div> */}
               <TextField
+                label="Description"
                 name="description"
                 type="text"
                 variant="outlined"
                 multiline
-                minRows={3}
                 maxRows={5}
                 style={textFieldStyle}
                 value={values.description}
                 onChange={onChange}
               />
             </div><br />
-            <Button type="submit" variant="contained" color="primary" style={buttonStyle}>Save Changes</Button>
+            <Button type="submit" variant="contained" color="primary" style={buttonStyle}>Save</Button>&nbsp;
+            <Button variant="contained" color="secondary" style={buttonStyle} onClick={toggleEdit}>Cancel</Button>
           </form>
           <div><br /></div>
         </div>}
         {showEdit &&
         <div>
           <Button variant="contained" color="primary" onClick={toggleEdit} style={buttonStyle}>
-            <EditIcon />&nbsp;Edit Contact
+            <EditIcon />&nbsp;Edit
+          </Button>&nbsp;
+          <Button variant="contained" color="secondary" style={buttonStyle} onClick={deleteContact}>
+            <DeleteIcon />&nbsp;Delete&nbsp;
           </Button>
           <div><br /></div>
         </div>}
@@ -407,59 +417,57 @@ export default function ContactProfile(props) {
  * @param props Data passed on from a parent component
  */
 function Profile(props) {
-  const labelStyle = { textAlign: "left", marginLeft: "12%" };
-  const textFieldStyle = { minWidth: "400px", marginTop: "2%" };
+  // const labelStyle = { textAlign: "left", marginLeft: "12%" };
+  const textFieldStyle = { minWidth: "400px" };
   return (
     <div>
-      <h1>{props.state.contactName}</h1><br />
+      <h1>{props.state.contactName}</h1>
       <div>
-        <div style={labelStyle}>Phone Numbers</div>
-        <div style={{marginTop: "3%"}}>
-          <TextField
-            label="Home"
-            type="text"
-            variant="outlined"
-            size="small"
-            style={{minWidth: "400px"}}
-            value={props.state.phoneHome}
-            placeholder="-"
-            inputProps={
-              { readOnly: true }
-            }
-          />
-        </div><br />
-        <div>
-          <TextField
-            label="Work"
-            type="text"
-            variant="outlined"
-            size="small"
-            style={{minWidth: "400px"}}
-            value={props.state.phoneWork}
-            placeholder="-"
-            inputProps={
-              { readOnly: true }
-            }
-          />
-        </div><br />
-        <div>
-          <TextField
-            label="Mobile"
-            type="text"
-            variant="outlined"
-            size="small"
-            style={{minWidth: "400px"}}
-            value={props.state.phoneMobile}
-            placeholder="-"
-            inputProps={
-              { readOnly: true }
-            }
-          />
-        </div>
+        <TextField
+          label="Mobile Number"
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.state.phoneMobile}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
       </div><br />
       <div>
-        <div style={labelStyle}>Email</div>
         <TextField
+          label="Home Number"
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.state.phoneHome}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
+      </div><br />
+      <div>
+        <TextField
+          label="Work Number"
+          type="text"
+          variant="outlined"
+          size="small"
+          style={textFieldStyle}
+          value={props.state.phoneWork}
+          placeholder="-"
+          inputProps={
+            { readOnly: true }
+          }
+        />
+      </div><br />
+      <div>
+        {/* <div style={labelStyle}>Email</div> */}
+        <TextField
+          label="Email"
           type="text"
           variant="outlined"
           size="small"
@@ -472,8 +480,9 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        <div style={labelStyle}>Label</div>
+        {/* <div style={labelStyle}>Label</div> */}
         <TextField
+          label="Label"
           type="text"
           variant="outlined"
           size="small"
@@ -486,8 +495,9 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        <div style={labelStyle}>Department</div>
+        {/* <div style={labelStyle}>Department</div> */}
         <TextField
+          label="Department"
           type="text"
           variant="outlined"
           size="small"
@@ -500,8 +510,9 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        <div style={labelStyle}>Organisation</div>
+        {/* <div style={labelStyle}>Organisation</div> */}
         <TextField
+          label="Organisation"
           type="text"
           variant="outlined"
           size="small"
@@ -514,12 +525,12 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        <div style={labelStyle}>Description</div>
+        {/* <div style={labelStyle}>Description</div> */}
         <TextField
+          label="Description"
           type="text"
           variant="outlined"
           multiline
-          minRows={3}
           maxRows={5}
           style={textFieldStyle}
           value={props.state.description}

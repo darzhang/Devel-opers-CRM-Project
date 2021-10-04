@@ -103,20 +103,13 @@ const EventDetails = () => {
 
 
   return (
-    <div style={{marginLeft:'75px'}}>
-      <EventHeader onAdd={()=>setEdit(!edit)} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'red' : 'green'}/>
-      {edit ? 
-      (event ? <AddEvent event={event} onEdit={editEvent} onAdd={null} id={id} closeForm={()=> setEdit(!edit)} text={'Edit Event'}/> : <CircularProgress/> )
-      : (event ? <EventDetail event={event} /> : <CircularProgress/>)}
-    </div>
-=======
     <>
     {event
       ? (<div style={{marginLeft:'75px'}}>
           <div style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
             <div style={{flex: 1}}></div>
             <div style={{flex: 1, minWidth: '300px', flexGrow: 1}}><h1>{edit ? 'Edit Event' : event.eventName}</h1></div>
-            <div style={{flex: 1}}><Button onClick={() => {setEdit(!edit)}} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'red' : 'blue'} /></div>
+            <div style={{flex: 1}}><Button onClick={() => {setEdit(!edit)}} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'secondary' : 'primary'} /></div>
           </div>
           {edit && <AddEvent event={event} onEdit={editEvent} onAdd={null} closeForm={null} text={'Save Changes'} readOnly={false} enableSubmit={true}/>}
           {!edit && <AddEvent event={event} onEdit={editEvent} onAdd={null} closeForm={null} text={'Save Changes'} readOnly={true} enableSubmit={false}/>}

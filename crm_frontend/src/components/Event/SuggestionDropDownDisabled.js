@@ -19,11 +19,12 @@ const SuggestionDropDownDisabled = ({participants, items, onChange}) => {
         renderInput={(params) => (
           <TextField
             {...params}
+            size="small"
             label="Participants"
-            placeholder=""
-            InputLabelProps={{
-              shrink: true,
-            }}
+            // placeholder=""
+            // InputLabelProps={{
+            //   shrink: true,
+            // }}
             inputProps={{ ...params.inputProps, readOnly:true }}
           />
         )}
