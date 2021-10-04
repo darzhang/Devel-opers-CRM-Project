@@ -51,6 +51,7 @@ code {
   margin: auto;
   max-width: 300px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .form-control label {
@@ -68,6 +69,11 @@ code {
   margin-top: 2%;
   margin-bottom: 10%;
 }
+
+
+.MuiGridFilterForm-operatorSelect { 
+  display: none !important;
+} 
 
 .table{
   float: left;
@@ -107,3 +113,4 @@ code {
   padding: 5px;
   display: inline;
 } */
+
