@@ -1,16 +1,17 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import AddEvent from '../../components/Event/AddEvent'
+// import AddEvent from '../../components/Event/AddEvent'
 // import EventHeader from '../../components/Event/EventHeader'
 import moment from 'moment'
 import DataGridComp from '../../components/Event/DataGridComp'
-import swal from 'sweetalert'
+import Swal from 'sweetalert2'
 import CircularProgress from '@mui/material/CircularProgress';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { Link } from 'react-router-dom';
 import Button from '../../components/Event/Button'
+import EventDialog from '../../components/Event/EventDialog'
 
 
 const Events = () => {
@@ -115,11 +116,6 @@ const Events = () => {
 
     if(res.status !== 400){
       const data = await res.json()
-      swal({
-        title: "Successful",
-        text: "You have successfuly added new event!",
-        icon: "success",
-      });
       data.id = data._id
       delete data._id
 
@@ -128,42 +124,71 @@ const Events = () => {
       data.dateAdded = moment(data.dateAdded).format(timeFormat)
       data.endTime = moment(data.endTime).format(timeFormat)
       data.participants = data.participants.map((participant)=>participant.name).join(", ")
-
-      setEvents([...events, data])
+      Swal.fire({
+        title: "Successful",
+        text: "You have successfuly added new event!",
+        icon: "success",
+        showClass: {
+          icon: ''
+        }
+      })
       setRefresh(!refresh)
+      
     }else {
-      swal({
+      Swal.fire({
         title: "Failure",
         text: "You have failed to add new event!",
         icon: "error",
+        showClass: {
+          icon: ''
+        }
       });
     }
     
   }
 
   //Delete Event
-  const deleteEvent = async (id) => {
-    const res = await fetch(`http://localhost:5000/event/${id}`, {
-      method: 'DELETE',
-    })
+  const deleteEvent = async (id, name) => {
 
-    if(res.status !== 400){
-      swal({
-        title: "Successful",
-        text: "You have successfuly deleted the event!",
-        icon: "success",
-      });
-  
-      setEvents(events.filter((event) => event.id !== id))
-      setRefresh(!refresh)
-    }else {
-      swal({
-        title: "Failure",
-        text: "You have failed to delete the event!",
-        icon: "error",
-      });
-    }
-    
+    Swal.fire({
+      title: `Do You Want to delete ${name} ?`,
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      showClass: {
+        icon: ''
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await fetch(`http://localhost:5000/event/${id}`, {
+          method: 'DELETE',
+        })
+
+        if(res.status !== 400){
+          Swal.fire({
+            title: 'Deleted!',
+            text: `${name} has been deleted.`,
+            icon: 'success',
+            showClass: {
+              icon: ''
+            }
+          })
+          setRefresh(!refresh)
+        }else {
+          Swal.fire({
+            title: "Failure",
+            text: "You have failed to delete the event!",
+            icon: "error",
+            showClass: {
+              icon: ''
+            }
+          });
+        }
+      }
+    })
   }
 
   const showDetailColumn = {
@@ -188,7 +213,7 @@ const Events = () => {
     renderCell: (cellValues) => {
       return (
         <Tooltip title="Delete Event">
-          <IconButton onClick={() => deleteEvent(cellValues.row.id)}>
+          <IconButton onClick={() => deleteEvent(cellValues.row.id, cellValues.row.eventName)}>
             <DeleteIcon/>
           </IconButton>
         </Tooltip>
@@ -215,7 +240,8 @@ const Events = () => {
         <Button color={showAddEvent ? 'red' : 'blue'} text={showAddEvent ? 'Close' : 'Add'} onClick = {() => setShowAddEvent(!showAddEvent)} />
         <Button color='blue' text={isUpcoming ? 'Show Past Events' : 'Show Upcoming Events'} onClick = {() => setIsUpcoming(!isUpcoming)} />
       </div>}
-      {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>}
+      {/* {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>} */}
+      <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
       <div className="listOfEvents">
         {events.length > 0 ? 
         (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )

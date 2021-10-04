@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react'
 import EventDetail from '../../components/Event/EventDetail'
 import AddEvent from '../../components/Event/AddEvent'
 import EventHeader from '../../components/Event/EventHeader'
-import swal from 'sweetalert'
+import Swal from 'sweetalert2'
 import { CircularProgress } from '@mui/material'
 import Button from '../../components/Event/Button'
-import { set } from 'date-fns'
 
 const EventDetails = () => {
 
@@ -55,21 +54,26 @@ const EventDetails = () => {
     })
 
     if(res.status !== 400){
-      const data = await res.json()
-      swal({
+      Swal.fire({
         title: "Successful",
         text: "You have successfully edit the event!",
         icon: "success",
+        showClass: {
+          icon: ''
+        }
       })
       setEvent('')
       setRefresh(!refresh)
       setEdit(!edit)
 
     }else {
-      swal({
+      Swal.fire({
         title: "Failure",
         text: "You have failed to edit the event!",
         icon: "error",
+        showClass: {
+          icon: ''
+        }
       });
     }
   }
@@ -94,7 +98,7 @@ const EventDetails = () => {
     }
     getEvent()
     
-  }, [refresh])
+  }, [id,refresh])
   
 
 

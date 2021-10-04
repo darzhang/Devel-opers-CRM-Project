@@ -25,6 +25,13 @@ function SuggestionDropDown({participants, items, onChange}) {
             }}
           />
         )}
+        ListboxProps={
+          {
+            style:{
+                maxHeight: '200px',
+            }
+          }
+        }
       />
     </div>
   )

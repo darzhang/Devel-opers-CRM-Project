@@ -51,6 +51,7 @@ code {
   margin: auto;
   max-width: 300px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .form-control label {

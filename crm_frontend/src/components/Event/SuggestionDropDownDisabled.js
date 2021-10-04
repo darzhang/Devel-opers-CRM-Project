@@ -27,6 +27,13 @@ const SuggestionDropDownDisabled = ({participants, items, onChange}) => {
             inputProps={{ ...params.inputProps, readOnly:true }}
           />
         )}
+        ListboxProps={
+          {
+            style:{
+                maxHeight: '200px',
+            }
+          }
+        }
       />
     </div>
   )
