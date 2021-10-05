@@ -6,7 +6,10 @@ import AddEvent from '../../components/Event/AddEvent'
 import EventHeader from '../../components/Event/EventHeader'
 import Swal from 'sweetalert2'
 import { CircularProgress } from '@mui/material'
-import Button from '../../components/Event/Button'
+// import Button from '../../components/Event/Button'
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const EventDetails = () => {
 
@@ -20,6 +23,7 @@ const EventDetails = () => {
   //   dateAdded: new Date()
   // }
   
+  const buttonStyle = { textTransform: "none", width: "108px" };
   const {id} = useParams()
   const [event, setEvent] = useState('')
   const [edit, setEdit] = useState(false)
@@ -77,9 +81,54 @@ const EventDetails = () => {
       });
     }
   }
+  //Delete Event
+  const deleteEvent = async (id, name) => {
+
+    Swal.fire({
+      title: `Do You Want to delete ${name} ?`,
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      showClass: {
+        icon: ''
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await fetch(`http://localhost:5000/event/${id}`, {
+          method: 'DELETE',
+        })
+
+        if(res.status !== 400){
+          Swal.fire({
+            title: 'Deleted!',
+            text: `${name} has been deleted.`,
+            icon: 'success',
+            showClass: {
+              icon: ''
+            }
+          }).then(function() {
+            window.location = '/event'
+          })
+        }else {
+          Swal.fire({
+            title: "Failure",
+            text: "You have failed to delete the event!",
+            icon: "error",
+            showClass: {
+              icon: ''
+            }
+          });
+        }
+      }
+    })
+  }
 
   // Re render page when the id in the params change
   useEffect(() => {
+    let mounted = true
     const getEvent = async () => {
       const eventFromServer = await fetchOneEvent(id)
       const contacts = await fetchContact()
@@ -93,10 +142,16 @@ const EventDetails = () => {
       })
       eventFromServer.participantsArray = participantsArray
       
-      setEvent(eventFromServer)
+      if(mounted){
+        setEvent(eventFromServer)
+      }
       
     }
     getEvent()
+
+    return function cleanup() {
+      mounted = false
+    } 
     
   }, [id,refresh])
   
@@ -106,13 +161,24 @@ const EventDetails = () => {
     <>
     {event
       ? (<div style={{marginLeft:'75px'}}>
-          <div style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
+          <h1>{edit ? 'Edit Event' : event.eventName}</h1>
+          {/* <div style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
             <div style={{flex: 1}}></div>
             <div style={{flex: 1, minWidth: '300px', flexGrow: 1}}><h1>{edit ? 'Edit Event' : event.eventName}</h1></div>
             <div style={{flex: 1}}><Button onClick={() => {setEdit(!edit)}} text={edit ? 'Close' : 'Edit Event'} color={edit ? 'secondary' : 'primary'} /></div>
-          </div>
-          {edit && <AddEvent event={event} onEdit={editEvent} onAdd={null} closeForm={null} text={'Save Changes'} readOnly={false} enableSubmit={true}/>}
-          {!edit && <AddEvent event={event} onEdit={editEvent} onAdd={null} closeForm={null} text={'Save Changes'} readOnly={true} enableSubmit={false}/>}
+          </div> */}
+          {edit && <AddEvent event={event} onEdit={editEvent} readOnly={false}/>}
+          {!edit && <AddEvent event={event} onEdit={editEvent} readOnly={true}/>}
+          {!edit && (
+            <div>
+            <Button variant="contained" color="primary" onClick={() => setEdit(!edit)} style={buttonStyle}>
+              <EditIcon />&nbsp;Edit
+            </Button>&nbsp;
+            <Button variant="contained" color="secondary" style={buttonStyle} onClick={() => {deleteEvent(event._id, event.eventName)}}>
+              <DeleteIcon />&nbsp;Delete
+            </Button>
+            </div>
+          )}
         </div>)
       : <CircularProgress /> 
     }
