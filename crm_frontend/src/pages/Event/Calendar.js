@@ -25,11 +25,17 @@ export default function CalendarPage() {
   const [events, setEvents] = useState([])
   
   useEffect(() => {
+    let mounted = true
     const getEvents = async () =>{
       const eventsFromBackEnd = await fetchEvents()
-      setEvents(eventsFromBackEnd)
+      if(mounted){
+        setEvents(eventsFromBackEnd)
+      }
     }
     getEvents()
+    return function cleanup() {
+      mounted = false
+    }
   }, [])
 
   //Fetch Events

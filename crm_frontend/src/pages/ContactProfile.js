@@ -36,7 +36,6 @@ export default function ContactProfile(props) {
 
   // Load data from the Backend when loading the page
   useEffect(() => {
-    let mounted = true
     // Get contact based on the id
     const getContact = async () => {
       const BASE_URL = "http://localhost:5000";
@@ -57,18 +56,9 @@ export default function ContactProfile(props) {
         setIsLoading(false);
       })
     }
-    if (mounted) {
-      getContact();
-    }
-    if (mounted) {
-      getDepartmentNames();
-    }
-    if (mounted) {
-      getOrganisationNames();
-    }
-    return function cleanup() {
-      mounted = false
-    }
+    getContact();
+    getDepartmentNames();
+    getOrganisationNames();
   }, [props.match.params.id])
 
   /* Get the department name of the contact
