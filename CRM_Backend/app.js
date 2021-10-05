@@ -13,6 +13,9 @@ const MongoDBStore = require("connect-mongo");
 const db = "mongodb+srv://user:P%40ssw0rd!@cluster0.lzade.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const dboptions = {
     useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
     dbName: "PersonalCRM"
   };
 const cors = require('cors');

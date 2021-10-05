@@ -29,9 +29,16 @@ export default function Contacts() {
 
   // Load data from the Backend when loading the page
   useEffect(() => {
-    getContacts();
-    setIsLoading(false);
-  }, [contactList])
+    let mounted = true
+    getContacts().then(() => {
+      if (mounted) {
+        setIsLoading(false);
+      }
+    });
+    return function cleanup() {
+      mounted = false
+    }
+  }, [])
 
   /* Get list of contacts from the Backend and display them in an alphabetically sorted order
    */
@@ -233,12 +240,12 @@ export default function Contacts() {
       />
       <div style={marginStyle}>
         {isLoading &&
-        <div style={loadingStyle}>
-          Loading...
+        <div>
+          <h1 style={{marginRight: "10%"}}>Contacts</h1>
         </div>}
         {!isLoading &&
         <div>
-          <h1 style={{marginRight: "10%"}}>Contact List</h1>
+          <h1 style={{marginRight: "10%"}}>Contacts</h1>
           <div style={buttonDivStyle}>
             <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick={() => setCreateContactDialog(true)}>
               Add Contact
