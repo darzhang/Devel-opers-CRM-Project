@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import DataGridComp from '../components/Event/DataGridComp';
+import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Organisation() {
   const [organisations, setOrganisations] = useState([]);
@@ -17,67 +13,63 @@ export default function Organisation() {
     fetch("http://localhost:5000/organisation")
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
+        data.forEach( async (org) =>{ 
+          org.id = org._id;
+        })
+        getContacts();
+        getOrgSize(data);
         setOrganisations(data);
       });
-    /*get the contact list from the database*/
-    fetch("http://localhost:5000/contact")
-      .then((data) => data.json())
-      .then((data) => {
-        console.log(data);
-        setContact(data);
-      });
-  }, []);
+  }, [contact]);
+
+  const showDetailColumn = {
+    width: 120,
+    field:'showDetail',
+    headerName: 'Detail',
+    filterable:false,
+    flex: 1,
+    renderCell: (org) => {
+      return (
+        <a href={"/organisation/" + org.id} style={{textDecoration: "none", textAlign: "center"}}>
+          <Button variant="contained" style={{textTransform: "none"}}>
+            View Detail
+          </Button>
+        </a>
+      );
+    }
+  }
+
+  const getContacts = async () => {
+    const BASE_URL = "http://localhost:5000";
+    await axios.get(BASE_URL + "/contact").then(res => {
+      const list = res.data;
+      setContact(list);
+    })
+  }
+
+  async function getOrgSize(organisation){
+    organisation.forEach(async (org) =>{
+      const orgSize = contact.filter((c) => c.organisationId === org._id).length;
+      org.size = orgSize;
+    });
+  }
+
+  const columns = [
+    { field: 'orgName', headerName: 'Organisation Name', minWidth: 160, flex: 1},
+    { field: 'size', headerName: 'Network Size', minWidth: 160, flex: 1, filterable:false},
+    showDetailColumn
+  ];
+
+  const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
   return (
-    <div>
-      <h1 style={{ marginRight: "10%" }}>Organisation List</h1>
-      <TableContainer
-        component={Paper}
-        style={{ width: "60%", marginLeft: "20%", marginTop: "2%" }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ fontWeight: "bold" }}>
-                Organisation Name
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>Network Size</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {organisations.map((org) => {
-              const size = contact.filter(
-                (c) => c.organisationId === org._id
-              ).length;
-              return (
-                <TableRow
-                  key={org.orgName}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>{org.orgName}</TableCell>
-                  <TableCell>{size}</TableCell>
-                  <TableCell align="center">
-                    <a
-                      href={"/organisation/" + org._id}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button
-                        variant="contained"
-                        style={{ textTransform: "none" }}
-                      >
-                        View Detail
-                      </Button>
-                    </a>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <br />
+    <div style={marginStyle}>
+      <h1>
+        Organisation List
+      </h1>
+      <div className="listOfEvents">
+          {organisations.length > 0 ? <DataGridComp events={organisations} columns={columns}></DataGridComp> : <CircularProgress />}
+      </div>
     </div>
-  );
+  )
 }

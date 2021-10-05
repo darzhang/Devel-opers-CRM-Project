@@ -5,6 +5,17 @@ const organisationSchema = new mongoose.Schema({
         type : String,
         required : true,
         unique : true
+    },
+    nameLower : {
+        type: String,
+        required : true,
+        unique : true
+    },
+    size : {
+        type: Number
+    },
+    createdBy : {
+        type: mongoose.Schema.Types.ObjectId
     }
 });
 

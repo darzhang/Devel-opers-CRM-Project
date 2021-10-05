@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Alert from '@mui/material/Alert';
 import {
   Dialog,
   DialogTitle,
@@ -29,9 +28,11 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
   };
 
   const [state, setState] = useState(initialState);
+  const [submitted, setSubmitted] = useState(false);
 
   // handle the change for the states
   const onChange = (e) => {
+    setSubmitted(false);
     setState({
       ...state,
       [e.target.name]: e.target.value,
@@ -40,6 +41,7 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
 
   // handle submitting the data to the backend
   const onSubmit = (e) => {
+    setSubmitted(true);
     e.preventDefault();
     const BASE_URL = "http://localhost:5000";
     const url = BASE_URL + "/contact";
@@ -48,14 +50,22 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
     .then(() => {
       window.location = "/contact";
       handleClose();
-      alert("success created contact")
+      alert("success created contact");
     });
   };
 
   const handleClose = () => {
     setContactDialog(false);
     setState(initialState);
+    setSubmitted(false);
   };
+
+  const mandatoryFieldsFilled = 
+    state.contactName != "" &&
+    state.phoneMobile != "" &&
+    state.email != "" &&
+    state.departmentName != "" &&
+    state.organisationName != ""
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
@@ -72,6 +82,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               value={state.contactName}
               onChange={onChange}
               required
+              error={state.contactName === "" && submitted === true}
+              helperText={state.contactName === "" && submitted === true ? 'Empty field!' : ' '}
             />
           </Grid>
 
@@ -84,6 +96,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               value={state.phoneMobile}
               onChange={onChange}
               required
+              error={state.phoneMobile === "" && submitted === true}
+              helperText={state.phoneMobile === "" && submitted === true ? 'Empty field!' : ' '}
             />
           </Grid>
 
@@ -106,9 +120,11 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               name="phoneWork"
               value={state.phoneWork}
               onChange={onChange}
+              error={false}
+              helperText={false ? 'Empty field!' : ' '}
             />
           </Grid>
-
+          
           <Grid item xs={6}>
             <TextField
               type="text"
@@ -118,6 +134,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               value={state.email}
               onChange={onChange}
               required
+              error={state.email === "" && submitted === true}
+              helperText={state.email === "" && submitted === true ? 'Empty field!' : ' '}
             />
           </Grid>
 
@@ -141,6 +159,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               value={state.departmentName}
               onChange={onChange}
               required
+              error={state.departmentName === "" && submitted === true}
+              helperText={state.departmentName === "" && submitted === true ? 'Empty field!' : ' '}
             />
           </Grid>
 
@@ -153,6 +173,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               value={state.organisationName}
               onChange={onChange}
               required
+              error={state.organisationName === "" && submitted === true}
+              helperText={state.organisationName === "" && submitted === true ? 'Empty field!' : ' '}
             />
           </Grid>
 
@@ -167,11 +189,10 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
             />
           </Grid>
         </Grid>
-
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button onClick={onSubmit} disabled={mandatoryFieldsFilled}>Submit</Button>
       </DialogActions>
     </Dialog>
   );
