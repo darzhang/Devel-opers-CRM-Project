@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Autocomplete from '@mui/material/Autocomplete';
 import Swal from 'sweetalert2'
+import CircularProgress from '@mui/material/CircularProgress';
 
 /* Display a contact profile page and can be switched to an edit contact profile page
  *
@@ -35,6 +36,7 @@ export default function ContactProfile(props) {
 
   // Load data from the Backend when loading the page
   useEffect(() => {
+    let mounted = true
     // Get contact based on the id
     const getContact = async () => {
       const BASE_URL = "http://localhost:5000";
@@ -55,9 +57,18 @@ export default function ContactProfile(props) {
         setIsLoading(false);
       })
     }
-    getContact();
-    getDepartmentNames();
-    getOrganisationNames();
+    if (mounted) {
+      getContact();
+    }
+    if (mounted) {
+      getDepartmentNames();
+    }
+    if (mounted) {
+      getOrganisationNames();
+    }
+    return function cleanup() {
+      mounted = false
+    }
   }, [props.match.params.id])
 
   /* Get the department name of the contact
@@ -213,21 +224,26 @@ export default function ContactProfile(props) {
     });
   }
 
+  const onCancel = () => {
+    const id = props.match.params.id;
+    window.location = '/contact/profile/' + id;
+  }
+
   // Styles
   const loadingStyle = { fontSize: "36px" };
   // const deleteDivStyle = { textAlign: "right", marginRight: "2%" };
   // const cancelDivStyle = { textAlign: "left", marginLeft: "2%" };
   const buttonStyle = { textTransform: "none", width: "108px" };
   const marginStyle = { marginTop: "2%", marginLeft: "80px" };
-  const profileStyle = { width: "500px", marginLeft: "32%" };
+  const profileStyle = { width: "500px", margin: "auto" };
   const labelStyle = { textAlign: "left", marginLeft: "12%" };
   const textFieldStyle = { minWidth: "400px" };
   const autoCompleteStyle = { width: "400px", marginLeft: "10%" }
   return (
     <div style={marginStyle}>
       {isLoading &&
-      <div style={loadingStyle}>
-          Loading...
+      <div>
+          <CircularProgress />
       </div>}
       {!isLoading &&
       <div>
@@ -393,7 +409,7 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <Button type="submit" variant="contained" color="primary" style={buttonStyle}>Save</Button>&nbsp;
-            <Button variant="contained" color="secondary" style={buttonStyle} onClick={toggleEdit}>Cancel</Button>
+            <Button variant="contained" color="secondary" style={buttonStyle} onClick={onCancel}>Cancel</Button>
           </form>
           <div><br /></div>
         </div>}

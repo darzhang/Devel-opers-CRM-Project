@@ -46,7 +46,7 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
     const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = state;
     axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description })
     .then(() => {
-      history.push("/contact");
+      window.location = "/contact";
       handleClose();
       alert("success created contact")
     });
