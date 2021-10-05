@@ -10,11 +10,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { Link } from 'react-router-dom';
-import Button from '../../components/Event/Button'
+// import Button from '../../components/Event/Button'
+import Button from "@material-ui/core/Button";
 import EventDialog from '../../components/Event/EventDialog'
 
 const Events = () => {
   const timeFormat = "DD/MM/YY, hh:mm a"
+  const buttonDivStyle = { textAlign: "right", marginRight: "2%", marginBottom: "10px" };
   const [events, setEvents] = useState([])
   const [pastEvents, setPastEvents] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
@@ -44,6 +46,7 @@ const Events = () => {
   }
 
   useEffect(() => {
+    let mounted = true
     const getEvents = async () =>{
       const contacts = await fetchContacts()
       const eventsFromBackEnd = await fetchEvents()
@@ -79,12 +82,19 @@ const Events = () => {
         event.dateAdded = moment(event.dateAdded).format(timeFormat);
         event.participants = names.join(", ")
       })
-      setEvents(eventsFromBackEnd)
-      setPastEvents(pastArray)
-      setUpcomingEvents(upcomingArray)
+      if(mounted){
+        setEvents(eventsFromBackEnd)
+        setPastEvents(pastArray)
+        setUpcomingEvents(upcomingArray)
+      }
+      
     }
-
+    
     getEvents()
+
+    return function cleanup() {
+      mounted = false
+    }
   }, [refresh])
 
   //Fetch Contacts
@@ -197,9 +207,11 @@ const Events = () => {
     filterable:false,
     renderCell: (cellValues) => {
       return (
-        <Link to={`/event/${cellValues.row.id}`}>
-        <Button color={'blue'} text={'Detail'} onClick={null}/>
-        </Link>
+        <a href={"/event/" + cellValues.id} style={{textDecoration: "none", textAlign: "center"}}>
+          <Button variant="contained" style={{textTransform: "none"}}>
+            View Event
+          </Button>
+        </a>
       );
     }
   }
@@ -235,10 +247,16 @@ const Events = () => {
   return (
     <div className="Events" style={{marginLeft:"75px"}}>
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
-      {events.length > 0 && <div style={{float:'right', marginRight: '2%', display: 'flex', flexDirection: 'row'}}>
-        <Button color={showAddEvent ? 'red' : 'blue'} text={showAddEvent ? 'Close' : 'Add'} onClick = {() => setShowAddEvent(!showAddEvent)} />
-        <Button color='blue' text={isUpcoming ? 'Show Past Events' : 'Show Current Events'} onClick = {() => setIsUpcoming(!isUpcoming)} />
-      </div>}
+      {events.length >0 && 
+        <div style={buttonDivStyle}>
+          <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setShowAddEvent(!showAddEvent)}>
+            Add Event
+          </Button>
+          <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setIsUpcoming(!isUpcoming)}>
+            {isUpcoming ? 'Show Past Events' : 'Show Current Events'}
+          </Button>
+        </div>
+      }
       {/* {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>} */}
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
       <div className="listOfEvents">

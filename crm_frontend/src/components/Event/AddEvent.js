@@ -5,8 +5,10 @@ import moment from 'moment'
 import SuggestionDropDown from './SuggestionDropDown'
 import SuggestionDropDownDisabled from './SuggestionDropDownDisabled'
 import Swal from 'sweetalert2'
+import Button from '@material-ui/core/Button';
 
-const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}) => {
+const AddEvent = ({event, onEdit, readOnly}) => {
+  const buttonStyle = { textTransform: "none", width: "108px" };
   const [eventName, setEventName] = useState(event.eventName)
   const [startTime, setStartTime] = useState(moment(new Date(event.startTime)).format("yyyy-MM-DDTHH:mm"))
   const [endTime, setEndTime] = useState(moment(new Date(event.endTime)).format("yyyy-MM-DDTHH:mm"))
@@ -57,12 +59,7 @@ const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}
       return;
     }
 
-    if(onEdit===null){
-      onAdd(data)
-      closeForm() 
-    }else if(onAdd===null){
-      onEdit(data)
-    }
+    onEdit(data)
   }
   return (
     <form className='add-form' onSubmit={onSubmit}>
@@ -140,7 +137,12 @@ const AddEvent = ({event, onAdd, closeForm, onEdit,text, readOnly, enableSubmit}
           InputProps={{readOnly: (readOnly ? true : false)}}
         />
       </div>
-      {enableSubmit && <input type='submit' value={text} className='btn btn-block'/>}
+      {!readOnly && (
+        <div>
+          <Button type="submit" variant="contained" color="primary" style={buttonStyle}>Save</Button>&nbsp;
+          <Button variant="contained" color="secondary" style={buttonStyle} onClick={() => window.location = `/event/${event._id}` }>Cancel</Button>
+        </div>
+      )}
     </form>
   )
 }

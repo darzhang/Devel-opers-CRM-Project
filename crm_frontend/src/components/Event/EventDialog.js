@@ -87,15 +87,24 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
   };
 
   useEffect(() => {
+    let mounted = true
     const getContacts = async () =>{
       const contactsFromBackEnd = await fetchContacts()
-      setContacts(contactsFromBackEnd)
+      if(mounted){
+        setContacts(contactsFromBackEnd)
+      }
+      
     }
     getContacts()
+
+    return function cleanup() {
+      mounted = false
+    }
   }, [isOpen])
 
   return (
     <Dialog open={isOpen} onClose={handleClose} fullWidth={true} maxWidth={'xs'}>
+      <form onSubmit={onSubmit}>
       <DialogTitle>Create Event</DialogTitle>
       <DialogContent>
         <div>
@@ -171,8 +180,9 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button type="submit">Submit</Button>
       </DialogActions>
+      </form>
     </Dialog>
   );
 }
