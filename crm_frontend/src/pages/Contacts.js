@@ -29,8 +29,7 @@ export default function Contacts() {
 
   // Load data from the Backend when loading the page
   useEffect(() => {
-    getContacts()
-    setIsLoading(false)
+    getContacts();
   }, [])
 
   /* Get list of contacts from the Backend and display them in an alphabetically sorted order
@@ -221,7 +220,7 @@ export default function Contacts() {
 
   // Styles
   const filtersStyle = { textAlign: "left" };
-  const buttonDivStyle = { textAlign: "right", marginRight: "2%" };
+  const buttonDivStyle = { textAlign: "right", marginRight: "1%" };
   const loadingStyle = { fontSize: "36px" };
   const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
@@ -232,11 +231,11 @@ export default function Contacts() {
         setContactDialog={setCreateContactDialog}
       />
       <div style={marginStyle}>
-        {isLoading &&
+        {filteredContacts.length === 0 &&
         <div>
           <h1 style={{marginRight: "10%"}}>Contacts</h1>
         </div>}
-        {!isLoading &&
+        {filteredContacts.length > 0 &&
         <div>
           <h1 style={{marginRight: "10%"}}>Contacts</h1>
           <div style={buttonDivStyle}>

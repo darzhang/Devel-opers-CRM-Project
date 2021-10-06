@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react'
 import axios from "axios";
 import {
   ResponsiveContainer,
-  AreaChart,
+  BarChart,
   XAxis,
   YAxis,
-  Area,
+  Bar,
+  Cell,
   Tooltip,
   CartesianGrid,
 } from "recharts";
@@ -19,15 +20,27 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+/* Display the Home page and shows an Activity graph consisting of the Number of events in the next 7 days,
+ * a list of recently added contacts, as well as upcoming events
+ *
+ * @param props Data passed on from a parent component
+ */
 export default function Home() {
+
+  // useState Hooks
   const [events, setEvents] = useState([])
   const [contactList, setContactList] = useState([]);
+  const [focusBar, setFocusBar] = useState(null);
+  const [mouseLeave, setMouseLeave] = useState(true);
   
+  // Load data from the Backend when loading the page
   useEffect(() => {
     getEvents()
     getContacts()
   }, [])
 
+  /* Get the list of events for the user
+   */
   const getEvents = async () =>{
     await axios.get("http://localhost:5000/event").then(res => {
       const list = res.data;
@@ -37,7 +50,9 @@ export default function Home() {
       console.error(error);
     });
   }
-  
+
+  /* Get the list of contacts for the user
+   */
   const getContacts = async () => {
     await axios.get("http://localhost:5000/contact").then(res => {
         const list = res.data;
@@ -76,7 +91,7 @@ export default function Home() {
   let graphData = []
   if (graphEvents && graphEvents.length > 0){
     date.setDate(date.getDate() - 1)
-    for (let num = 0; num < 30; num++){
+    for (let num = 0; num < 7; num++){
       let tempDate = new Date(date.setDate(date.getDate() + 1));
       graphData.push({
         graphDate: tempDate,
@@ -98,6 +113,7 @@ export default function Home() {
     }
   }
 
+  // Obtains the last five contacts added
   let lastFiveContacts = []
   let index = 0;
   for (let i = contactList.length - 1; i >= 0; i--){
@@ -107,6 +123,7 @@ export default function Home() {
     }
   }
 
+  // Obtains the next upcoming events
   let upcomingEvents = []
   index = 0;
   for (let i = 0; i < events.length; i++){
@@ -119,6 +136,8 @@ export default function Home() {
   }
   upcomingEvents.reverse()
   
+  /* Get the contact row for the contact table
+   */
   const contactString = 'Profile'
   const contactRow = (contact, i) => (
     <TableRow key={i}>
@@ -134,6 +153,9 @@ export default function Home() {
       </TableCell>
     </TableRow>
   )
+
+  /* Get the contact table
+   */
   function ContactTable(){
     return(
       <TableContainer component={Paper} style={{width: "100%", maxHeight: "270px"}}>
@@ -156,6 +178,8 @@ export default function Home() {
     );
   }
 
+  /* Get the event row for the event table
+   */
   upcomingEvents.reverse();
   const eventString = "View"
   const eventRow = (event, i) => (
@@ -172,6 +196,8 @@ export default function Home() {
     </TableRow>
   )
 
+  /* Get the event table
+   */
   function EventTable(){
     return(
       <TableContainer component={Paper} style={{width: "100%", maxHeight: "270px"}}>
@@ -192,10 +218,12 @@ export default function Home() {
     );
   }
 
+  // Styles for the margins
   const marginStyle = { marginTop: "2%", marginLeft: "3%", marginRight: "5%"};
   const graphMarginStyle = { marginTop: "2%", marginLeft: "3%", marginRight: "8%"};
   const eventMarginStyle = { marginTop: "0%", marginLeft: "7%", marginRight: "0%"};
   const contactMarginStyle = { marginTop: "0%", marginLeft: "2%", marginRight: "0%"};
+
 
   return (
     <div style={marginStyle}>
@@ -203,23 +231,35 @@ export default function Home() {
       <h2 style={{marginLeft:"8%", marginTop:"0%"}}>Activity Graph</h2>
       <div style={graphMarginStyle}>
         <ResponsiveContainer width="110%" height={260}>
-          <AreaChart data={graphData}>
-
-            <defs>
-            <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} />
-              <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05} />
-            </linearGradient>
-            </defs>
-
-            <Area dataKey="value" stroke="#2451B7" fill="url(#color)" />
-
+          <BarChart 
+            width={730} 
+            height={250} 
+            data={graphData}
+            onMouseMove={(state) => {
+              if (state.isTooltipActive) {
+                setFocusBar(state.activeTooltipIndex);
+                setMouseLeave(false);
+              } else {
+                setFocusBar(null);
+                setMouseLeave(true);
+              }
+            }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <Bar dataKey="value" fill="#2B5CE7">
+            {graphData.map((entry, index) => (
+              <Cell
+                fill={
+                focusBar === index || mouseLeave
+                  ? "#2B5CE7"
+                  : "rgba(43, 92, 231, 0.2)"
+               }
+              />
+            ))}
+            
+            </Bar>
             <XAxis 
-              dataKey="date" 
-              tickLine={false}
-              tickFormatter={(str) => {
-                return str.toString().substr(3, 7);
-              }} />
+              dataKey="date"
+              tickLine={false}/>
 
             <YAxis
             dataKey="value"
@@ -233,15 +273,12 @@ export default function Home() {
             label={{ value: "Number of Events", position: "insideLeft", angle: -90,   dy: 50}}/>
 
             <Tooltip 
+              cursor={false}
               formatter={function(value, name) {
                 return [`${value}`, 'Number of Events'];
               }}/>
 
-            <CartesianGrid 
-              opacity={0.5} 
-              vertical={false} />
-
-          </AreaChart>
+          </BarChart>
         </ResponsiveContainer>
       </div>
 
@@ -251,7 +288,7 @@ export default function Home() {
           <EventTable></EventTable>
         </div>
 
-        <div style={contactMarginStyle} className='tcolumn2'>
+        <div style={contactMarginStyle} className='tcolumn'>
           <h3 style={{marginLeft:"2%", marginTop:"2%"}}>Recently Added</h3>
           <ContactTable></ContactTable>
         </div>
