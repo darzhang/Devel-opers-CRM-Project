@@ -30,6 +30,7 @@ export default function Contacts() {
   // Load data from the Backend when loading the page
   useEffect(() => {
     getContacts()
+    setIsLoading(false)
   }, [])
 
   /* Get list of contacts from the Backend and display them in an alphabetically sorted order

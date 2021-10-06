@@ -13,6 +13,7 @@ const AddEvent = ({event, onEdit, readOnly}) => {
   const [startTime, setStartTime] = useState(moment(new Date(event.startTime)).format("yyyy-MM-DDTHH:mm"))
   const [endTime, setEndTime] = useState(moment(new Date(event.endTime)).format("yyyy-MM-DDTHH:mm"))
   const [participants, setParticipants] = useState(event.participantsArray)
+  const [participantsList, setParticipantsList] = useState('')
   const [description, setDescription] = useState(event.description)
   const [location, setLocation] = useState(event.location)
   const [contacts, setContacts] = useState([])
@@ -21,6 +22,11 @@ const AddEvent = ({event, onEdit, readOnly}) => {
     const getContacts = async () =>{
       const contactsFromBackEnd = await fetchContacts()
       setContacts(contactsFromBackEnd)
+      const list = []
+      participants.forEach((participant) => {
+        list.push(participant.name)
+      })
+      setParticipantsList(list.join(", "))
     }
     getContacts()
   }, [])
@@ -45,7 +51,15 @@ const AddEvent = ({event, onEdit, readOnly}) => {
     const participantsIdArray = []
     participants.map((participant) => participantsIdArray.push(participant.id))
 
-    const data = {eventName, startTime, endTime, participants:participantsIdArray, description, location, dateAdded: dateAdded}
+    const data = {eventName,
+      startTime,
+      endTime,
+      participants:participantsIdArray,
+      description,
+      location,
+      dateAdded: dateAdded,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      isEmailed: false}
 
     if (data.startTime > data.endTime) {
       Swal.fire({
@@ -105,7 +119,18 @@ const AddEvent = ({event, onEdit, readOnly}) => {
       </div>
       <div className='form-control'>
         {readOnly 
-          ? <SuggestionDropDownDisabled participants={participants} items={contacts} onChange={(value) => setParticipants(value)}/>
+          ? (<div className='form-control'>
+              <TextField
+                fullWidth
+                multiline
+                size="small"
+                label="Participants"
+                value={participantsList}
+                variant="outlined"
+                // InputLabelProps={{shrink: true,}}
+                InputProps={{readOnly: (readOnly ? true : false)}}
+              />
+            </div>)
           : <SuggestionDropDown participants={participants} items={contacts} onChange={(value) => setParticipants(value)}/>
         }
       </div>
