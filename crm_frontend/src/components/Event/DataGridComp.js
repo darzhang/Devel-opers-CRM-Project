@@ -3,6 +3,7 @@ import {
   DataGrid, 
   GridToolbarContainer,
   GridToolbarFilterButton,
+  GridToolbarExport
 } from '@mui/x-data-grid'
 
 function DataGridComp({events, columns}) {
@@ -44,6 +45,7 @@ function DataGridComp({events, columns}) {
           }}
         /> */}
         <GridToolbarFilterButton />
+        <GridToolbarExport />
       </GridToolbarContainer>
     );
   }
