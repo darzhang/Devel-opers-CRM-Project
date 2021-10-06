@@ -10,10 +10,10 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export default function CalendarPage() {
   
+  // Localisers
   const locales = {
     "en-AU": require("date-fns/locale/en-AU"),
   };
-
   const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -22,8 +22,10 @@ export default function CalendarPage() {
     locales,
   })
 
+  // useState hooks
   const [events, setEvents] = useState([])
   
+  // Load data from the Backend when loading the page
   useEffect(() => {
     let mounted = true
     const getEvents = async () =>{
@@ -38,7 +40,8 @@ export default function CalendarPage() {
     }
   }, [])
 
-  //Fetch Events
+  /* Get the list of events for the user
+   */
   const fetchEvents = async () => {
     const res = await fetch('http://localhost:5000/event')
     const data = await res.json()
@@ -56,16 +59,24 @@ export default function CalendarPage() {
 
   const history = useHistory();
   let eventID = '';
+
+  /* Get the event ID
+   */
   function getEventID(){
     const newURL = '/event/' + eventID;
     return newURL
   }
+
+  /* Redirects to the corresponding event page
+   */
   function redirectEvent() {
     history.push(getEventID());
   }
 
+  // Margin Styles
   const marginStyle = { marginTop: "2%", marginLeft: "10%", marginRight: "10%"};
 
+  
   return (
     <div style={marginStyle}>
       <div className="Calendar" style={{marginLeft:"75px"}}>
