@@ -22,6 +22,12 @@ const eventSchema = new mongoose.Schema({
     },
     dateAdded: {
         type: Date
+    },
+    timezone: {
+        type: String
+    },
+    isEmailed: {
+        type: Boolean
     }
 }, { versionKey: false , timestamps: false });
 

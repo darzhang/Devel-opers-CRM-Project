@@ -10,6 +10,7 @@ const flash = require('connect-flash-plus');
 const session = require("express-session");
 const jwt = require('jsonwebtoken');
 const MongoDBStore = require("connect-mongo");
+const schedule = require('node-schedule');
 const db = "mongodb+srv://user:P%40ssw0rd!@cluster0.lzade.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const dboptions = {
     useNewUrlParser: true,
@@ -92,6 +93,10 @@ app.get('/', (req, res) => {
     res.render('login')
     //res.send('<h1>Personal CRM</h1>')
 })
+
+//Schedule the email notification for events
+const notificationScheduler = require('./notificationScheduler')
+const job = schedule.scheduleJob('*/15 * * * * *', notificationScheduler.sendNotifications);
 
 
 module.exports = app

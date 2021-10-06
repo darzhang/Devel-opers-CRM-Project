@@ -68,7 +68,9 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
       participants:participantsIdArray, 
       description: state.description, 
       location: state.location, 
-      dateAdded}
+      dateAdded,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      isEmailed: false}
 
     if (data.startTime > data.endTime) {
       Swal.fire({
