@@ -9,11 +9,8 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 
 export default function CreateContactDialog({ isOpen, setContactDialog }) {
-
-  const history = useHistory();
 
   const initialState = {
     contactName: "",
@@ -59,13 +56,6 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
     setState(initialState);
     setSubmitted(false);
   };
-
-  // const mandatoryFieldsFilled = 
-  //   state.contactName != "" &&
-  //   state.phoneMobile != "" &&
-  //   state.email != "" &&
-  //   state.departmentName != "" &&
-  //   state.organisationName != ""
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>

@@ -9,19 +9,32 @@ export default function Organisation() {
   const [contact, setContact] = useState([]);
 
   useEffect(() => {
-    /*get the organisation list from the database*/
-    fetch("http://localhost:5000/organisation")
-      .then((data) => data.json())
-      .then((data) => {
-        data.forEach( async (org) =>{ 
-          org.id = org._id;
-        })
-        getContacts();
-        getOrgSize(data);
-        setOrganisations(data);
-      });
+    if (contact.length > 0) {
+      /*get the organisation list from the database*/
+      fetch("http://localhost:5000/organisation")
+        .then((data) => data.json())
+        .then((data) => {
+          const mappedData = data.map(org =>{
+            const orgSize = contact.filter((c) => c.organisationId === org._id).length;
+            return {
+              ...org,
+              id: org._id,
+              size: orgSize
+            }
+          });
+          setOrganisations(mappedData);
+        });
+    }
   }, [contact]);
 
+  useEffect(() => {
+    const BASE_URL = "http://localhost:5000";
+    axios.get(BASE_URL + "/contact").then(res => {
+      const list = res.data;
+      setContact(list);
+    })
+  }, [])
+  
   const showDetailColumn = {
     width: 120,
     field:'showDetail',
@@ -39,20 +52,13 @@ export default function Organisation() {
     }
   }
 
-  const getContacts = async () => {
-    const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/contact").then(res => {
-      const list = res.data;
-      setContact(list);
-    })
-  }
-
-  async function getOrgSize(organisation){
-    organisation.forEach(async (org) =>{
-      const orgSize = contact.filter((c) => c.organisationId === org._id).length;
-      org.size = orgSize;
-    });
-  }
+  // const getContacts = async () => {
+  //   const BASE_URL = "http://localhost:5000";
+  //   await axios.get(BASE_URL + "/contact").then(res => {
+  //     const list = res.data;
+  //     setContact(list);
+  //   })
+  // }
 
   const columns = [
     { field: 'orgName', headerName: 'Organisation Name', minWidth: 160, flex: 1},
