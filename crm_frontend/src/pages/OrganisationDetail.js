@@ -12,8 +12,8 @@ export default function OrganisationDetail(props) {
   useEffect(() => {
     /*get the organisation list from the database*/
     const BASE_URL ="http://localhost:5000/organisation/" + props.match.params.id;
-    fetch(BASE_URL)
-      .then((data) => data.json())
+    axios.get(BASE_URL, {withCredentials: true})
+      .then((data) => data.data)
       .then((data) => {
         setOrganisation(data);
         getContacts(data[0]);
@@ -24,7 +24,7 @@ export default function OrganisationDetail(props) {
    */
   const getDepartments = async () => {
     const BASE_URL = "http://localhost:5000";
-    const res = await axios.get(BASE_URL + "/department")
+    const res = await axios.get(BASE_URL + "/department", {withCredentials: true})
     setDepartmentList(res.data);
     let depList = res.data
     return depList;
@@ -35,7 +35,7 @@ export default function OrganisationDetail(props) {
   const getContacts = async (org) => {
     const deps = await getDepartments();
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/contact").then(res => {
+    await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
         console.log(sortedList);

@@ -1,42 +1,30 @@
 import React, { useState } from "react";
 import axios from 'axios';
+
 // import { loginUser } from "../api";
 import { withRouter } from "react-router-dom";
 //import { response } from "../../../CRM_Backend/app";
 
 
-
-
-
-// component to Logout user
-export function Logout() {
-  
-  // remove token from the local storage
-  sessionStorage.removeItem('token');
-  // open the homepage --- example of how to redirect
-  // another example
-  
-  
-}
-
 /*
   Generate a login form
 */
-export function LoginForm({history}) {
-  // state hook functions   
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export function RegisterForm({history}) {
 
   if (sessionStorage.getItem("isAuthenticated") === "true"){
     history.push('./')
   }
+  // state hook functions   
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
-  // const token = localStorage.getItem("token");
-  // if (token !== null) {
-  //     return (
-  //         <div>You are logged in</div>
-  //     )
-  
+//   const token = localStorage.getItem("token");
+//   if (token !== null) {
+//       return (
+//           <div>You are logged in</div>
+//       )
+//   }
   
   // submit form
   function onSubmit(e) {
@@ -49,20 +37,21 @@ export function LoginForm({history}) {
     axios({
       method: "POST",
       data: {
+        username: username,
         email: email,
         password: password
       },
       withCredentials: true,
-      url: "http://localhost:5000/login"
+      url: "http://localhost:5000/register"
     }).then((response) => {
-      console.log(response)
       if (response.data){
-        sessionStorage.setItem("isAuthenticated", "true")
         console.log('successful login');
+       
+        sessionStorage.setItem("isAuthenticated", "true")
         history.push('/')
       } 
       else {
-        alert('Wrong email or password');
+        alert('email existing');
       }
     }).catch(error => {
       console.log('server error');
@@ -73,7 +62,7 @@ export function LoginForm({history}) {
   }
   return (
       <div>
-          <h1>CUSTOMER LOGIN</h1>
+          <h1>CUSTOMER REGISTER</h1>
           <form method= "post" action="/login">
               <input
                   type="text"
@@ -95,12 +84,22 @@ export function LoginForm({history}) {
                     setPassword(event.target.value);
                   }}                      
               />
-              <input type="submit" value="Login" onClick={onSubmit}/>
+              <input
+                  type="username"
+                  name="username"
+                  id="username"                
+                  value={username}
+                  placeholder="username"
+                  onChange={event => {
+                    setUsername(event.target.value);
+                  }}                      
+              />
+              <input type="submit" value="Register" onClick={onSubmit}/>
+                  
+              
           </form>
-          <a href = "/register">
-            <button>Register</button>
-          </a>
       </div>
       
   );
 }
+

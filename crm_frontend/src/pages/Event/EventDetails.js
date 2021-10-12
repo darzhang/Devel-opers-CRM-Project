@@ -10,8 +10,9 @@ import { CircularProgress } from '@mui/material'
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios'
 
-const EventDetails = () => {
+const EventDetails = () => { 
 
   // const defaultEvent = {
   //   eventName: '',
@@ -31,8 +32,8 @@ const EventDetails = () => {
 
   //Fetch Contacts
   const fetchContact = async () => {
-    const res = await fetch('http://localhost:5000/contact')
-    const data = await res.json()
+    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const data = await res.data
     const returnedData = []
 
     data.map((contact) => returnedData.push({name: contact.contactName, id: contact._id}))
@@ -42,20 +43,37 @@ const EventDetails = () => {
 
   // Fetch one Event
   const fetchOneEvent = async (id) => {
-    const res = await fetch(`http://localhost:5000/event/${id}`)
-    const data = await res.json()
+    const res = await axios.get(`http://localhost:5000/event/${id}`, {withCredentials: true});
+    const data = res.data;
     return data
   }
 
   //Edit existing event
-  const editEvent = async (event) => {
-    const res = await fetch(`http://localhost:5000/event/edit/${id}`, {
-      method:'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(event)
-    })
+  const editEvent = async (event, id) => {
+    // const res = await axios({
+    //   method: "POST",
+    //   data: {
+    //     event
+    //   },
+    //   withCredentials: true,
+    //   url: "http://localhost:5000/event/edit/${id}"
+    // })
+    // const res = await fetch(`http://localhost:5000/event/edit/${id}`, {
+    //   method:'POST',
+    //   headers: {
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(event)
+    // })
+
+
+    const res = await axios.post(
+    `http://localhost:5000/event/edit/${id}`, 
+    event, 
+    {withCredentials: true})
+
+    const data = res.data;
+    console.log(res.status)
 
     if(res.status !== 400){
       Swal.fire({
@@ -97,8 +115,8 @@ const EventDetails = () => {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await fetch(`http://localhost:5000/event/${id}`, {
-          method: 'DELETE',
+        const res = await axios.delete(`http://localhost:5000/event/${id}`, {
+          withCredentials: true
         })
 
         if(res.status !== 400){

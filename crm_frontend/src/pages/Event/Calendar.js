@@ -7,6 +7,7 @@ import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import axios from 'axios'
 
 export default function CalendarPage() {
   
@@ -43,9 +44,8 @@ export default function CalendarPage() {
   /* Get the list of events for the user
    */
   const fetchEvents = async () => {
-    const res = await fetch('http://localhost:5000/event')
-    const data = await res.json()
-
+    const res = await axios.get('http://localhost:5000/event', {withCredentials: true});
+    const data = res.data;
     let eventsList = data;
     for (let i = 0; i < eventsList.length; i++){
       eventsList[i].eventsListID = eventsList[i]._id
@@ -53,9 +53,9 @@ export default function CalendarPage() {
       eventsList[i].start = new Date(eventsList[i].startTime)
       eventsList[i].end = new Date(eventsList[i].endTime)
     }
-
-    return data
-  }
+    return data;
+  };
+    
 
   const history = useHistory();
   let eventID = '';

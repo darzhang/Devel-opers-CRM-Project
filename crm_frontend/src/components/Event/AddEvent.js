@@ -6,6 +6,7 @@ import SuggestionDropDown from './SuggestionDropDown'
 import SuggestionDropDownDisabled from './SuggestionDropDownDisabled'
 import Swal from 'sweetalert2'
 import Button from '@material-ui/core/Button';
+import axios from 'axios'
 
 const AddEvent = ({event, onEdit, readOnly}) => {
   const buttonStyle = { textTransform: "none", width: "108px" };
@@ -33,9 +34,9 @@ const AddEvent = ({event, onEdit, readOnly}) => {
 
   //Fetch Contacts
   const fetchContacts = async () => {
-    const res = await fetch('http://localhost:5000/contact')
-    const data = await res.json()
-    const returnedData = []
+    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const data = await res.data;
+    const returnedData = [];
 
     data.map((contact) => returnedData.push({name: contact.contactName, id: contact._id}))
     

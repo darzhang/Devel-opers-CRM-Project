@@ -5,7 +5,7 @@ const LocalStrategy = require("passport-local").Strategy;
 
 
 passport.serializeUser(function(user, done){
-    done(null, {'id': user._id, 'type': user.type});
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(user, done){
@@ -20,7 +20,8 @@ passport.use('customer-signup', new LocalStrategy({
     passReqToCallback : true },
     function(req, email, password, done){
         process.nextTick( function(){
-            User.findOne({'email': email}, function(err, existingUser){if (err){
+            User.findOne({'email': email}, function(err, existingUser){
+            if (err){
                 console.log(err);
                 return done(err);
             }
@@ -30,9 +31,11 @@ passport.use('customer-signup', new LocalStrategy({
             }
             else {
                 var newUser = new User();
+                console.log(email);
+                console.log(password);
                 newUser.email = email;
                 newUser.password = newUser.generateHash(password);
-                newUser.username = req.body.fullname;
+                newUser.username = req.body.username;
                 console.log(req.body.fullname);
                 newUser.save(function(err){
                     if (err)
@@ -57,12 +60,11 @@ passport.use('customer-login', new LocalStrategy({
             console.log(password)
             User.findOne({'email': email}, function(err, user){if (err){
                 return done(err);
-                console.log("found")
             }
 
             if (user.validPassword(password)){
                 req.session.email = email;
-                console.log(req.session);
+            
                 return done(null, user, req.flash('loginMessage', 'Login succesful'));
             }
             else{

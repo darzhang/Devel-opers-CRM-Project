@@ -43,7 +43,7 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
     const BASE_URL = "http://localhost:5000";
     const url = BASE_URL + "/contact";
     const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = state;
-    axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description })
+    axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description }, {withCredentials:true})
     .then(() => {
       window.location = "/contact";
       handleClose();

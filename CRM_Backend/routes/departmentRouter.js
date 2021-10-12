@@ -16,5 +16,7 @@ departmentRouter.post('/create', departmentController.createOne)
 //POST request to delete a department
 departmentRouter.post('/delete/:name', departmentController.deleteOne)
 
+
+
 // export the router
 module.exports = departmentRouter;

@@ -40,7 +40,7 @@ export default function ContactProfile(props) {
     const getContact = async () => {
       const BASE_URL = "http://localhost:5000";
       const id = props.match.params.id;
-      await axios.get(BASE_URL + "/contact/" + id).then(res => {
+      await axios.get(BASE_URL + "/contact/" + id, {withCredentials: true}).then(res => {
         const data = res.data;
         setValues({
           contactName: data.contactName,
@@ -67,7 +67,7 @@ export default function ContactProfile(props) {
    */
   const getDepartmentName = async (departmentId) => {
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/department").then(res => {
+    await axios.get(BASE_URL + "/department", {withCredentials: true}).then(res => {
       const dep = res.data.find(x => x._id === departmentId);
       const departmentName = dep.departmentName;
       setDepartmentName(departmentName);
@@ -80,7 +80,7 @@ export default function ContactProfile(props) {
    */
   const getOrganisationName = async (organisationId) => {
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/organisation").then(res => {
+    await axios.get(BASE_URL + "/organisation", {withCredentials: true}).then(res => {
       const org = res.data.find(x => x._id === organisationId);
       const organisationName = org.orgName;
       setOrganisationName(organisationName);
@@ -91,7 +91,7 @@ export default function ContactProfile(props) {
    */
   const getDepartmentNames = async () => {
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/department").then(res => {
+    await axios.get(BASE_URL + "/department", {withCredentials: true}).then(res => {
       const departmentNames = res.data.map(x => x.departmentName)
       setDepartmentNameList(departmentNames);
     })
@@ -101,7 +101,7 @@ export default function ContactProfile(props) {
    */
   const getOrganisationNames = async () => {
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/organisation").then(res => {
+    await axios.get(BASE_URL + "/organisation", {withCredentials:true}).then(res => {
       const organisationNames = res.data.map(x => x.orgName)
       setOrganisationNameList(organisationNames);
     })
@@ -123,7 +123,7 @@ export default function ContactProfile(props) {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.delete(BASE_URL + "/contact/" + id).then(() => {
+        await axios.delete(BASE_URL + "/contact/" + id, {withCredentials: true}).then(() => {
           Swal.fire({
             title: "Success!",
             text: "Contact has been successfully deleted!",
@@ -199,7 +199,7 @@ export default function ContactProfile(props) {
     const BASE_URL = "http://localhost:5000";
     const url = BASE_URL + "/contact/edit";
     const _id = props.match.params.id;
-    axios.post(url, { _id, ...values, departmentName, organisationName })
+    axios.post(url, { _id, ...values, departmentName, organisationName }, {withCredentials: true})
     .then(() => {
       Swal.fire({
         title: "Success!",

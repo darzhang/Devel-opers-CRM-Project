@@ -11,8 +11,8 @@ export default function Organisation() {
   useEffect(() => {
     if (contact.length > 0) {
       /*get the organisation list from the database*/
-      fetch("http://localhost:5000/organisation")
-        .then((data) => data.json())
+      axios.get("http://localhost:5000/organisation", {withCredentials: true})
+        .then((data) => data.data)
         .then((data) => {
           const mappedData = data.map(org =>{
             const orgSize = contact.filter((c) => c.organisationId === org._id).length;
@@ -29,7 +29,7 @@ export default function Organisation() {
 
   useEffect(() => {
     const BASE_URL = "http://localhost:5000";
-    axios.get(BASE_URL + "/contact").then(res => {
+    axios.get(BASE_URL + "/contact", {withCredentials:true}).then(res => {
       const list = res.data;
       setContact(list);
     })

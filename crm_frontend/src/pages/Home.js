@@ -34,32 +34,34 @@ export default function Home() {
   const [mouseLeave, setMouseLeave] = useState(true);
   
   // Load data from the Backend when loading the page
+
   useEffect(() => {
     getEvents()
     getContacts()
   }, [])
-
-  /* Get the list of events for the user
-   */
   const getEvents = async () =>{
-    await axios.get("http://localhost:5000/event").then(res => {
+    // const eventsFromBackEnd = await fetchEvents()
+    await axios.get("http://localhost:5000/event", {withCredentials: true}).then(res => {
       const list = res.data;
       const sortedList = list.sort((a, b) => (a.startTime > b.startTime) ? 1 : -1)
       setEvents(sortedList);
-    }).catch((error) => {
-      console.error(error);
-    });
+    }).catch(error => {
+      console.log('server error');
+      console.log(error);
+    })
   }
 
   /* Get the list of contacts for the user
    */
   const getContacts = async () => {
-    await axios.get("http://localhost:5000/contact").then(res => {
+    const BASE_URL = "http://localhost:5000";
+    await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         setContactList(list);
-    }).catch((error) => {
-    console.error(error);
-  });
+    }).catch(error => {
+      console.log('server error');
+      console.log(error);
+    })
   }
 
   // Initial values for dates

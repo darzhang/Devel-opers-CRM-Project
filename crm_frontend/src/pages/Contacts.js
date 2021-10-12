@@ -38,7 +38,7 @@ export default function Contacts() {
     const deps = await getDepartments();
     const orgs = await getOrganisations();
     const BASE_URL = "http://localhost:5000";
-    await axios.get(BASE_URL + "/contact").then(res => {
+    await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
         sortedList.forEach(async (contact) => {
@@ -58,7 +58,7 @@ export default function Contacts() {
    */
   const getDepartments = async () => {
     const BASE_URL = "http://localhost:5000";
-    const res = await axios.get(BASE_URL + "/department")
+    const res = await axios.get(BASE_URL + "/department", {withCredentials: true})
     setDepartmentList(res.data);
     depList = res.data;
     return depList;
@@ -69,7 +69,7 @@ export default function Contacts() {
    */
   const getOrganisations = async () => {
     const BASE_URL = "http://localhost:5000";
-    const res = await axios.get(BASE_URL + "/organisation")
+    const res = await axios.get(BASE_URL + "/organisation", {withCredentials: true})
     orgList = res.data;
     return orgList;
   }

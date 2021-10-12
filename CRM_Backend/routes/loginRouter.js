@@ -1,49 +1,47 @@
 var express = require('express');
+const { session } = require('passport');
 const router = express.Router();
 const passport = require('passport');
 
-router.get('/home', async (req,res) => {
-    try {
-      res.render('home');
-    } catch (err) {
-      console.log(err)
-    } 
-});
-  
 
-router.get('/login', async (req,res) => {
-    try{
-      res.render('login')
-    } catch (err) {
-      res.render(404)
-    }
+
+
+router.post("/login", (req, res, next) => {
+	passport.authenticate("customer-login", (err, user, info) => {
+	  if (err) throw err;
+	  if (!user) res.send(false);
+	  else {
+		req.logIn(user, (err) => {
+		  if (err) throw err;
+		  res.send("Successfully Authenticated");
+		  console.log(req.user);
+		});
+	  }
+	})(req, res, next);
   });
 
-router.post('/login', passport.authenticate('customer-login', {
-successRedirect: '/home',
-failureRedirect: '/login',
-failureFlash: true
-}));
 
-router.get('/register', async (req,res) => {
-    try {
-      res.render('register');
-    } catch (err){
-    res.render(404);
-    }
-});
+  router.post("/register", (req, res, next) => {
+	passport.authenticate("customer-signup", (err, user, info) => {
+	  if (err) throw err;
+	  if (!user) res.send(false);
+	  else {
+		req.logIn(user, (err) => {
+		  if (err) throw err;
+		  res.send("Successfully Authenticated");
+		  console.log(req.user);
+		});
+	  }
+	})(req, res, next);
+  });
 
-router.post('/register', passport.authenticate('customer-signup', {
-    successRedirect: '/home',
-    failureRedirect: '/register',
-    failureFlash: true
-}));
 
 router.post('/logout',function(req,res){
     console.log("logging out..")
     req.logout();
-    req.flash('');
-    res.redirect('back');
+    req.session.destroy();
+    // req.flash('');
+    res.send('succesfully logout');
 })
 
 module.exports = router;

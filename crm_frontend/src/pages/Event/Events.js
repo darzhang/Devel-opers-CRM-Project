@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 // import Button from '../../components/Event/Button'
 import Button from "@material-ui/core/Button";
 import EventDialog from '../../components/Event/EventDialog'
+import axios from 'axios'
+
 
 const Events = () => {
   const timeFormat = "DD/MM/YY, hh:mm a"
@@ -99,29 +101,26 @@ const Events = () => {
 
   //Fetch Contacts
   const fetchContacts = async () => {
-    const res = await fetch('http://localhost:5000/contact')
-    const data = await res.json()
+    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const data = await res.data;
 
     return data
   }
 
   //Fetch Events
   const fetchEvents = async () => {
-    const res = await fetch('http://localhost:5000/event')
-    const data = await res.json()
+    const res = await axios.get('http://localhost:5000/event', {withCredentials: true})
+    const data = await res.data;
 
     return data
   }
 
   //Add new Event
   const addEvent = async (event) => {
-    const res = await fetch('http://localhost:5000/event/', {
-      method:'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(event)
-    })
+    const res = await axios.post(
+      `http://localhost:5000/event`, 
+      event, 
+      {withCredentials: true});
 
     if(res.status !== 400){
       const data = await res.json()
@@ -172,8 +171,8 @@ const Events = () => {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await fetch(`http://localhost:5000/event/${id}`, {
-          method: 'DELETE',
+        const res = await axios.delete(`http://localhost:5000/event/${id}`, {
+          withCredentials: true
         })
 
         if(res.status !== 400){

@@ -16,28 +16,34 @@ import ContactProfile from "./pages/ContactProfile";
 import Events from './pages/Event/Events';
 import EventDetails from './pages/Event/EventDetails';
 import Calendar from './pages/Event/Calendar';
+import {RegisterForm} from './pages/Register';
+import ProtectedRoute from './components/ProtectedRoutes';
 
 function App() {
   
   const [loggedIn, setLoggedIn] = useState(false);
-
   const mainComponent = (
     <div className="App">
       <Router>
-        <SideBar />
         <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/login" component={LoginForm} />
-          <Route exact path="/logout" component={Logout} />
-          <Route exact path="/contact" component={Contacts} />
-          <Route exact path="/organisation" component={Organisation} />
-          <Route exact path="/organisation/:id" component={OrganisationDetail} />
-          <Route exact path="/contact/profile/:id" component={ContactProfile} />
-          <Route exact path="/event/" component={Events} />
-          <Route exact path="/event/:id" component={EventDetails} />
-          <Route exact path="/calendar" component={Calendar} />
+         <Route exact path="/login" component={LoginForm} />
+         <Route exact path="/register" component={RegisterForm} />
+        <div>
+        <SideBar />
+          <Switch>
+            <ProtectedRoute exact path="/">
+              <Home />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/logout" component={Logout} />
+            <ProtectedRoute exact path="/contact" component={Contacts} />
+            <ProtectedRoute exact path="/organisation" component={Organisation} />
+            <ProtectedRoute exact path="/organisation/:id" component={OrganisationDetail} />
+            <ProtectedRoute exact path="/contact/profile/:id" component={ContactProfile} />
+            <ProtectedRoute exact path="/event/" component={Events} />
+            <ProtectedRoute exact path="/event/:id" component={EventDetails} />
+            <ProtectedRoute exact path="/calendar" component={Calendar} />
+          </Switch>
+        </div>  
         </Switch>
       </Router>
     </div>

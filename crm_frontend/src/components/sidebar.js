@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import axios from 'axios';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -122,7 +123,9 @@ export default function SideBar() {
     history.push('/organisation');
   }
   function redirectLogout() {
-    history.push('/');
+    axios.post('http://localhost:5000/logout', {}, {withCredentials: true});
+    sessionStorage.setItem("isAuthenticated", "false")
+    history.push('/login');
   }
   return (
     <div className={classes.root}>

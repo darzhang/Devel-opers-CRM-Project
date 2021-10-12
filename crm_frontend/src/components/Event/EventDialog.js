@@ -11,6 +11,7 @@ import {
 import moment from "moment";
 import SuggestionDropDown from "./SuggestionDropDown";
 import Swal from 'sweetalert2'
+import axios from "axios";
 
 export default function EventDialog({ isOpen, setDialog, onAdd}) {
 
@@ -28,8 +29,8 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
 
   //Fetch Contacts
   const fetchContacts = async () => {
-    const res = await fetch('http://localhost:5000/contact')
-    const data = await res.json()
+    const res = await axios.get('http://localhost:5000/contact', {withCredentials:true})
+    const data = await res.data;
     const returnedData = []
 
     data.map((contact) => returnedData.push({name: contact.contactName, id: contact._id}))

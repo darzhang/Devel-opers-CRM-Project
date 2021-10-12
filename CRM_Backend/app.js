@@ -43,16 +43,22 @@ app.engine('hbs', exphbs({
   }))
 
 app.use(express.json())
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: "http://localhost:3000",
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
 
 app.use(session({
-  secret: "test",
-  resave: true,
-  saveUnitialized: true,
-  expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000)),
+  secret: "testttt",
+  resave: false,
+  saveUnitialized: false,
+  expires: new Date(Date.now() + (1)),
   cookie: { secure: false,
-            httpOnly: false } ,
-  store: MongoDBStore.create({mongoUrl: db})
+            httpOnly: true } ,
+  store: MongoDBStore.create({mongoUrl: db,
+                              dbName: 'PersonalCRM',
+                              autoRemove: 'native'})
 }));
 
 app.use(passport.initialize());
