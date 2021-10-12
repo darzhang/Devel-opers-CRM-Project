@@ -61,6 +61,8 @@ const createEvent = async (req, res) => {
 const editEvent = async (req, res) => {
     try {
         const body = (req.body)
+        console.log(req.params.id);
+        console.log(body);
         const result = await Event.findOneAndUpdate({_id: objectId(req.params.id)}, body, {new:true}); //find the event, and update it with new data 
         if (!result) { // if event is not found in database, returns an error
             res.status(400);

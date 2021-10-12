@@ -49,29 +49,14 @@ const EventDetails = () => {
   }
 
   //Edit existing event
-  const editEvent = async (event, id) => {
-    // const res = await axios({
-    //   method: "POST",
-    //   data: {
-    //     event
-    //   },
-    //   withCredentials: true,
-    //   url: "http://localhost:5000/event/edit/${id}"
-    // })
-    // const res = await fetch(`http://localhost:5000/event/edit/${id}`, {
-    //   method:'POST',
-    //   headers: {
-    //     'Content-type': 'application/json'
-    //   },
-    //   body: JSON.stringify(event)
-    // })
-
-
+  const editEvent = async (event) => {
+    console.log(id)
     const res = await axios.post(
     `http://localhost:5000/event/edit/${id}`, 
     event, 
     {withCredentials: true})
-
+    
+    console.log("test")
     const data = res.data;
     console.log(res.status)
 
