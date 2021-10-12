@@ -36,13 +36,15 @@ passport.use('customer-signup', new LocalStrategy({
                 newUser.email = email;
                 newUser.password = newUser.generateHash(password);
                 newUser.username = req.body.username;
+                req.session.email = email;
+                
                 console.log(req.body.fullname);
-                newUser.save(function(err){
+                newUser.save(function(err, out){
+                    req.session.userId = out.id;
                     if (err)
                         throw(err);
                     return done(null, newUser);
                 });
-                req.session.email = email;
             }
         });
     });
@@ -58,18 +60,27 @@ passport.use('customer-login', new LocalStrategy({
         process.nextTick( function(){
             console.log(email);
             console.log(password)
-            User.findOne({'email': email}, function(err, user){if (err){
+            User.findOne({'email': email}, function(err, user){
+            if (err){
+                
                 return done(err);
             }
-
-            if (user.validPassword(password)){
-                req.session.email = email;
-            
-                return done(null, user, req.flash('loginMessage', 'Login succesful'));
-            }
             else{
-                return done(null, false, req.flash('loginMessage', 'Wrong email or password!'));
-            } 
+                console.log("email found");
+                if (password === null){
+                    return done(null, false, req.flash('loginMessage', 'password is NULL'));
+                }
+                if (user.validPassword(password)){
+                    req.session.email = email;
+                    console.log(user.id)
+                    req.session.userId = user.id;
+                    // console.log(req.session.userId)
+                    return done(null, user, req.flash('loginMessage', 'Login succesful'));
+                }
+                else{
+                    return done(null, false, req.flash('loginMessage', 'Wrong email or password!'));
+                } 
+            }
         });
     });
 }));
