@@ -1,6 +1,7 @@
 // import contact model & nodemailer
 const Events = require('./models/event');
-const Contacts = require('./models/contact')
+const Contacts = require('./models/contact');
+const Users = require('./models/users')
 const nodemailer = require('nodemailer')
 const moment = require('moment')
 const momentTimezone = require('moment-timezone')
@@ -14,7 +15,11 @@ const getParticipants = async (ids) => {
 
 }
 
-
+const getEmail = async (event) => {
+  const userId = event.userId
+  const user = await Users.findOne({_id: userId}).lean()
+  return user.email
+}
 
 const sendNotifications = async() => {
   const today = new Date()
@@ -22,7 +27,7 @@ const sendNotifications = async() => {
   tomorrow.setDate(tomorrow.getDate() + 1)
   const timeFormat = "DD/MM/YY, hh:mm a"
 
-  //create nodemailer transporter
+  //create nodemailer transporter with provided credentials
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -42,9 +47,7 @@ const sendNotifications = async() => {
   if(events.length > 0){
     events.forEach( async (event) => {
       //get the user's Email
-      const emails = ['vhartono@student.unimelb.edu.au', 'darzhang@student.unimelb.edu.au', 
-      'angkajayae@student.unimelb.edu.au', 'llaisina@student.unimelb.edu.au', 'edchen@student.unimelb.edu.au']
-      const email_test = ["darzhang@student.unimelb.edu.au"]
+      const userEmail = await getEmail(event)
   
       //get the name list of the participants
       const participantsList = await getParticipants(event.participants)
@@ -60,10 +63,10 @@ const sendNotifications = async() => {
       `Location: ${event.location}`
 
   
-      //email to the user
+      // email to the user
       const mailOptions = {
         from: "developers.personalcrm@outlook.com",
-        to: email_test,
+        to: userEmail,
         subject: `Personal CRM : Notification for "${event.eventName}"`,
         text: emailText
       }
