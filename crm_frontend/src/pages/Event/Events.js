@@ -25,6 +25,7 @@ const Events = () => {
   const [showAddEvent, setShowAddEvent] = useState(false)
   const [isUpcoming, setIsUpcoming] = useState(true)
   const [refresh, setRefresh] = useState(false)
+  const [isLoading,setIsLoading] = useState(true)
 
   const defaultEvent = {
     eventName: '',
@@ -88,6 +89,7 @@ const Events = () => {
         setEvents(eventsFromBackEnd)
         setPastEvents(pastArray)
         setUpcomingEvents(upcomingArray)
+        setIsLoading(false)
       }
       
     }
@@ -123,7 +125,7 @@ const Events = () => {
       {withCredentials: true});
 
     if(res.status !== 400){
-      const data = await res.json()
+      const data = res.data
       data.id = data._id
       delete data._id
 
@@ -248,7 +250,7 @@ const Events = () => {
   return (
     <div className="Events" style={{marginLeft:"75px"}}>
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
-      {events.length >0 && 
+      {!isLoading && 
         <div style={buttonDivStyle}>
           <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setShowAddEvent(!showAddEvent)}>
             Add Event
@@ -261,8 +263,8 @@ const Events = () => {
       {/* {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>} */}
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
       <div className="listOfEvents">
-        {events.length > 0 ? 
-        (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns} fields={fields}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns} fields={fields}></DataGridComp> )
+        {!isLoading ? 
+        (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )
         : <CircularProgress />}
       </div>
     </div>
