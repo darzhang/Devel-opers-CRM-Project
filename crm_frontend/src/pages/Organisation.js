@@ -66,6 +66,8 @@ export default function Organisation() {
     showDetailColumn
   ];
 
+  const fields = ['orgName', 'size'];
+
   const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
   return (
@@ -74,7 +76,7 @@ export default function Organisation() {
         Organisation List
       </h1>
       <div className="listOfEvents">
-          {organisations.length > 0 ? <DataGridComp events={organisations} columns={columns}></DataGridComp> : <CircularProgress />}
+          {organisations.length > 0 ? <DataGridComp events={organisations} columns={columns} fields={fields}></DataGridComp> : <CircularProgress />}
       </div>
     </div>
   )

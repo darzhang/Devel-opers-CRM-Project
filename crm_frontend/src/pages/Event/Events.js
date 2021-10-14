@@ -245,6 +245,8 @@ const Events = () => {
     deleteColumn
   ];
 
+  const fields = ['eventName', 'startTime', 'endTime', 'location', 'participants'];
+
   return (
     <div className="Events" style={{marginLeft:"75px"}}>
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
@@ -253,7 +255,7 @@ const Events = () => {
           <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setShowAddEvent(!showAddEvent)}>
             Add Event
           </Button>
-          <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setIsUpcoming(!isUpcoming)}>
+          <Button variant="contained" style={{textTransform: "none"}} onClick = {() => setIsUpcoming(!isUpcoming)}>
             {isUpcoming ? 'Show Past Events' : 'Show Current Events'}
           </Button>
         </div>

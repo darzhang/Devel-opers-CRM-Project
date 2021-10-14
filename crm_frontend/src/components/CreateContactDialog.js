@@ -137,6 +137,7 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               name="contactLabel"
               value={state.contactLabel}
               onChange={onChange}
+              required
             />
           </Grid>
 

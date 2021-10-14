@@ -6,7 +6,7 @@ import {
   GridToolbarExport
 } from '@mui/x-data-grid'
 
-function DataGridComp({events, columns}) {
+function DataGridComp({events, columns, fields}) {
   const initialHeaderFooter = 36 + 56 + 54
   const rowHeight = 52
   const [pageSize, setPageSize] = useState(5)
@@ -45,7 +45,7 @@ function DataGridComp({events, columns}) {
           }}
         /> */}
         <GridToolbarFilterButton />
-        <GridToolbarExport />
+        <GridToolbarExport csvOptions={{ fields: fields }} />
       </GridToolbarContainer>
     );
   }
