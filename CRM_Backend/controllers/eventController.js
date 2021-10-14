@@ -6,13 +6,14 @@ const objectId = require('mongodb').ObjectID;
 
 //get all events
 const getAllEvents = async (req, res) => {
-  try {
-      const events = await Event.find().lean();
-      return res.send(events);
-  } catch (err) { // error occured
-      res.status(400);
-      return res.send("Database query failed");
-  }
+    try {
+        //get events related to the userId from the req.session
+        const events = await Event.find({userId: objectId(req.session.userId)}).lean();
+        return res.send(events);
+    } catch (err) { // error occured
+        res.status(400);
+        return res.send("Database query failed");
+    }
 };
 
 // find one event by their id
@@ -48,6 +49,7 @@ const getSpecificEvent = async (req, res) => {
 // create new Event (POST)
 const createEvent = async (req, res) => {
     const event = new Event(req.body); //create new event from POST body
+    event.userId = objectId(req.session.userId)
     try { 
         let result = await event.save(); // save the new event to the database
         return res.send(result);
@@ -61,8 +63,6 @@ const createEvent = async (req, res) => {
 const editEvent = async (req, res) => {
     try {
         const body = (req.body)
-        console.log(req.params.id);
-        console.log(body);
         const result = await Event.findOneAndUpdate({_id: objectId(req.params.id)}, body, {new:true}); //find the event, and update it with new data 
         if (!result) { // if event is not found in database, returns an error
             res.status(400);

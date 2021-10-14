@@ -115,6 +115,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
           <div className='form-control'>
             <TextField
               fullWidth
+              multiline
               type="text"
               label="Event Name" 
               variant="outlined"
@@ -158,6 +159,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
           <div className='form-control'>
             <TextField
               fullWidth
+              multiline
               type="text"
               label="Description" 
               variant="outlined"
@@ -170,6 +172,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
           <div className='form-control'>
             <TextField
               fullWidth
+              multiline
               type="text"
               label="Location" 
               variant="outlined"
