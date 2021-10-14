@@ -243,6 +243,8 @@ const Events = () => {
     deleteColumn
   ];
 
+  const fields = ['eventName', 'startTime', 'endTime', 'location', 'participants'];
+
   return (
     <div className="Events" style={{marginLeft:"75px"}}>
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
@@ -251,7 +253,7 @@ const Events = () => {
           <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setShowAddEvent(!showAddEvent)}>
             Add Event
           </Button>
-          <Button variant="contained" style={{textTransform: "none", marginRight: "1%"}} onClick = {() => setIsUpcoming(!isUpcoming)}>
+          <Button variant="contained" style={{textTransform: "none"}} onClick = {() => setIsUpcoming(!isUpcoming)}>
             {isUpcoming ? 'Show Past Events' : 'Show Current Events'}
           </Button>
         </div>
@@ -260,7 +262,7 @@ const Events = () => {
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
       <div className="listOfEvents">
         {events.length > 0 ? 
-        (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )
+        (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns} fields={fields}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns} fields={fields}></DataGridComp> )
         : <CircularProgress />}
       </div>
     </div>

@@ -37,8 +37,6 @@ const sendNotifications = async() => {
     $lt: tomorrow
   }, isEmailed: 'false'}).lean()
 
-  console.log(events)
-
   if(events.length > 0){
     events.forEach( async (event) => {
       //get the user's Email
