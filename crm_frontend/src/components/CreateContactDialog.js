@@ -138,6 +138,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
               value={state.contactLabel}
               onChange={onChange}
               required
+              error={state.label === "" && submitted === true}
+              helperText={state.label === "" && submitted === true ? 'Empty field!' : ' '}
             />
           </Grid>
 
