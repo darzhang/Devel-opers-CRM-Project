@@ -153,7 +153,8 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
           <SuggestionDropDown 
             participants={participants} 
             items={contacts} 
-            onChange={(value) => setParticipants(value)}/>
+            onChange={(value) => setParticipants(value)}
+            size = "medium"/>
           </div>
 
           <div className='form-control'>

@@ -132,7 +132,7 @@ const AddEvent = ({event, onEdit, readOnly}) => {
                 InputProps={{readOnly: (readOnly ? true : false)}}
               />
             </div>)
-          : <SuggestionDropDown participants={participants} items={contacts} onChange={(value) => setParticipants(value)}/>
+          : <SuggestionDropDown participants={participants} items={contacts} onChange={(value) => setParticipants(value)} size="small"/>
         }
       </div>
       <div className='form-control'>

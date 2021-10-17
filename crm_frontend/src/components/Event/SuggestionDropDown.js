@@ -2,7 +2,7 @@ import React from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import { TextField } from '@mui/material'
 
-function SuggestionDropDown({participants, items, onChange}) {
+function SuggestionDropDown({participants, items, onChange, size}) {
   return (
     <div>
       <Autocomplete
@@ -18,7 +18,7 @@ function SuggestionDropDown({participants, items, onChange}) {
         renderInput={(params) => (
           <TextField
             {...params}
-            size="small"
+            size={size}
             label="Participants"
             // placeholder="Add Participant"
             // InputLabelProps={{
