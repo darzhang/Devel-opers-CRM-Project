@@ -47,6 +47,25 @@ code {
   margin-bottom: 40px;
 }
 
+.login-form
+{
+justify-content: center;
+min-height: 90vh;
+}
+
+.button-block{
+  width: 100%;
+  font-size: "40px";
+}
+
+.login-background
+{
+justify-content: center;
+min-height: 40vh;
+min-width: 50vh;
+padding: 50px;
+}
+
 .form-control {
   margin: auto;
   max-width: 400px;

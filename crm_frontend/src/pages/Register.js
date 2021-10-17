@@ -1,5 +1,15 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import {
+  Button,
+  TextField,
+  Grid,
+  Paper,
+  AppBar,
+  Typography,
+  Toolbar,
+  Link,
+  } from "@material-ui/core";
 
 // import { loginUser } from "../api";
 import { withRouter } from "react-router-dom";
@@ -61,44 +71,108 @@ export function RegisterForm({history}) {
     
   }
   return (
-      <div>
-          <h1>CUSTOMER REGISTER</h1>
+    <div>
+    <AppBar position="static" alignitems="center" color="primary">
+      <Toolbar>
+        <Grid container justify="center" wrap="wrap">
+          <Grid item>
+            <Typography variant="h6">DEVELOPERS CRM</Typography>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+    <Grid container spacing={5} justify="center" direction="row">
+      <Grid item>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          spacing={2}
+          className="login-form"
+        >
+        <Paper
+          variant="elevation"
+          elevation={2}
+          className="login-background"
+        >
+        <Grid item>
+          <Typography component="h1" variant="h3">
+            Register
+          </Typography>
+          <br />
+        </Grid>
+        <Grid item>
           <form method= "post" action="/login">
-              <input
+            <Grid container direction="column" spacing={4}>
+              <Grid item>
+                <TextField
                   type="text"
+                  placeholder="Email"
+                  fullWidth
                   name="email"
-                  id="email"                
-                  value={email}
-                  placeholder="email"  
+                  id = "email"
+                  variant="outlined"
                   onChange={event => {
                     setEmail(event.target.value);
-                  }}                  
-              />
-              <input
+                  }}   
+                  required
+                  autoFocus
+                />
+              </Grid>
+              <Grid item>
+                <TextField
                   type="password"
+                  id = "password"
+                  placeholder="Password"
+                  fullWidth
                   name="password"
-                  id="password"                
-                  value={password}
-                  placeholder="************"
+                  variant="outlined"
                   onChange={event => {
                     setPassword(event.target.value);
-                  }}                      
-              />
-              <input
+                  }} 
+                  required
+                />
+              </Grid>
+              <Grid item>
+                <TextField
                   type="username"
+                  id = "username"
+                  placeholder="Name"
+                  fullWidth
                   name="username"
-                  id="username"                
-                  value={username}
-                  placeholder="username"
+                  variant="outlined"
                   onChange={event => {
                     setUsername(event.target.value);
-                  }}                      
-              />
-              <input type="submit" value="Register" onClick={onSubmit}/>
-                  
-              
+                  }}
+                  required
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className="button-block"
+                onClick={onSubmit}
+                >
+                  Submit
+                </Button>
+                <br />
+                <br />
+              </Grid>
+            </Grid>
           </form>
-      </div>
+        </Grid>
+        <Grid item>
+          <Link href="/login" variant="h6">
+          Have an account? Login here.
+          </Link>
+        </Grid>
+        </Paper>
+        </Grid>
+      </Grid>
+    </Grid>
+  </div>
       
   );
 }
