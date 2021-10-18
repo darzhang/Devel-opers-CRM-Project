@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publishToHeroku": "cd ../ && git subtree push --prefix CRM_Backend heroku-developer-crm-backend master || true"
   },
   "author": "DEVEL-opers",
   "license": "ISC",
