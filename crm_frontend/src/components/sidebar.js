@@ -108,7 +108,7 @@ export default function SideBar() {
     history.push('/');
   }
   function redirectProfile() {
-    history.push('/');
+    history.push('/profile');
   }
   function redirectContact() {
     history.push('/contact');
