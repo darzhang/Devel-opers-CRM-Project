@@ -34,7 +34,7 @@ export default function CreateContact ({props}) {
   // handle submitting the data to the backend
   const onSubmit = (e) => {
     e.preventDefault();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const url = BASE_URL + "/contact";
     const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = this.state;
     axios.post(url, {phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, descriptionCredentials: true}, {withCredentials: true})

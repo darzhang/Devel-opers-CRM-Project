@@ -32,7 +32,7 @@ const EventDetails = () => {
 
   //Fetch Contacts
   const fetchContact = async () => {
-    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/contact', {withCredentials: true})
     const data = await res.data
     const returnedData = []
 
@@ -43,7 +43,7 @@ const EventDetails = () => {
 
   // Fetch one Event
   const fetchOneEvent = async (id) => {
-    const res = await axios.get(`http://localhost:5000/event/${id}`, {withCredentials: true});
+    const res = await axios.get(`https://developer-crm-backend.herokuapp.com/event/${id}`, {withCredentials: true});
     const data = res.data;
     return data
   }
@@ -52,7 +52,7 @@ const EventDetails = () => {
   const editEvent = async (event) => {
     console.log(id)
     const res = await axios.post(
-    `http://localhost:5000/event/edit/${id}`, 
+    `https://developer-crm-backend.herokuapp.com/event/edit/${id}`, 
     event, 
     {withCredentials: true})
     
@@ -100,7 +100,7 @@ const EventDetails = () => {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axios.delete(`http://localhost:5000/event/${id}`, {
+        const res = await axios.delete(`https://developer-crm-backend.herokuapp.com/event/${id}`, {
           withCredentials: true
         })
 

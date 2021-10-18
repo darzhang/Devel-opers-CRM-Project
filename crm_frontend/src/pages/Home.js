@@ -41,7 +41,7 @@ export default function Home() {
   }, [])
   const getEvents = async () =>{
     // const eventsFromBackEnd = await fetchEvents()
-    await axios.get("http://localhost:5000/event", {withCredentials: true}).then(res => {
+    await axios.get("https://developer-crm-backend.herokuapp.com/event", {withCredentials: true}).then(res => {
       const list = res.data;
       const sortedList = list.sort((a, b) => (a.startTime > b.startTime) ? 1 : -1)
       setEvents(sortedList);
@@ -54,7 +54,7 @@ export default function Home() {
   /* Get the list of contacts for the user
    */
   const getContacts = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         setContactList(list);

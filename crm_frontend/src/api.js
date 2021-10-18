@@ -2,7 +2,7 @@
 // for other purposes, this app using Fetch API -- you should switch others to Axios
 // if you want to try as an exercise
 import axios from 'axios';
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://developer-crm-frontend.herokuapp.com/";
 
 // Axios interceptors are functions that Axios calls for every request
 // We are simply adding out token to every request that we send to the

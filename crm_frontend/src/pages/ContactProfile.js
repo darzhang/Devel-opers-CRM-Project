@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Autocomplete from '@mui/material/Autocomplete';
 import Swal from 'sweetalert2'
 import CircularProgress from '@mui/material/CircularProgress';
@@ -38,7 +37,7 @@ export default function ContactProfile(props) {
   useEffect(() => {
     // Get contact based on the id
     const getContact = async () => {
-      const BASE_URL = "http://localhost:5000";
+      const BASE_URL = "https://developer-crm-backend.herokuapp.com";
       const id = props.match.params.id;
       await axios.get(BASE_URL + "/contact/" + id, {withCredentials: true}).then(res => {
         const data = res.data;
@@ -66,7 +65,7 @@ export default function ContactProfile(props) {
    * @param departmentId The department ID of the contact
    */
   const getDepartmentName = async (departmentId) => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/department", {withCredentials: true}).then(res => {
       const dep = res.data.find(x => x._id === departmentId);
       const departmentName = dep.departmentName;
@@ -79,7 +78,7 @@ export default function ContactProfile(props) {
    * @param organisationId The organisation ID of the contact
    */
   const getOrganisationName = async (organisationId) => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/organisation", {withCredentials: true}).then(res => {
       const org = res.data.find(x => x._id === organisationId);
       const organisationName = org.orgName;
@@ -90,7 +89,7 @@ export default function ContactProfile(props) {
   /* Get list of department names from the Backend
    */
   const getDepartmentNames = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/department", {withCredentials: true}).then(res => {
       const departmentNames = res.data.map(x => x.departmentName)
       setDepartmentNameList(departmentNames);
@@ -100,15 +99,17 @@ export default function ContactProfile(props) {
   /* Get list of organisation names from the Backend
    */
   const getOrganisationNames = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/organisation", {withCredentials:true}).then(res => {
       const organisationNames = res.data.map(x => x.orgName)
       setOrganisationNameList(organisationNames);
     })
   }
 
+  /* Delete the contact
+  */
   const deleteContact = () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const id = props.match.params.id;
     Swal.fire({
       title: "Warning!",
@@ -196,7 +197,7 @@ export default function ContactProfile(props) {
    */
   const onSubmit = (e) => {
     e.preventDefault();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const url = BASE_URL + "/contact/edit";
     const _id = props.match.params.id;
     axios.post(url, { _id, ...values, departmentName, organisationName }, {withCredentials: true})
@@ -237,16 +238,6 @@ export default function ContactProfile(props) {
       </div>}
       {!isLoading &&
       <div>
-        {/* {showEdit &&
-        <div style={deleteDivStyle}>
-          <Button variant="contained" color="secondary" style={buttonStyle} onClick={deleteContact}><DeleteIcon />&nbsp;Delete&nbsp;</Button>
-        </div>
-        } */}
-        {/* {!showEdit &&
-        <div style={cancelDivStyle} onClick={toggleEdit}>
-          <Button variant="contained" style={buttonStyle} onClick={toggleEdit}>Cancel</Button>
-        </div>
-        } */}
         {showEdit &&
         <div style={profileStyle}>
           <Profile state={values} departmentName={departmentName} organisationName={organisationName} />
@@ -256,7 +247,6 @@ export default function ContactProfile(props) {
           <h1>Edit Contact</h1>
           <form onSubmit={onSubmit}>
             <div>
-              {/* <div style={labelStyle}>Name <span style={{color: "red"}}>*</span></div> */}
               <TextField
                 label="Name"
                 name="contactName"
@@ -307,7 +297,6 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              {/* <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div> */}
               <TextField
                 label="Email"
                 name="email"
@@ -321,7 +310,6 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              {/* <div style={labelStyle}>Label <span style={{color: "red"}}>*</span></div> */}
               <TextField
                 label="Label"
                 name="contactLabel"
@@ -335,7 +323,6 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              {/* <div style={labelStyle}>Department Name <span style={{color: "red"}}>*</span></div> */}
               <Autocomplete 
                 freeSolo
                 options={departmentNameList}
@@ -360,7 +347,6 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              {/* <div style={labelStyle}>Organisation Name <span style={{color: "red"}}>*</span></div> */}
               <Autocomplete 
                 freeSolo
                 options={organisationNameList}
@@ -385,7 +371,6 @@ export default function ContactProfile(props) {
               />
             </div><br />
             <div>
-              {/* <div style={labelStyle}>Description</div> */}
               <TextField
                 label="Description"
                 name="description"
@@ -423,7 +408,6 @@ export default function ContactProfile(props) {
  * @param props Data passed on from a parent component
  */
 function Profile(props) {
-  // const labelStyle = { textAlign: "left", marginLeft: "12%" };
   const textFieldStyle = { minWidth: "400px" };
   return (
     <div>
@@ -471,7 +455,6 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        {/* <div style={labelStyle}>Email</div> */}
         <TextField
           label="Email"
           type="text"
@@ -486,7 +469,6 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        {/* <div style={labelStyle}>Label</div> */}
         <TextField
           label="Label"
           type="text"
@@ -501,7 +483,6 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        {/* <div style={labelStyle}>Department</div> */}
         <TextField
           label="Department"
           type="text"
@@ -516,7 +497,6 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        {/* <div style={labelStyle}>Organisation</div> */}
         <TextField
           label="Organisation"
           type="text"
@@ -531,7 +511,6 @@ function Profile(props) {
         />
       </div><br />
       <div>
-        {/* <div style={labelStyle}>Description</div> */}
         <TextField
           label="Description"
           type="text"

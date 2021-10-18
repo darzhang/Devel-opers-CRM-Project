@@ -14,10 +14,6 @@ Toolbar,
 Link,
 } from "@material-ui/core";
 
-
-
-
-
 // component to Logout user
 export function Logout() {
   
@@ -63,7 +59,7 @@ export function LoginForm({history}) {
         password: password
       },
       withCredentials: true,
-      url: "http://localhost:5000/login"
+      url: "https://developer-crm-backend.herokuapp.com/login"
     }).then((response) => {
       console.log(response)
       if (response.data){
@@ -112,7 +108,7 @@ export function LoginForm({history}) {
             </Typography>
             <br /> 
           </Grid>
-          <Grid item>
+          <Grid item style={{marginTop: "10%"}}>
             <form method= "post" action="/login">
               <Grid container direction="column" spacing={4}>
                 <Grid item>
@@ -151,6 +147,7 @@ export function LoginForm({history}) {
                     type="submit"
                     className="button-block"
                     onClick={onSubmit}
+                    style={{textTransform: "none"}}
                   >
                     Submit
                   </Button>
@@ -162,13 +159,13 @@ export function LoginForm({history}) {
             </form>
           </Grid>
           <Grid item>
-            <Link href="#" variant="h6">
+            <Link href="#" style={{fontSize: "16px"}}>
             Forgot Password?
             </Link>
             <br />
           </Grid>
           <Grid item>
-            <Link href="/register" variant="h6">
+            <Link href="/register" style={{fontSize: "16px"}}>
             Don't have an account? Register here.
             </Link>
           </Grid>

@@ -44,7 +44,7 @@ export default function CalendarPage() {
   /* Get the list of events for the user
    */
   const fetchEvents = async () => {
-    const res = await axios.get('http://localhost:5000/event', {withCredentials: true});
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/event', {withCredentials: true});
     const data = res.data;
     let eventsList = data;
     for (let i = 0; i < eventsList.length; i++){

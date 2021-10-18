@@ -52,7 +52,7 @@ export function RegisterForm({history}) {
         password: password
       },
       withCredentials: true,
-      url: "http://localhost:5000/register"
+      url: "https://developer-crm-backend.herokuapp.com/register"
     }).then((response) => {
       if (response.data){
         console.log('successful login');
