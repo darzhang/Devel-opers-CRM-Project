@@ -15,7 +15,8 @@ import Button from "@material-ui/core/Button";
 import EventDialog from '../../components/Event/EventDialog'
 import axios from 'axios'
 
-
+/* Display an event list page
+ */
 const Events = () => {
   const timeFormat = "DD/MM/YY, hh:mm a"
   const buttonDivStyle = { textAlign: "right", marginRight: "2%", marginBottom: "10px" };
@@ -38,6 +39,12 @@ const Events = () => {
     dateAdded: new Date()
   }
 
+  /* Compare two dates 
+   *
+   * @param first First date
+   * @param second Second date
+   * @return integer value of the comparison
+   */
   const compareDate = (first, second) => {
     if(first.startTime < second.startTime){
       return -1
@@ -48,6 +55,7 @@ const Events = () => {
     }
   }
 
+  // fetch list of contacts and events and preprocess some data to be compatible with the data grid component
   useEffect(() => {
     let mounted = true
     const getEvents = async () =>{
@@ -101,7 +109,8 @@ const Events = () => {
     }
   }, [refresh])
 
-  //Fetch Contacts
+  /* Fetch all contact list from the backend
+   */
   const fetchContacts = async () => {
     const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
     const data = await res.data;
@@ -109,7 +118,8 @@ const Events = () => {
     return data
   }
 
-  //Fetch Events
+  /* Fetch all event list from the backend
+   */
   const fetchEvents = async () => {
     const res = await axios.get('http://localhost:5000/event', {withCredentials: true})
     const data = await res.data;
@@ -117,7 +127,10 @@ const Events = () => {
     return data
   }
 
-  //Add new Event
+  /* send new event based on the provided event object to the backend
+   *
+   * @param event Newly created event object
+   */
   const addEvent = async (event) => {
     const res = await axios.post(
       `http://localhost:5000/event`, 
@@ -157,7 +170,12 @@ const Events = () => {
     
   }
 
-  //Delete Event
+  /* Delete specific event with alert prior to the deletion of the event
+   *
+   * @param id Event ID of the deleted event
+   * @param name Event name to be shown on the alert of the event deletion
+   * @return integer value of the comparison
+   */
   const deleteEvent = async (id, name) => {
 
     Swal.fire({

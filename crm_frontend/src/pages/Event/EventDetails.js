@@ -12,6 +12,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios'
 
+/* Display an event detail page and can be switched to an edit event page
+ */
 const EventDetails = () => { 
 
   // const defaultEvent = {
@@ -30,7 +32,8 @@ const EventDetails = () => {
   const [edit, setEdit] = useState(false)
   const [refresh, setRefresh] = useState(false)
 
-  //Fetch Contacts
+  /* Fetch all the contact list from backend
+   */
   const fetchContact = async () => {
     const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
     const data = await res.data
@@ -41,14 +44,20 @@ const EventDetails = () => {
     return returnedData
   }
 
-  // Fetch one Event
+  /* Fetch a specific event object based on the id of the event object
+   *
+   * @param id ID of the specific one event
+   */
   const fetchOneEvent = async (id) => {
     const res = await axios.get(`http://localhost:5000/event/${id}`, {withCredentials: true});
     const data = res.data;
     return data
   }
 
-  //Edit existing event
+  /* Send the newly edited event object to the backend to be saved
+   *
+   * @param event Event object to be sent to the backend
+   */
   const editEvent = async (event) => {
     console.log(id)
     const res = await axios.post(
@@ -84,7 +93,12 @@ const EventDetails = () => {
       });
     }
   }
-  //Delete Event
+  
+  /* Delete event from the backend with a prior alert before confirming the deletion of the event
+   *
+   * @param id Event ID of the deleted event
+   * @param name The name of the event to be shown on the alert
+   */
   const deleteEvent = async (id, name) => {
 
     Swal.fire({
@@ -129,7 +143,7 @@ const EventDetails = () => {
     })
   }
 
-  // Re render page when the id in the params change
+  // Re render page when the refresh and id variable changed while getting the event and contact list from backend
   useEffect(() => {
     let mounted = true
     const getEvent = async () => {
