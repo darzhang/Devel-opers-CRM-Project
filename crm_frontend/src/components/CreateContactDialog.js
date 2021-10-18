@@ -47,7 +47,14 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
     .then(() => {
       window.location = "/contact";
       handleClose();
-      alert("success created contact");
+      Swal.fire({
+        title: "Successful",
+        text: "Contact has been successfully created!",
+        icon: "success",
+        showClass: {
+          icon: ''
+        }
+      })
     });
   };
 
