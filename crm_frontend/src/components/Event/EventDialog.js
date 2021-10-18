@@ -13,6 +13,13 @@ import SuggestionDropDown from "./SuggestionDropDown";
 import Swal from 'sweetalert2'
 import axios from "axios";
 
+
+/* Create a dialog for creating new event
+ *
+ * @param isOpen Boolean value of whether the dialog is open or not
+ * @param setDialog Function to set the the dialog open or close
+ * @param onAdd Function to handle the process of add event
+ */
 export default function EventDialog({ isOpen, setDialog, onAdd}) {
 
   const initialState = {
@@ -27,7 +34,8 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
   const [contacts, setContacts] = useState([])
   const [participants, setParticipants] = useState([])
 
-  //Fetch Contacts
+  /* Fetch contact list of the logged in user
+   */
   const fetchContacts = async () => {
     const res = await axios.get('https://developer-crm-backend.herokuapp.com/contact', {withCredentials:true})
     const data = await res.data;
@@ -38,7 +46,10 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     return returnedData
   }
 
-  // handle the change for the states
+  /* Handle any changes to the input text fields
+   *
+   * @param e Event
+   */
   const onChange = (e) => {
     setState({
       ...state,
@@ -46,6 +57,8 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     });
   };
 
+  /* Handle the closure of the event dialog
+   */
   const handleClose = () => {
     setDialog(false);
     setState(initialState);
@@ -53,7 +66,10 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     setContacts([])
   };
 
-  // handle submitting the data to the backend
+  /* Handle saving the changes to text field and sending it to the Backend
+   *
+   * @param e Event
+   */
   const onSubmit = (e) => {
     e.preventDefault();
     const dateAdded = new Date()
@@ -89,6 +105,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     
   };
 
+  // Load contact from backend when the dialog loads
   useEffect(() => {
     let mounted = true
     const getContacts = async () =>{

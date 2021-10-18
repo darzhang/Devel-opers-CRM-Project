@@ -6,6 +6,12 @@ import {
   GridToolbarExport
 } from '@mui/x-data-grid'
 
+/* Create a data grid component (table) to show list of objects
+ *
+ * @param events The list of objects to be shown on the data grid
+ * @param columns The list of columns header for each object's field
+ * @param fields The fields included in the exported csv file
+ */
 function DataGridComp({events, columns, fields}) {
   const initialHeaderFooter = 36 + 56 + 54
   const rowHeight = 52
