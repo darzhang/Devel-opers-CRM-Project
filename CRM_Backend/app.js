@@ -101,8 +101,8 @@ app.get('/', (req, res) => {
 })
 
 //Schedule the email notification for events
-// const notificationScheduler = require('./notificationScheduler')
-// const job = schedule.scheduleJob('*/15 * * * * *', notificationScheduler.sendNotifications);
+const notificationScheduler = require('./notificationScheduler')
+const job = schedule.scheduleJob('*/5 * * * * *', notificationScheduler.sendNotifications);
 
 
 module.exports = app
