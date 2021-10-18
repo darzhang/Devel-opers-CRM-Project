@@ -22,7 +22,7 @@ import { withRouter } from "react-router-dom";
 export function RegisterForm({history}) {
 
   if (sessionStorage.getItem("isAuthenticated") === "true"){
-    history.push('./')
+    history.push('./login')
   }
   // state hook functions   
   const [email, setEmail] = useState("");
