@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import { LoginForm, Logout  } from "./pages/Users";
 import Contacts from "./pages/Contacts";
 import ContactProfile from "./pages/ContactProfile";
+import ProfilePage from "./pages/ProfilePage";
 import Events from './pages/Event/Events';
 import EventDetails from './pages/Event/EventDetails';
 import Calendar from './pages/Event/Calendar';
@@ -39,6 +40,7 @@ function App() {
             <ProtectedRoute exact path="/organisation" component={Organisation} />
             <ProtectedRoute exact path="/organisation/:id" component={OrganisationDetail} />
             <ProtectedRoute exact path="/contact/profile/:id" component={ContactProfile} />
+            <ProtectedRoute exact path="/profile" component={ProfilePage} />
             <ProtectedRoute exact path="/event/" component={Events} />
             <ProtectedRoute exact path="/event/:id" component={EventDetails} />
             <ProtectedRoute exact path="/calendar" component={Calendar} />

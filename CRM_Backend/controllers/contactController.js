@@ -1,5 +1,6 @@
 // import contact model
 const Contact = require('../models/contact');
+const User = require('../models/users');
 const Department = require('../models/department');
 const Organisation = require('../models/organisation');
 
@@ -30,6 +31,23 @@ const getOneContact = async (req, res) => {
         res.status(400);
         return res.send("Database query failed");
     }
+};
+
+const getOneProfile = async (req, res) => {
+    try {
+        console.log(req.body)
+        const oneContact = await User.findById({"_id": req.session.userId}).lean();
+        if (oneContact === null) {  // no contact found in database
+            res.status(404);
+            return res.send("Contact not found");
+        }
+        console.log(oneContact)
+        return res.send(oneContact);
+    } catch (err) { // error occured
+        res.status(400);
+        return res.send("Database query failed");
+    }
+
 };
 
 // add a contact (POST)
@@ -158,5 +176,5 @@ const deleteContact = async (req, res) => {
 };
 
 module.exports = {
-    getOneContact, getAllContacts, createContact, editContact, deleteContact
+    getOneContact, getAllContacts, createContact, editContact, deleteContact, getOneProfile
 };
