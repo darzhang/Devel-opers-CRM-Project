@@ -10,7 +10,8 @@ const objectId = require('mongodb').ObjectID;
 const getAllContacts = async (req, res) => {
     try {
         console.log(req.session.userId);
-        const contacts = await Contact.find({'userId': req.session.userId}).lean();
+        // const contacts = await Contact.find({'userId': req.session.userId}).lean();
+        const contacts = await Contact.find({'userId': objectId('6123be502afc875770f07ef9')}).lean();
         return res.send(contacts);
     } catch (err) { // error occured
         res.status(400);
@@ -73,7 +74,8 @@ const createContact = async (req, res) => {
         organisationId: organisationId,
         description: description,
         dateCreated: new Date(),
-        userId: req.session.userId
+        // userId: req.session.userId
+        userId: objectId('6123be502afc875770f07ef9')
     }
     // create a new contact based on the info
     const contact = new Contact(contactInfo);
