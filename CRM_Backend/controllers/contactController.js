@@ -128,7 +128,8 @@ const editContact = async (req, res) => {
         organisationId: organisationId,
         description: description,
         dateCreated: new Date(),
-        userId: req.session.userId
+        // userId: req.session.userId
+        userId: objectId('6123be502afc875770f07ef9')
     }
 
     try {
