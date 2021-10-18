@@ -43,7 +43,12 @@ app.engine('hbs', exphbs({
   }))
 
 app.use(express.json())
-app.use(cors());
+app.options('*', cors());
+app.use(cors({
+  credentials: true,
+  origin: "https://developer-crm-backend.herokuapp.com",
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
 
 app.use(session({
   secret: "testttt",
