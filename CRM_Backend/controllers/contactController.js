@@ -9,6 +9,7 @@ const objectId = require('mongodb').ObjectID;
 // get all contacts
 const getAllContacts = async (req, res) => {
     try {
+        console.log(req.session.userId);
         const contacts = await Contact.find({'userId': req.session.userId}).lean();
         return res.send(contacts);
     } catch (err) { // error occured
