@@ -8,7 +8,8 @@ const objectId = require('mongodb').ObjectID;
 const getAllEvents = async (req, res) => {
     try {
         //get events related to the userId from the req.session
-        const events = await Event.find({userId: objectId(req.session.userId)}).lean();
+        // const events = await Event.find({userId: objectId(req.session.userId)}).lean();
+        const events = await Event.find({userId: objectId('6123be502afc875770f07ef9')}).lean();
         return res.send(events);
     } catch (err) { // error occured
         res.status(400);
@@ -49,7 +50,8 @@ const getSpecificEvent = async (req, res) => {
 // create new Event (POST)
 const createEvent = async (req, res) => {
     const event = new Event(req.body); //create new event from POST body
-    event.userId = objectId(req.session.userId)
+    // event.userId = objectId(req.session.userId)
+    event.userId = objectId('6123be502afc875770f07ef9')
     try { 
         let result = await event.save(); // save the new event to the database
         return res.send(result);
