@@ -41,7 +41,7 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
   const onSubmit = (e) => {
     setSubmitted(true);
     e.preventDefault();
-    const BASE_URL = "https://developer-crm-backend.herokuapp.com/";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const url = BASE_URL + "/contact";
     const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = state;
     axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description }, {withCredentials:true})

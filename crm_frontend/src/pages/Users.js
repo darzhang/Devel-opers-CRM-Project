@@ -58,9 +58,6 @@ export function LoginForm({history}) {
         email: email,
         password: password
       },
-      headers: {
-        "Access-Control-Allow-Origin": "*"
-      },
       withCredentials: true,
       url: "https://developer-crm-backend.herokuapp.com/login"
     }).then((response) => {
