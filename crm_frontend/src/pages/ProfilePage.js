@@ -38,7 +38,7 @@ export default function ContactProfile(props) {
   useEffect(() => {
     // Get contact based on the id
     const getContact = async () => {
-      const BASE_URL = "http://localhost:5000";
+      const BASE_URL = "https://developer-crm-backend.herokuapp.com";
       const id = props.match.params.id;
       await axios.get(BASE_URL + "/contact/" + id, {withCredentials: true}).then(res => {
         const data = res.data;
@@ -66,7 +66,7 @@ export default function ContactProfile(props) {
    * @param departmentId The department ID of the contact
    */
   const getDepartmentName = async (departmentId) => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/department", {withCredentials: true}).then(res => {
       const dep = res.data.find(x => x._id === departmentId);
       const departmentName = dep.departmentName;
@@ -79,7 +79,7 @@ export default function ContactProfile(props) {
    * @param organisationId The organisation ID of the contact
    */
   const getOrganisationName = async (organisationId) => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/organisation", {withCredentials: true}).then(res => {
       const org = res.data.find(x => x._id === organisationId);
       const organisationName = org.orgName;
@@ -90,7 +90,7 @@ export default function ContactProfile(props) {
   /* Get list of department names from the Backend
    */
   const getDepartmentNames = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/department", {withCredentials: true}).then(res => {
       const departmentNames = res.data.map(x => x.departmentName)
       setDepartmentNameList(departmentNames);
@@ -100,7 +100,7 @@ export default function ContactProfile(props) {
   /* Get list of organisation names from the Backend
    */
   const getOrganisationNames = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/organisation", {withCredentials:true}).then(res => {
       const organisationNames = res.data.map(x => x.orgName)
       setOrganisationNameList(organisationNames);
@@ -108,7 +108,7 @@ export default function ContactProfile(props) {
   }
 
   const deleteContact = () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const id = props.match.params.id;
     Swal.fire({
       title: "Warning!",
@@ -196,7 +196,7 @@ export default function ContactProfile(props) {
    */
   const onSubmit = (e) => {
     e.preventDefault();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const url = BASE_URL + "/contact/edit";
     const _id = props.match.params.id;
     axios.post(url, { _id, ...values, departmentName, organisationName }, {withCredentials: true})

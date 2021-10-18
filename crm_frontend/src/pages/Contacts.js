@@ -23,7 +23,7 @@ export default function Contacts() {
   const getContacts = async () => {
     const deps = await getDepartments();
     const orgs = await getOrganisations();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
@@ -44,7 +44,7 @@ export default function Contacts() {
   /* Get list of departments from the Backend
    */
   const getDepartments = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const res = await axios.get(BASE_URL + "/department", {withCredentials: true});
     depList = res.data;
     return depList;
@@ -54,7 +54,7 @@ export default function Contacts() {
   /* Get list of organisations from the Backend
    */
   const getOrganisations = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const res = await axios.get(BASE_URL + "/organisation", {withCredentials: true});
     orgList = res.data;
     return orgList;

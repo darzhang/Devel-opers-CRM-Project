@@ -103,7 +103,7 @@ const Events = () => {
 
   //Fetch Contacts
   const fetchContacts = async () => {
-    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/contact', {withCredentials: true})
     const data = await res.data;
 
     return data
@@ -111,7 +111,7 @@ const Events = () => {
 
   //Fetch Events
   const fetchEvents = async () => {
-    const res = await axios.get('http://localhost:5000/event', {withCredentials: true})
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/event', {withCredentials: true})
     const data = await res.data;
 
     return data
@@ -120,7 +120,7 @@ const Events = () => {
   //Add new Event
   const addEvent = async (event) => {
     const res = await axios.post(
-      `http://localhost:5000/event`, 
+      `https://developer-crm-backend.herokuapp.com/event`, 
       event, 
       {withCredentials: true});
 
@@ -173,7 +173,7 @@ const Events = () => {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axios.delete(`http://localhost:5000/event/${id}`, {
+        const res = await axios.delete(`https://developer-crm-backend.herokuapp.com/event/${id}`, {
           withCredentials: true
         })
 
@@ -248,7 +248,7 @@ const Events = () => {
   const fields = ['eventName', 'startTime', 'endTime', 'location', 'participants'];
 
   return (
-    <div className="Events" style={{marginLeft:"75px"}}>
+    <div className="Events" style={{marginTop: "2%", marginLeft:"75px"}}>
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
       {!isLoading && 
         <div style={buttonDivStyle}>
@@ -262,7 +262,7 @@ const Events = () => {
       }
       {/* {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>} */}
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
-      <div className="listOfEvents">
+      <div className="listOfEvents" style={{marginTop: "1.5%"}}>
         {!isLoading ? 
         (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )
         : <CircularProgress />}

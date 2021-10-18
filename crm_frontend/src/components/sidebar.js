@@ -123,7 +123,7 @@ export default function SideBar() {
     history.push('/organisation');
   }
   function redirectLogout() {
-    axios.post('http://localhost:5000/logout', {}, {withCredentials: true});
+    axios.post('https://developer-crm-backend.herokuapp.com/logout', {}, {withCredentials: true});
     sessionStorage.setItem("isAuthenticated", "false")
     history.push('/login');
   }
