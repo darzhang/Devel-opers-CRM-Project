@@ -1,6 +1,6 @@
 import React from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
-import { TextField } from '@mui/material'
+import TextField from '@mui/material/TextField'
 
 function SuggestionDropDown({participants, items, onChange, size}) {
   return (
