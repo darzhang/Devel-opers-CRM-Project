@@ -80,6 +80,9 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
 
     //Change time based on the local device timezone
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    console.log(timezone)
+    console.log(new Date())
+    console.log(new Date().getTimezoneOffset())
 
     const data = {
       eventName: state.eventName, 
