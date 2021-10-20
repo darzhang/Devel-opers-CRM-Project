@@ -40,7 +40,7 @@ export default function ContactProfile(props) {
     // Get contact based on the id
     const getContact = async () => {
       const BASE_URL = "https://developer-crm-backend.herokuapp.com";
-      await axios.get(BASE_URL + "/profile", {withCredentials: true}).then(res => 
+      await axios.get(BASE_URL + "/profile", {withCredentials: true}).then(res => {
         const data = res.data;
         console.log(data)
         setValues({
