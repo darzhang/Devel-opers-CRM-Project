@@ -23,7 +23,7 @@ import { withRouter } from "react-router-dom";
 export function RegisterForm({history}) {
 
   if (sessionStorage.getItem("isAuthenticated") === "true"){
-    history.push('./')
+    history.push('./login')
   }
   // state hook functions   
   const [email, setEmail] = useState("");
@@ -53,7 +53,7 @@ export function RegisterForm({history}) {
         password: password
       },
       withCredentials: true,
-      url: "http://localhost:5000/register"
+      url: "https://developer-crm-backend.herokuapp.com/register"
     }).then((response) => {
       if (response.data){
         sessionStorage.setItem("isAuthenticated", "true")

@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publishToHeroku": "cd ../ && git subtree push --prefix CRM_Backend heroku-developer-crm-backend master || true"
   },
   "author": "DEVEL-opers",
   "license": "ISC",
@@ -26,9 +27,9 @@
     "node-schedule": "^2.0.0",
     "nodemailer": "^6.6.5",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "nodemon": "^2.0.13"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
   }
 }

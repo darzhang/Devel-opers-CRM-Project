@@ -7,11 +7,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 export default function Organisation() {
   const [organisations, setOrganisations] = useState([]);
   const [contact, setContact] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (contact.length > 0) {
       /*get the organisation list from the database*/
-      axios.get("http://localhost:5000/organisation", {withCredentials: true})
+      axios.get("https://developer-crm-backend.herokuapp.com/organisation", {withCredentials: true})
         .then((data) => data.data)
         .then((data) => {
           const mappedData = data.map(org =>{
@@ -23,12 +24,13 @@ export default function Organisation() {
             }
           });
           setOrganisations(mappedData);
+          setIsLoading(false);
         });
     }
   }, [contact]);
 
   useEffect(() => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     axios.get(BASE_URL + "/contact", {withCredentials:true}).then(res => {
       const list = res.data;
       setContact(list);
@@ -52,14 +54,6 @@ export default function Organisation() {
     }
   }
 
-  // const getContacts = async () => {
-  //   const BASE_URL = "http://localhost:5000";
-  //   await axios.get(BASE_URL + "/contact").then(res => {
-  //     const list = res.data;
-  //     setContact(list);
-  //   })
-  // }
-
   const columns = [
     { field: 'orgName', headerName: 'Organisation Name', minWidth: 160, flex: 1},
     { field: 'size', headerName: 'Network Size', minWidth: 160, flex: 1, filterable:false},
@@ -73,10 +67,10 @@ export default function Organisation() {
   return (
     <div style={marginStyle}>
       <h1>
-        Organisation List
+        Organisations
       </h1>
       <div className="listOfEvents">
-          {organisations.length > 0 ? <DataGridComp events={organisations} columns={columns} fields={fields}></DataGridComp> : <CircularProgress />}
+          {!isLoading ? <DataGridComp events={organisations} columns={columns} fields={fields}></DataGridComp> : <CircularProgress />}
       </div>
     </div>
   )

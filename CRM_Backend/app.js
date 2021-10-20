@@ -45,7 +45,7 @@ app.engine('hbs', exphbs({
 app.use(express.json())
 app.use(cors({
   credentials: true,
-  origin: "http://localhost:3000",
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
@@ -102,7 +102,7 @@ app.get('/', (req, res) => {
 
 //Schedule the email notification for events
 const notificationScheduler = require('./notificationScheduler')
-const job = schedule.scheduleJob('*/15 * * * * *', notificationScheduler.sendNotifications);
+const job = schedule.scheduleJob('*/5 * * * * *', notificationScheduler.sendNotifications);
 
 
 module.exports = app

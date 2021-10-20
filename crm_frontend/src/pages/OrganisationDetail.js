@@ -8,10 +8,11 @@ export default function OrganisationDetail(props) {
   const [organisation, setOrganisation] = useState([]);
   const [contact, setContact] = useState([]);
   const [departmentList, setDepartmentList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     /*get the organisation list from the database*/
-    const BASE_URL ="http://localhost:5000/organisation/" + props.match.params.id;
+    const BASE_URL ="https://developer-crm-backend.herokuapp.com/organisation/" + props.match.params.id;
     axios.get(BASE_URL, {withCredentials: true})
       .then((data) => data.data)
       .then((data) => {
@@ -23,7 +24,7 @@ export default function OrganisationDetail(props) {
   /* Get list of departments from the Backend
    */
   const getDepartments = async () => {
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const res = await axios.get(BASE_URL + "/department", {withCredentials: true})
     setDepartmentList(res.data);
     let depList = res.data
@@ -34,7 +35,7 @@ export default function OrganisationDetail(props) {
    */
   const getContacts = async (org) => {
     const deps = await getDepartments();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
@@ -49,6 +50,7 @@ export default function OrganisationDetail(props) {
           contact.organisationName = org.orgName;
         })
         setContact(filteredList);
+        setIsLoading(false);
     })
   }
 
@@ -83,16 +85,21 @@ export default function OrganisationDetail(props) {
 
   return (
     <div style={marginStyle}>
-      {organisation.map((org) => {
-        return (
-          <div>
-            <h1>{org.orgName}</h1>
-          </div>
-        ); 
-      })}
-      <h1>Contact List</h1>
+      {isLoading && <CircularProgress />}
+      {!isLoading &&
+      <div>
+        {organisation.map((org) => {
+          return (
+            <div>
+              <h1>{org.orgName}</h1>
+            </div>
+          ); 
+        })}
+        <h1>Contact List</h1>
+      </div>
+      }
       <div className="listOfEvents">
-          {contact.length > 0 ? <DataGridComp events={contact} columns={columns}></DataGridComp> : <CircularProgress />}
+          {!isLoading ? <DataGridComp events={contact} columns={columns}></DataGridComp> : <></>}
       </div>
     </div>
   );

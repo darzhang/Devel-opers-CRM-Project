@@ -8,6 +8,12 @@ import Swal from 'sweetalert2'
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
 
+/* Create a component of textfields for the event detail page
+ *
+ * @param event The event objet to be shown on the textfields as prefilled value
+ * @param onEdit Function to handle the event's data after being edited and saved
+ * @param readOnly Boolean value to set the textfield to readOnly
+ */
 const AddEvent = ({event, onEdit, readOnly}) => {
   const buttonStyle = { textTransform: "none", width: "108px" };
   const [eventName, setEventName] = useState(event.eventName)
@@ -19,6 +25,7 @@ const AddEvent = ({event, onEdit, readOnly}) => {
   const [location, setLocation] = useState(event.location)
   const [contacts, setContacts] = useState([])
 
+  // Get the contact list when the page first load
   useEffect(() => {
     const getContacts = async () =>{
       const contactsFromBackEnd = await fetchContacts()
@@ -32,9 +39,10 @@ const AddEvent = ({event, onEdit, readOnly}) => {
     getContacts()
   }, [])
 
-  //Fetch Contacts
+  /* Fetch list of contacts from backend
+   */
   const fetchContacts = async () => {
-    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/contact', {withCredentials: true})
     const data = await res.data;
     const returnedData = [];
 
@@ -42,7 +50,10 @@ const AddEvent = ({event, onEdit, readOnly}) => {
     
     return returnedData
   }
-
+  /* Handle saving the changes to text field and sending it to the Backend
+   *
+   * @param e Event
+   */
   const onSubmit = async (e) => {
     e.preventDefault()
 

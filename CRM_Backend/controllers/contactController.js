@@ -10,7 +10,9 @@ const objectId = require('mongodb').ObjectID;
 // get all contacts
 const getAllContacts = async (req, res) => {
     try {
-        const contacts = await Contact.find({'userId': req.session.userId}).lean();
+        console.log(req.session.userId);
+        // const contacts = await Contact.find({'userId': req.session.userId}).lean();
+        const contacts = await Contact.find({'userId': objectId('6123be502afc875770f07ef9')}).lean();
         return res.send(contacts);
     } catch (err) { // error occured
         res.status(400);
@@ -90,7 +92,8 @@ const createContact = async (req, res) => {
         organisationId: organisationId,
         description: description,
         dateCreated: new Date(),
-        userId: req.session.userId
+        // userId: req.session.userId
+        userId: objectId('6123be502afc875770f07ef9')
     }
     // create a new contact based on the info
     const contact = new Contact(contactInfo);
@@ -120,13 +123,13 @@ const editContact = async (req, res) => {
         departmentId = objectId(newDepartment._id);
     }
     // check if an organisation with that name exist
-    const organisation = await Organisation.findOne({orgName: organisationName}).lean()
+    const organisation = await Organisation.findOne({nameLower: organisationName.toLowerCase()}).lean()
     let organisationId = ""
     // if it exist, just take the id
     if (organisation !== null) {
         organisationId = objectId(organisation._id);
     } else { // it doesn't exist so create a new organisation with that name and save it to the database
-        const newOrganisation = new Organisation({orgName: organisationName});
+        const newOrganisation = new Organisation({orgName: organisationName, nameLower: organisationName.toLowerCase()});
         await newOrganisation.save();
         organisationId = objectId(newOrganisation._id);
     }
@@ -144,7 +147,8 @@ const editContact = async (req, res) => {
         organisationId: organisationId,
         description: description,
         dateCreated: new Date(),
-        userId: req.session.userId
+        // userId: req.session.userId
+        userId: objectId('6123be502afc875770f07ef9')
     }
 
     try {

@@ -39,9 +39,8 @@ export default function ContactProfile(props) {
   useEffect(() => {
     // Get contact based on the id
     const getContact = async () => {
-      const BASE_URL = "http://localhost:5000";
-      await axios.get(BASE_URL + "/profile", {withCredentials: true}).then(res => {
-        
+      const BASE_URL = "https://developer-crm-backend.herokuapp.com";
+      await axios.get(BASE_URL + "/profile", {withCredentials: true}).then(res => 
         const data = res.data;
         console.log(data)
         setValues({
@@ -54,6 +53,7 @@ export default function ContactProfile(props) {
     }
     getContact();
   }, [])
+
 
   /* Change the contact profile page to edit contact profile page when the 'Edit Contact' button is clicked
    */
@@ -79,7 +79,7 @@ export default function ContactProfile(props) {
    */
   const onSubmit = (e) => {
     e.preventDefault();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const url = BASE_URL + "/profile/updatepassword";
     axios.post(url, {...values},{withCredentials: true})
     .then((response) => {

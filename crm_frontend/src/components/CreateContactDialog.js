@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2';
 import {
   Dialog,
   DialogTitle,
@@ -40,14 +41,21 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
   const onSubmit = (e) => {
     setSubmitted(true);
     e.preventDefault();
-    const BASE_URL = "http://localhost:5000";
+    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
     const url = BASE_URL + "/contact";
     const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = state;
     axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description }, {withCredentials:true})
     .then(() => {
       window.location = "/contact";
       handleClose();
-      alert("success created contact");
+      Swal.fire({
+        title: "Successful",
+        text: "Contact has been successfully created!",
+        icon: "success",
+        showClass: {
+          icon: ''
+        }
+      })
     });
   };
 

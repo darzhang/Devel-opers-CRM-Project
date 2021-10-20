@@ -19,6 +19,7 @@ import EventDetails from './pages/Event/EventDetails';
 import Calendar from './pages/Event/Calendar';
 import {RegisterForm} from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoutes';
+import Profile from './pages/ProfilePage';
 
 function App() {
   
@@ -36,6 +37,7 @@ function App() {
               <Home />
             </ProtectedRoute>
             <ProtectedRoute exact path="/logout" component={Logout} />
+            <ProtectedRoute exact path="/profile" component={Profile} />
             <ProtectedRoute exact path="/contact" component={Contacts} />
             <ProtectedRoute exact path="/organisation" component={Organisation} />
             <ProtectedRoute exact path="/organisation/:id" component={OrganisationDetail} />

@@ -21,6 +21,12 @@ const getEmail = async (event) => {
   return user.email
 }
 
+const getName = async (event) => {
+  const userId = event.userId
+  const user = await Users.findOne({_id: userId}).lean()
+  return user.username
+}
+
 const sendNotifications = async() => {
   const today = new Date()
   const tomorrow = new Date(today)
@@ -44,15 +50,16 @@ const sendNotifications = async() => {
 
   if(events.length > 0){
     events.forEach( async (event) => {
-      //get the user's Email
+      //get the user's Email and username
       const userEmail = await getEmail(event)
+      const username = await getName(event)
   
       //get the name list of the participants
       const participantsList = await getParticipants(event.participants)
   
       
       // Create the notification text
-      const emailText = `Dear User,\n\nYou have an Upcoming Event:\n\n`+
+      const emailText = `Dear ${username},\n\nYou have an Upcoming Event:\n\n`+
       `Event Name: ${event.eventName}\n\n`+
       `Start Time: ${momentTimezone(event.startTime).tz(event.timezone).format(timeFormat)} (${event.timezone})\n\n`+
       `End Time: ${momentTimezone(event.endTime).tz(event.timezone).format(timeFormat)} (${event.timezone})\n\n`+

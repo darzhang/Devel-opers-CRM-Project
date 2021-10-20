@@ -15,7 +15,8 @@ import Button from "@material-ui/core/Button";
 import EventDialog from '../../components/Event/EventDialog'
 import axios from 'axios'
 
-
+/* Display an event list page
+ */
 const Events = () => {
   const timeFormat = "DD/MM/YY, hh:mm a"
   const buttonDivStyle = { textAlign: "right", marginRight: "2%", marginBottom: "10px" };
@@ -38,6 +39,12 @@ const Events = () => {
     dateAdded: new Date()
   }
 
+  /* Compare two dates 
+   *
+   * @param first First date
+   * @param second Second date
+   * @return integer value of the comparison
+   */
   const compareDate = (first, second) => {
     if(first.startTime < second.startTime){
       return -1
@@ -48,6 +55,7 @@ const Events = () => {
     }
   }
 
+  // fetch list of contacts and events and preprocess some data to be compatible with the data grid component
   useEffect(() => {
     let mounted = true
     const getEvents = async () =>{
@@ -101,26 +109,31 @@ const Events = () => {
     }
   }, [refresh])
 
-  //Fetch Contacts
+  /* Fetch all contact list from the backend
+   */
   const fetchContacts = async () => {
-    const res = await axios.get('http://localhost:5000/contact', {withCredentials: true})
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/contact', {withCredentials: true})
     const data = await res.data;
 
     return data
   }
 
-  //Fetch Events
+  /* Fetch all event list from the backend
+   */
   const fetchEvents = async () => {
-    const res = await axios.get('http://localhost:5000/event', {withCredentials: true})
+    const res = await axios.get('https://developer-crm-backend.herokuapp.com/event', {withCredentials: true})
     const data = await res.data;
 
     return data
   }
 
-  //Add new Event
+  /* send new event based on the provided event object to the backend
+   *
+   * @param event Newly created event object
+   */
   const addEvent = async (event) => {
     const res = await axios.post(
-      `http://localhost:5000/event`, 
+      `https://developer-crm-backend.herokuapp.com/event`, 
       event, 
       {withCredentials: true});
 
@@ -157,7 +170,12 @@ const Events = () => {
     
   }
 
-  //Delete Event
+  /* Delete specific event with alert prior to the deletion of the event
+   *
+   * @param id Event ID of the deleted event
+   * @param name Event name to be shown on the alert of the event deletion
+   * @return integer value of the comparison
+   */
   const deleteEvent = async (id, name) => {
 
     Swal.fire({
@@ -173,7 +191,7 @@ const Events = () => {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axios.delete(`http://localhost:5000/event/${id}`, {
+        const res = await axios.delete(`https://developer-crm-backend.herokuapp.com/event/${id}`, {
           withCredentials: true
         })
 
@@ -248,7 +266,7 @@ const Events = () => {
   const fields = ['eventName', 'startTime', 'endTime', 'location', 'participants'];
 
   return (
-    <div className="Events" style={{marginLeft:"75px"}}>
+    <div className="Events" style={{marginTop: "2%", marginLeft:"75px"}}>
       <div><h1>{isUpcoming ? 'Events' : 'Past Events'}</h1></div>
       {!isLoading && 
         <div style={buttonDivStyle}>
@@ -262,7 +280,7 @@ const Events = () => {
       }
       {/* {showAddEvent && <AddEvent event={defaultEvent} onEdit={null} onAdd={addEvent} closeForm ={() => setShowAddEvent(false)} text={'Add Event'} readOnly={false} enableSubmit={true} participantsArray={[]}/>} */}
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
-      <div className="listOfEvents">
+      <div className="listOfEvents" style={{marginTop: "1.5%"}}>
         {!isLoading ? 
         (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )
         : <CircularProgress />}

@@ -136,7 +136,7 @@ export default function SideBar() {
       }
     }).then(async (result) => {
       if (result.isConfirmed) {
-        axios.post('http://localhost:5000/logout', {}, {withCredentials: true});
+        axios.post('https://developer-crm-backend.herokuapp.com/logout', {}, {withCredentials: true});
         sessionStorage.setItem("isAuthenticated", "false")
         history.push('/login');
       }
