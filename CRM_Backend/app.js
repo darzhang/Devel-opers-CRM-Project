@@ -54,8 +54,6 @@ app.use(session({
   resave: false,
   saveUnitialized: false,
   expires: new Date(Date.now() + (1)),
-  cookie: { secure: false,
-            httpOnly: false } ,
   store: MongoDBStore.create({mongoUrl: db,
                               dbName: 'PersonalCRM',
                               autoRemove: 'native'})
