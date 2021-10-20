@@ -79,14 +79,9 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     participants.map((participant) => participantsIdArray.push(participant.id))
 
     //Change time based on the local device timezone
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const timezoneDifference= (new Date().getTimezoneOffset()) / 60
     let newStartTime = new Date(state.startTime)
-    // newStartTime.setHours(newStartTime.getHours() + timezoneDifference)
     let newEndTime = new Date(state.endTime)
-    // newEndTime.setHours(newEndTime.getHours() + timezoneDifference)
     let newDateAdded = new Date(state.dateAdded)
-    // newDateAdded.setHours(newDateAdded.getHours() + timezoneDifference)
 
     const data = {
       eventName: state.eventName, 

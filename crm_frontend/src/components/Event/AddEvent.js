@@ -63,13 +63,18 @@ const AddEvent = ({event, onEdit, readOnly}) => {
     const participantsIdArray = []
     participants.map((participant) => participantsIdArray.push(participant.id))
 
+    //Change time based on the local device timezone
+    let newStartTime = new Date(startTime)
+    let newEndTime = new Date(endTime)
+    let newDateAdded = new Date(dateAdded)
+
     const data = {eventName,
-      startTime,
-      endTime,
+      startTime: newStartTime,
+      endTime: newEndTime,
       participants:participantsIdArray,
       description,
       location,
-      dateAdded: dateAdded,
+      dateAdded: newDateAdded,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       isEmailed: false}
 
