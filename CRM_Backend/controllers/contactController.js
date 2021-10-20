@@ -38,7 +38,8 @@ const getOneContact = async (req, res) => {
 const getOneProfile = async (req, res) => {
     try {
         console.log(req.body)
-        const oneContact = await User.findById({"_id": req.session.userId}).lean();
+        // const oneContact = await User.findById({"_id": req.session.userId}).lean();
+        const oneContact = await User.findById({"_id": objectId('6123be502afc875770f07ef9')}).lean();
         if (oneContact === null) {  // no contact found in database
             res.status(404);
             return res.send("Contact not found");
