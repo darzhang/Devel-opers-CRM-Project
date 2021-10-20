@@ -80,21 +80,27 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
 
     //Change time based on the local device timezone
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    console.log(timezone)
-    console.log(new Date())
-    console.log(new Date().getTimezoneOffset())
-    console.log(state)
+    const timezoneDifference= (new Date().getTimezoneOffset()) / 60
+    let newStartTime = new Date(state.startTime)
+    newStartTime.setHours(newStartTime.getHours() + timezoneDifference)
+    let newEndTime = new Date(state.endTime)
+    newEndTime.setHours(newEndTime.getHours() + timezoneDifference)
+    let newDateAdded = new Date(state.dateAdded)
+    newDateAdded.setHours(newDateAdded.getHours() + timezoneDifference)
 
     const data = {
       eventName: state.eventName, 
-      startTime: moment(state.startTime).tz(timezone), 
-      endTime: moment(state.endTime).tz(timezone), 
+      startTime: newStartTime, 
+      endTime: newEndTime, 
       participants:participantsIdArray, 
       description: state.description, 
       location: state.location, 
-      dateAdded : moment(dateAdded).tz(timezone),
+      dateAdded : newDateAdded,
       timezone: timezone,
-      isEmailed: false}
+      isEmailed: false
+    }
+    console.log(state)
+    console.log(data)
 
     if (data.startTime > data.endTime) {
       Swal.fire({
