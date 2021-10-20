@@ -141,13 +141,9 @@ const Events = () => {
       const data = res.data
       data.id = data._id
       delete data._id
-
-      //preprocessing data for display in grid
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
-      data.startTime = moment(data.startTime).tz(timezone).format(timeFormat)
-      data.dateAdded = moment(data.dateAdded).tz(timezone).format(timeFormat)
-      data.endTime = moment(data.endTime).tz(timezone).format(timeFormat)
+      data.startTime = moment(data.startTime).format(timeFormat)
+      data.dateAdded = moment(data.dateAdded).format(timeFormat)
+      data.endTime = moment(data.endTime).format(timeFormat)
       data.participants = data.participants.map((participant)=>participant.name).join(", ")
       Swal.fire({
         title: "Successful",

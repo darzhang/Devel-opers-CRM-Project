@@ -8,7 +8,7 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
-import moment from "moment";
+import moment from "moment-timezone";
 import SuggestionDropDown from "./SuggestionDropDown";
 import Swal from 'sweetalert2'
 import axios from "axios";
@@ -78,15 +78,18 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     const participantsIdArray = []
     participants.map((participant) => participantsIdArray.push(participant.id))
 
+    //Change time based on the local device timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
     const data = {
       eventName: state.eventName, 
-      startTime: state.startTime, 
-      endTime: state.endTime, 
+      startTime: moment(state.startTime).tz(timezone), 
+      endTime: moment(state.endTime).tz(timezone), 
       participants:participantsIdArray, 
       description: state.description, 
       location: state.location, 
-      dateAdded,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      dateAdded : moment(dateAdded).tz(timezone),
+      timezone: timezone,
       isEmailed: false}
 
     if (data.startTime > data.endTime) {
