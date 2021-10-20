@@ -83,6 +83,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     console.log(timezone)
     console.log(new Date())
     console.log(new Date().getTimezoneOffset())
+    console.log(state)
 
     const data = {
       eventName: state.eventName, 
