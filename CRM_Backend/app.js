@@ -49,6 +49,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
+app.set("trust proxy", 1);
 app.use(session({
   secret: "testttt",
   resave: false,
