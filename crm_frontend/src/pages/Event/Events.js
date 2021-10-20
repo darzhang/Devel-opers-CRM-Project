@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 // import AddEvent from '../../components/Event/AddEvent'
 // import EventHeader from '../../components/Event/EventHeader'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import DataGridComp from '../../components/Event/DataGridComp'
 import Swal from 'sweetalert2'
 import CircularProgress from '@mui/material/CircularProgress';
@@ -143,9 +143,11 @@ const Events = () => {
       delete data._id
 
       //preprocessing data for display in grid
-      data.startTime = moment(data.startTime).format(timeFormat)
-      data.dateAdded = moment(data.dateAdded).format(timeFormat)
-      data.endTime = moment(data.endTime).format(timeFormat)
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+      data.startTime = moment(data.startTime).tz(timezone).format(timeFormat)
+      data.dateAdded = moment(data.dateAdded).tz(timezone).format(timeFormat)
+      data.endTime = moment(data.endTime).tz(timezone).format(timeFormat)
       data.participants = data.participants.map((participant)=>participant.name).join(", ")
       Swal.fire({
         title: "Successful",
