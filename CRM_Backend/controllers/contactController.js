@@ -11,8 +11,8 @@ const objectId = require('mongodb').ObjectID;
 const getAllContacts = async (req, res) => {
     try {
         console.log(req.session.userId);
-        // const contacts = await Contact.find({'userId': req.session.userId}).lean();
-        const contacts = await Contact.find({'userId': objectId('6123be502afc875770f07ef9')}).lean();
+        const contacts = await Contact.find({'userId': req.session.userId}).lean();
+        // const contacts = await Contact.find({'userId': objectId('6123be502afc875770f07ef9')}).lean();
         return res.send(contacts);
     } catch (err) { // error occured
         res.status(400);
@@ -38,8 +38,8 @@ const getOneContact = async (req, res) => {
 const getOneProfile = async (req, res) => {
     try {
         console.log(req.body)
-        // const oneContact = await User.findById({"_id": req.session.userId}).lean();
-        const oneContact = await User.findById({"_id": objectId('6123be502afc875770f07ef9')}).lean();
+        const oneContact = await User.findById({"_id": req.session.userId}).lean();
+        // const oneContact = await User.findById({"_id": objectId('6123be502afc875770f07ef9')}).lean();
         if (oneContact === null) {  // no contact found in database
             res.status(404);
             return res.send("Contact not found");
@@ -93,8 +93,8 @@ const createContact = async (req, res) => {
         organisationId: organisationId,
         description: description,
         dateCreated: new Date(),
-        // userId: req.session.userId
-        userId: objectId('6123be502afc875770f07ef9')
+        userId: req.session.userId
+        // userId: objectId('6123be502afc875770f07ef9')
     }
     // create a new contact based on the info
     const contact = new Contact(contactInfo);
@@ -148,8 +148,8 @@ const editContact = async (req, res) => {
         organisationId: organisationId,
         description: description,
         dateCreated: new Date(),
-        // userId: req.session.userId
-        userId: objectId('6123be502afc875770f07ef9')
+        userId: req.session.userId
+        // userId: objectId('6123be502afc875770f07ef9')
     }
 
     try {
