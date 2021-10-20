@@ -5,7 +5,7 @@ import { Redirect, Route, useLocation } from "react-router-dom";
 const ProtectedRoute = (props) => {
   const location = useLocation();
   const isAuthenticated = sessionStorage.getItem("isAuthenticated");
-  console.log("this", isAuthenticated);
+  // console.log("this", isAuthenticated);
 
   return isAuthenticated === "true" ? (
     <Route {...props} />

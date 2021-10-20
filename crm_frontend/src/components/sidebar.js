@@ -24,6 +24,7 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 const drawerWidth = 240;
 
@@ -123,9 +124,23 @@ export default function SideBar() {
     history.push('/organisation');
   }
   function redirectLogout() {
-    axios.post('https://developer-crm-backend.herokuapp.com/logout', {}, {withCredentials: true});
-    sessionStorage.setItem("isAuthenticated", "false")
-    history.push('/login');
+    Swal.fire({
+      title: `Do You Want to Logout?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Logout',
+      showClass: {
+        icon: ''
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        axios.post('https://developer-crm-backend.herokuapp.com/logout', {}, {withCredentials: true});
+        sessionStorage.setItem("isAuthenticated", "false")
+        history.push('/login');
+      }
+    });
   }
   return (
     <div className={classes.root}>

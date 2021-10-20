@@ -57,17 +57,26 @@ passport.use('customer-login', new LocalStrategy({
     passReqToCallback : true },
 
     function(req, email, password, done){
-        process.nextTick( function(){
+        process.nextTick( async function(){
             console.log(email);
             console.log(password)
-            User.findOne({'email': email}, function(err, user){
+            await User.findOne({'email': email}, function(err, user){
             if (err){
                 
                 return done(err);
             }
             else{
-                console.log("email found");
+                if (user == null){
+                    return done(null, false, req.flash('loginMessage', 'password is NULL'));
+                }
+                
                 if (password === null){
+                    return done(null, false, req.flash('loginMessage', 'password is NULL'));
+                }
+                if (password == false){
+                    return done(null, false, req.flash('loginMessage', 'password is NULL'));
+                }
+                if (password == ""){
                     return done(null, false, req.flash('loginMessage', 'password is NULL'));
                 }
                 if (user.validPassword(password)){

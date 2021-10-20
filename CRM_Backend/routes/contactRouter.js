@@ -13,6 +13,8 @@ contactRouter.get('/:id', (req, res) => contactController.getOneContact(req, res
 // handle POST requests to add one contact
 contactRouter.post('/', (req, res) => contactController.createContact(req, res));
 
+contactRouter.get('/profile', (req, res) => contactController.getOneProfile(req, res));
+
 // handle POST requests to update a contact
 contactRouter.post('/edit', (req, res) => contactController.editContact(req, res));
 

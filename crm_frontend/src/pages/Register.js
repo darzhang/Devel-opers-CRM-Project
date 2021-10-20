@@ -10,6 +10,7 @@ import {
   Toolbar,
   Link,
   } from "@material-ui/core";
+import Swal from 'sweetalert2'
 
 // import { loginUser } from "../api";
 import { withRouter } from "react-router-dom";
@@ -55,17 +56,37 @@ export function RegisterForm({history}) {
       url: "https://developer-crm-backend.herokuapp.com/register"
     }).then((response) => {
       if (response.data){
-        console.log('successful login');
-       
         sessionStorage.setItem("isAuthenticated", "true")
-        history.push('/')
+        Swal.fire({
+          title: "Successfully Logged In!",
+          icon: "success",
+          showClass: {
+            icon: ''
+          },
+          timer: 1000,
+          showConfirmButton: false
+        }).then(()=>{history.push('/')})
       } 
       else {
-        alert('email existing');
+        Swal.fire({
+          title: "Registration Error!",
+          text: "Please try again.",
+          icon: "warning",
+          showClass: {
+            icon: ''
+          },
+        })
       }
     }).catch(error => {
-      console.log('server error');
-      console.log(error);
+      Swal.fire({
+        title: "Server Error!",
+        icon: "warning",
+        showClass: {
+          icon: ''
+        },
+        timer: 1400,
+        showConfirmButton: false
+      })
     })
 
     

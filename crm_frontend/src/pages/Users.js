@@ -13,6 +13,7 @@ Typography,
 Toolbar,
 Link,
 } from "@material-ui/core";
+import Swal from 'sweetalert2'
 
 // component to Logout user
 export function Logout() {
@@ -64,11 +65,26 @@ export function LoginForm({history}) {
       console.log(response)
       if (response.data){
         sessionStorage.setItem("isAuthenticated", "true")
-        console.log('successful login');
-        history.push('/')
+        Swal.fire({
+          title: "Successfully Logged In!",
+          icon: "success",
+          showClass: {
+            icon: ''
+          },
+          timer: 1000,
+          showConfirmButton: false
+        }).then(()=>{history.push('/')})
+        
       } 
       else {
-        alert('Wrong email or password');
+        Swal.fire({
+          title: "Wrong Email or Password",
+          text: "Please try again.",
+          icon: "warning",
+          showClass: {
+            icon: ''
+          }
+        })
       }
     }).catch(error => {
       console.log('server error');
@@ -158,15 +174,10 @@ export function LoginForm({history}) {
               </Grid>
             </form>
           </Grid>
+
           <Grid item>
-            <Link href="#" style={{fontSize: "16px"}}>
-            Forgot Password?
-            </Link>
-            <br />
-          </Grid>
-          <Grid item>
-            <Link href="/register" style={{fontSize: "16px"}}>
-            Don't have an account? Register here.
+            <Link href="/register" variant="h6">
+            Do not have an account? Register here.
             </Link>
           </Grid>
           </Paper>
