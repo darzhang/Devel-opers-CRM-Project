@@ -7,6 +7,7 @@ import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios'
 
 export default function CalendarPage() {
@@ -25,6 +26,7 @@ export default function CalendarPage() {
 
   // useState hooks
   const [events, setEvents] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
   
   // Load data from the Backend when loading the page
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function CalendarPage() {
     return function cleanup() {
       mounted = false
     }
+    
   }, [])
 
   /* Get the list of events for the user
@@ -53,6 +56,7 @@ export default function CalendarPage() {
       eventsList[i].start = new Date(eventsList[i].startTime)
       eventsList[i].end = new Date(eventsList[i].endTime)
     }
+    setIsLoading(false);
     return data;
   };
     
@@ -80,15 +84,22 @@ export default function CalendarPage() {
   return (
     <div style={marginStyle}>
       <div className="Calendar" style={{marginLeft:"75px"}}>
-              <h1>Calendar</h1>
-              <Calendar 
-                localizer={localizer} 
-                events={events} 
-                startAccessor="start"
-                endAccessor="end"
-                onSelectEvent={event => (eventID = event._id)}
-                onDoubleClickEvent={redirectEvent}
-                style={{ height: 600}} />
+        {isLoading &&
+          <div>
+            <h1>Calendar</h1>
+          </div>
+        }
+        
+        {!isLoading &&
+            <Calendar 
+              localizer={localizer} 
+              events={events} 
+              startAccessor="start"
+              endAccessor="end"
+              onSelectEvent={event => (eventID = event._id)}
+              onDoubleClickEvent={redirectEvent}
+              style={{ height: 600}} />
+        }
         </div>
       </div>
   )
