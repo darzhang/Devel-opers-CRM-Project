@@ -45,7 +45,7 @@ app.engine('hbs', exphbs({
 app.use(express.json())
 app.use(cors({
   credentials: true,
-  origin: true,
+  origin: "https://developer-crm-frontend.herokuapp.com",
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
@@ -54,6 +54,8 @@ app.use(session({
   resave: false,
   saveUnitialized: false,
   expires: new Date(Date.now() + (1)),
+  cookie: { secure: true,
+            httpOnly: false } ,
   store: MongoDBStore.create({mongoUrl: db,
                               dbName: 'PersonalCRM',
                               autoRemove: 'native'})
