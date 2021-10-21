@@ -83,20 +83,19 @@ export default function CalendarPage() {
   
   return (
     <div style={marginStyle}>
-      <div style={{marginLeft:"65px"}}>
-        <h1>Calendar</h1>
-      </div>
+      {/* <div className="Calendar" style={{marginLeft:"65px"}}> */}
+      <h1>Calendar</h1>
+      {/* </div> */}
       <div className="Calendar" style={{marginLeft:"75px"}}>
-        {!isLoading ?
-            <Calendar 
+              {!isLoading ? <Calendar 
               localizer={localizer} 
               events={events} 
               startAccessor="start"
               endAccessor="end"
               onSelectEvent={event => (eventID = event._id)}
               onDoubleClickEvent={redirectEvent}
-              style={{ height: 600}} />
-              : <CircularProgress></CircularProgress>}
+              style={{ height: 600}} 
+              /> : <CircularProgress />}
       </div>
     </div>
   )
