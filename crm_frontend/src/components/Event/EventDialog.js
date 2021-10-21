@@ -91,7 +91,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
       description: state.description, 
       location: state.location, 
       dateAdded : newDateAdded,
-      timezone: timezone,
+      timezone: state.timezone,
       isEmailed: false
     }
     console.log(state)
