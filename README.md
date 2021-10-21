@@ -34,11 +34,11 @@ In this project we are building a WebApp.
 2. Server : Express v.4.17.1, Node JS v.14.18.0
 3. Front End : React v.17.0.2
 4. Deployment : Heroku
-https://developer-crm-frontend.herokuapp.com/
+* https://developer-crm-frontend.herokuapp.com/
 5. Documentation : Confluence
-https://devel-opers.atlassian.net/wiki/spaces/FILES/pages/131465/Team+Document
+* https://devel-opers.atlassian.net/wiki/spaces/FILES/pages/131465/Team+Document
 6. Task Management : Jira
-https://devel-opers.atlassian.net/jira/software/projects/PC/boards/1
+* https://devel-opers.atlassian.net/jira/software/projects/PC/boards/1
 
 
 ## Implementation
