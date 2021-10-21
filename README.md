@@ -46,6 +46,18 @@ In this project we are building a WebApp.
 ### Login Page
 
 ### Home Page
+This page contains information about Home.
+
+* Home have the following functionality :
+
+| Functionality | Description |
+| :---| :---:|
+| Activity Graph | View all Events in the next 7 days   |
+| Graph Tooltip | View specific day with total number of Events  |
+| Upcoming Events | View the next 4 Upcoming Events  |
+| View | Redirect user to the specific Event Page  |
+| Recently Added | View the last 4 Recently Added Contacts  |
+| Profile | Redirect user to the specific Contact Page  |
 
 ### Contact Page
 
@@ -63,7 +75,7 @@ This page contains information about the Calendar.
 | Day | View all Events in the current day  |
 | Agenda | View Events as an Agenda  |
 | Next/Back | Change months of current viewing session  |
-| onClick | Redirect the user to the specific Event page after double-clicking on the specific Event  |
+| onClick | Redirect user to the specific Event page after double-clicking on the specific Event  |
 
 ### Organisation Page
 This page contains information about Organisation.
