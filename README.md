@@ -88,6 +88,34 @@ This page contains information about Contact.
 | Delete | Delete a contact based on the inputs  |
 
 ### Event Page
+This page contains information about Event.
+
+* Event contains the following attributes : 
+
+| Attribute | Data type | Description |
+| :---|:---:| :---:|
+| eventName | String | The name of the event  |
+| startTime | Date | The start date & time of the event  |
+| endTime | Date | The end date & time of the event  |
+| description | String | The description of the event  |
+| location | String | The location of the event  |
+| participants | Array | The array of participant's IDs (from contact)  |
+| dateAddedd | Date | The date & time of the creation of event  |
+| timezone | String | The timezone where the event is created (local browser's timezone)  |
+| isEmailed | Boolean | The truth value of whether the event has been notified to the user  |
+| userId | MongoDb ObjectID | The userId that creates the event  |
+
+* Event have the following functionality :
+
+| Functionality | Description |
+| :---| :---:|
+| Filter | Filter the event based on the selected field  |
+| Sort | Sort the event based on the selected field  |
+| Export | Export data about the event to a csv file  |
+| Notification | Notify the user for upcoming event 24 hours prior to the start of the event through email  |
+| Add | Create a new event based on the inputs  |
+| Edit | Edit a event based on the inputs  |
+| Delete | Delete a event based on the inputs  |
 
 ### Calendar Page
 This page contains information about the Calendar.
