@@ -83,6 +83,9 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     let newEndTime = new Date(state.endTime)
     let newDateAdded = new Date(state.dateAdded)
 
+    console.log(state.startTime, newStartTime)
+    console.log(state.endTime, newEndTime)
+
     const data = {
       eventName: state.eventName, 
       startTime: newStartTime, 
@@ -91,7 +94,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
       description: state.description, 
       location: state.location, 
       dateAdded : newDateAdded,
-      timezone: state.timezone,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       isEmailed: false
     }
     console.log(state)
