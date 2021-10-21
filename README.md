@@ -66,6 +66,7 @@ This page contains information about Organisation.
 | createdBy | MongoDb ObjectID | The userID that created this organisation  |
 
 * Organisation have the following functionality :
+
 | Functionality | Description |
 | :---| :---:|
 | Search | Search organisation by the name  |
