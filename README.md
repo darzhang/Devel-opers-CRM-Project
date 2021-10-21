@@ -42,3 +42,33 @@ In this project we are building a WebApp.
 
 
 ## Implementation
+
+# Login Page
+
+# Home Page
+
+# Contact Page
+
+# Event Page
+
+# Calendar Page
+
+# Organisation Page
+This page contains information about Organisation.
+
+* Organisation contains the following attributes : 
+
+| Attribute | Data type | Description |
+| :---|:---:| :---:|
+| orgName | String | The name of the organisation  |
+| nameLower | String | The name of the organisation with all lower case character  |
+| size | Integer | NUmber of contact in the specific organisation  |
+| createdBy | MongoDb ObjectID | The userID that created this organisation  |
+
+* Organisation have the following functionality :
+| Functionality | Description |
+| :---| :---:|
+| Search | Search organisation by the name  |
+| Sort | Sort the organisation based on the selected field  |
+| Filter | Filter the organisation based on the selected field  |
+| Export | Export data about the organisations to a csv file  |
