@@ -43,17 +43,17 @@ In this project we are building a WebApp.
 
 ## Implementation
 
-### Login Page
+1. Login Page
 
-### Home Page
+2. Home Page
 
-### Contact Page
+3. Contact Page
 
-### Event Page
+4. Event Page
 
-### Calendar Page
+5. Calendar Page
 
-### Organisation Page
+6. Organisation Page
 This page contains information about Organisation.
 
 * Organisation contains the following attributes : 
