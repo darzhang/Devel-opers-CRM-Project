@@ -83,7 +83,7 @@ export default function CalendarPage() {
   
   return (
     <div style={marginStyle}>
-      <div className="Calendar" style={{marginLeft:"65px"}}>
+      <div className="Calendar" style={{marginLeft:"50px"}}>
         <h1>Calendar</h1>
       </div>
       <div className="Calendar" style={{marginLeft:"75px"}}>
