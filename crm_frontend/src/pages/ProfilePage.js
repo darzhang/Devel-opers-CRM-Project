@@ -42,7 +42,7 @@ export default function ContactProfile(props) {
       const BASE_URL = "https://developer-crm-backend.herokuapp.com";
       await axios.get(BASE_URL + "/profile", {withCredentials: true}).then(res => {
         const data = res.data;
-        console.log(data)
+        // console.log(data)
         setValues({
           username: data.username,
           email: data.email
@@ -83,7 +83,7 @@ export default function ContactProfile(props) {
     const url = BASE_URL + "/profile/updatepassword";
     axios.post(url, {...values},{withCredentials: true})
     .then((response) => {
-      console.log(response.status)
+      // console.log(response.status)
     Swal.fire({
       title: "Success!",
       text: "Password has been successfully updated!",
