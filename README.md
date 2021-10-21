@@ -12,7 +12,7 @@ Welcome to DEVEL-opers CRM project
 ## Team Members
 
 | Name | Student ID | Task | Email |
-| :---         |     :---:      |     :---:      |          ---: |
+| :---         |     :---:      |     :---:      | :---: |
 | Erdinan Angkajaya | 1086206 | Back End, Front End, README Format  | angkajayae@student.unimelb.edu.au |
 | Edward Chen | 1086210 | Back End, Front End, UI Design  |  edchen@student.unimelb.edu.au |
 | Lesley Laisina  | 1086234 | Back End, Front End, UI Design |  llaisina@student.unimelb.edu.au |
