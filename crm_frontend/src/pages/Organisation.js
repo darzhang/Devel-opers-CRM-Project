@@ -10,23 +10,21 @@ export default function Organisation() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (contact.length > 0) {
       /*get the organisation list from the database*/
       axios.get("https://developer-crm-backend.herokuapp.com/organisation", {withCredentials: true})
-        .then((data) => data.data)
-        .then((data) => {
-          const mappedData = data.map(org =>{
-            const orgSize = contact.filter((c) => c.organisationId === org._id).length;
-            return {
-              ...org,
-              id: org._id,
-              size: orgSize
-            }
-          });
-          setOrganisations(mappedData);
-          setIsLoading(false);
+      .then((data) => data.data)
+      .then((data) => {
+        const mappedData = data.map(org =>{
+          const orgSize = contact.filter((c) => c.organisationId === org._id).length;
+          return {
+            ...org,
+            id: org._id,
+            size: orgSize
+          }
         });
-    }
+        setOrganisations(mappedData);
+        setIsLoading(false);
+      });
   }, [contact]);
 
   useEffect(() => {
