@@ -64,7 +64,7 @@ const createContact = async (req, res) => {
     if (department !== null) {
         departmentId = objectId(department._id);
     } else { // it doesn't exist so create a new department with that name and save it to the database
-        const newDepartment = new Department({departmentName: departmentName});
+        const newDepartment = new Department({departmentName: departmentName, userId : req.session.userId});
         await newDepartment.save();
         departmentId = objectId(newDepartment._id);
     }
@@ -75,7 +75,7 @@ const createContact = async (req, res) => {
     if (organisation !== null) {
         organisationId = objectId(organisation._id);
     } else { // it doesn't exist so create a new organisation with that name and save it to the database
-        const newOrganisation = new Organisation({orgName: organisationName, nameLower: organisationName.toLowerCase()});
+        const newOrganisation = new Organisation({orgName: organisationName, nameLower: organisationName.toLowerCase(), userId : req.session.userId});
         await newOrganisation.save();
         organisationId = objectId(newOrganisation._id);
     }

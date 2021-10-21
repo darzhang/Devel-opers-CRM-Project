@@ -14,8 +14,9 @@ const organisationSchema = new mongoose.Schema({
     size : {
         type: Number
     },
-    createdBy : {
-        type: mongoose.Schema.Types.ObjectId
+    userId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref : 'user'
     }
 });
 

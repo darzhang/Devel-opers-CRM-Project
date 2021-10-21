@@ -9,6 +9,10 @@ const departmentSchema = new mongoose.Schema({
     orgID : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'organisation'
+    },
+    userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'user'
     }
 });
 
