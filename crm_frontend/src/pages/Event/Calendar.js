@@ -8,7 +8,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CircularProgress from '@mui/material/CircularProgress';
-import axios from 'axios'
+import axios from 'axios';
 
 export default function CalendarPage() {
   
@@ -83,10 +83,11 @@ export default function CalendarPage() {
   
   return (
     <div style={marginStyle}>
+      <div style={{marginLeft:"65px"}}>
+        <h1>Calendar</h1>
+      </div>
       <div className="Calendar" style={{marginLeft:"75px"}}>
-          <h1>Calendar</h1>
-        
-        {!isLoading &&
+        {!isLoading ?
             <Calendar 
               localizer={localizer} 
               events={events} 
@@ -95,9 +96,9 @@ export default function CalendarPage() {
               onSelectEvent={event => (eventID = event._id)}
               onDoubleClickEvent={redirectEvent}
               style={{ height: 600}} />
-        }
-        </div>
+              : <CircularProgress></CircularProgress>}
       </div>
+    </div>
   )
 
 }
