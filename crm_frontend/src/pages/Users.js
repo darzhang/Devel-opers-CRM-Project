@@ -62,7 +62,7 @@ export function LoginForm({history}) {
       withCredentials: true,
       url: "https://developer-crm-backend.herokuapp.com/login"
     }).then((response) => {
-      console.log(response)
+      // console.log(response)
       if (response.data){
         sessionStorage.setItem("isAuthenticated", "true")
         Swal.fire({

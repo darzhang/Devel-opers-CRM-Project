@@ -39,8 +39,8 @@ export default function OrganisationDetail(props) {
     await axios.get(BASE_URL + "/contact", {withCredentials: true}).then(res => {
         const list = res.data;
         const sortedList = list.sort((a, b) => (a.contactName > b.contactName) ? 1 : -1)
-        console.log(sortedList);
-        console.log(org);
+        // console.log(sortedList);
+        // console.log(org);
         const filteredList = sortedList.filter((c) => c.organisationId === org._id)
         filteredList.forEach(async (contact) => {
           contact.id = contact._id;

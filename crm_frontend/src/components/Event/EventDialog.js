@@ -91,11 +91,9 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
       description: state.description, 
       location: state.location, 
       dateAdded : newDateAdded,
-      timezone: state.timezone,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       isEmailed: false
     }
-    console.log(state)
-    console.log(data)
 
     if (data.startTime > data.endTime) {
       Swal.fire({

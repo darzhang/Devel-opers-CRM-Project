@@ -59,15 +59,15 @@ const EventDetails = () => {
    * @param event Event object to be sent to the backend
    */
   const editEvent = async (event) => {
-    console.log(id)
+    // console.log(id)
     const res = await axios.post(
     `https://developer-crm-backend.herokuapp.com/event/edit/${id}`, 
     event, 
     {withCredentials: true})
     
-    console.log("test")
+    // console.log("test")
     const data = res.data;
-    console.log(res.status)
+    // console.log(res.status)
 
     if(res.status !== 400){
       Swal.fire({
