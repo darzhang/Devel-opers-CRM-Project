@@ -60,6 +60,32 @@ This page contains information about Home.
 | Profile | Redirect user to the specific Contact Page  |
 
 ### Contact Page
+This page contains information about Contact.
+
+* Contact contains the following attributes :
+
+| Attribute | Data type | Description |
+| :---|:---:| :---:|
+| contactName | String | The name of the contact  |
+| phoneNumbers | Object | The phone numbers of the contact, which are divided into mobile, work, and home  |
+| email | String | The email address of the contact  |
+| label | String | The label used to refer to a contact  |
+| departmentId | MongoDb ObjectID | The department ID based on the department of the contact  |
+| organisationId | MongoDb ObjectID | The organisation ID based on the department of the contact  |
+| description | String | The description which describes the contact  |
+| dateCreated | String | The date when the contact was created  |
+| userId | MongoDb ObjectID | The ID of the user that created the contact  |
+
+* Contact have the following functionality :
+
+| Functionality | Description |
+| :---| :---:|
+| Filter | Filter the contact based on the selected field  |
+| Sort | Sort the contact based on the selected field  |
+| Export | Export data about the contacts to a csv file  |
+| Add | Create a new contact based on the inputs  |
+| Edit | Edit a contact based on the inputs  |
+| Delete | Delete a contact based on the inputs  |
 
 ### Event Page
 
@@ -86,7 +112,7 @@ This page contains information about Organisation.
 | :---|:---:| :---:|
 | orgName | String | The name of the organisation  |
 | nameLower | String | The name of the organisation with all lower case character  |
-| size | Integer | NUmber of contact in the specific organisation  |
+| size | Integer | Number of contact in the specific organisation  |
 | createdBy | MongoDb ObjectID | The userID that created this organisation  |
 
 * Organisation have the following functionality :
