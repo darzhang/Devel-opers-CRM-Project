@@ -84,11 +84,7 @@ export default function CalendarPage() {
   return (
     <div style={marginStyle}>
       <div className="Calendar" style={{marginLeft:"75px"}}>
-        {isLoading &&
-          <div>
-            <h1>Calendar</h1>
-          </div>
-        }
+          <h1>Calendar</h1>
         
         {!isLoading &&
             <Calendar 
