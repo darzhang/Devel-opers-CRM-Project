@@ -52,6 +52,18 @@ In this project we are building a WebApp.
 ### Event Page
 
 ### Calendar Page
+This page contains information about the Calendar.
+
+* Calendar have the following functionality :
+
+| Functionality | Description |
+| :---| :---:|
+| Month | View all Events in the current month  |
+| Week | View all Events in the current week  |
+| Day | View all Events in the current day  |
+| Agenda | View Events as an Agenda  |
+| Next/Back | Change months of current viewing session  |
+| onClick | Redirect the user to the specific Event page after double-clicking on the specific Event  |
 
 ### Organisation Page
 This page contains information about Organisation.
