@@ -25,5 +25,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm install
-    - run: npm run build
+    - run: npm run build --no-fail-on-warnings
     - run: npm start & npx wait-on http://localhost:3000
