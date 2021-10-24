@@ -64,6 +64,19 @@ export default function Home() {
     })
   }
 
+  // Obtains the next upcoming events
+  let upcomingEvents = []
+  let index = 0;
+  for (let i = 0; i < events.length; i++){
+    if (events[i].startTime > (new Date()).toISOString()) {
+      upcomingEvents[index++] = events[i];
+    }
+    if (index === 4){
+      break
+    }
+  }
+
+  upcomingEvents.reverse()
   // Initial values for dates
   let date = new Date();
   let endDate = new Date();
@@ -117,7 +130,7 @@ export default function Home() {
 
   // Obtains the last five contacts added
   let lastFiveContacts = []
-  let index = 0;
+  index = 0;
   for (let i = contactList.length - 1; i >= 0; i--){
     lastFiveContacts[index++] = contactList[i];
     if (i === contactList.length - 4){
@@ -125,18 +138,6 @@ export default function Home() {
     }
   }
 
-  // Obtains the next upcoming events
-  let upcomingEvents = []
-  index = 0;
-  for (let i = 0; i < events.length; i++){
-    if (events[i].startTime > (new Date()).toISOString()) {
-      upcomingEvents[index++] = events[i];
-    }
-    if (index === 4){
-      break
-    }
-  }
-  upcomingEvents.reverse()
   
   /* Get the contact row for the contact table
    */
