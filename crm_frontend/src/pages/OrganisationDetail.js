@@ -81,6 +81,8 @@ export default function OrganisationDetail(props) {
     showDetailColumn
   ];
 
+  const fields = ['contactName', 'email', 'phoneMobile', 'label', 'departmentName', 'organisationName'];
+
   const marginStyle = { marginTop: "2%", marginLeft: "5%" };
 
   return (
@@ -99,7 +101,7 @@ export default function OrganisationDetail(props) {
       </div>
       }
       <div className="listOfEvents">
-          {!isLoading ? <DataGridComp events={contact} columns={columns}></DataGridComp> : <></>}
+          {!isLoading ? <DataGridComp events={contact} columns={columns} fields={fields}></DataGridComp> : <></>}
       </div>
     </div>
   );
