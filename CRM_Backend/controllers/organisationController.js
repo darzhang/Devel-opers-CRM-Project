@@ -16,7 +16,7 @@ module.exports = {
     },
     deleteOne: async (req, res) => {
         try {
-            await Organisation.findOneAndRemove({ orgName: req.params.name }, function (err) {
+            await Organisation.findOneAndRemove({ orgName: req.params.name, userId : req.session.userId }, function (err) {
                 if (err) return res.status(400).json(err);
                 res.status(204).json({});
             });
@@ -41,7 +41,7 @@ module.exports = {
     },
     getAll: async (req, res) => {
         try {
-            await Organisation.find({})
+            await Organisation.find({userId : req.session.userId})
             .exec(function (err, org) {
                 if (err) return res.status(404).json(err);
                 res.json(org);
