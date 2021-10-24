@@ -220,7 +220,7 @@ function Profile(props) {
       </div><br />
       <div>
         <TextField
-          label="Username"
+          label="Name"
           type="text"
           variant="outlined"
           size="small"
