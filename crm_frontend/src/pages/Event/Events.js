@@ -280,7 +280,7 @@ const Events = () => {
       <EventDialog onAdd={addEvent} isOpen={showAddEvent} setDialog={setShowAddEvent}/>
       <div className="listOfEvents" style={{marginTop: "1.5%"}}>
         {!isLoading ? 
-        (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )
+        (isUpcoming ? <DataGridComp events={upcomingEvents} columns={columns} fields={fields}></DataGridComp> : <DataGridComp events={pastEvents} columns={columns}></DataGridComp> )
         : <CircularProgress />}
       </div>
     </div>
