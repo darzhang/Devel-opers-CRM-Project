@@ -83,6 +83,7 @@ const eventRouter = require('./routes/eventRouter');
 const departmentRouter = require('./routes/departmentRouter');
 const organisationRouter = require('./routes/organisationRouter');
 const loginRouter = require('./routes/loginRouter'); 
+const notificationRouter = require('./routes/notificationRouter');
 
 // handle requests
 // the contact routes are added onto the end of '/contact'
@@ -91,6 +92,7 @@ app.use('/event', eventRouter)
 app.use('/department', departmentRouter)
 app.use('/organisation', organisationRouter)
 app.use('/', loginRouter)
+app.use('/notify', notificationRouter)
 
 app.listen(port, () => {
     console.log(`The personal CRM app is listening on port ${port}!`)
@@ -103,8 +105,8 @@ app.get('/', (req, res) => {
 })
 
 //Schedule the email notification for events
-const notificationScheduler = require('./notificationScheduler')
-const job = schedule.scheduleJob('*/5 * * * * *', notificationScheduler.sendNotifications);
+const notificationController = require('./controllers/notificationController');
+const job = schedule.scheduleJob('*/10 * * * * *', notificationController.periodicCheck);
 
 
 module.exports = app
