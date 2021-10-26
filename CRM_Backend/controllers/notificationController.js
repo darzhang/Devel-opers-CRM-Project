@@ -15,7 +15,7 @@ const getParticipants = async (ids) => {
 
 //get the user
 const getUser = async(userId) => {
-    const user = await Users.findOne({_id: objectId(req.session.userId)}).lean()
+    const user = await Users.findOne({_id: objectId(userId)}).lean()
     return user
 }
 
