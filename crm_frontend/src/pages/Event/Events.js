@@ -175,6 +175,8 @@ const Events = () => {
    * @return integer value of the comparison
    */
   const deleteEvent = async (id, name) => {
+    //get the data of the event
+    const response = await axios.get(`https://developer-crm-backend.herokuapp.com/event/${id}`,{withCredentials: true})
 
     Swal.fire({
       title: `Do You Want to delete ${name} ?`,
@@ -190,9 +192,8 @@ const Events = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         //send notification of the deleted event
-        await axios.get(`https://developer-crm-backend.herokuapp.com/event/${id}`,{withCredentials: true})
         await axios.post(`https://developer-crm-backend.herokuapp.com/notify/delete`,
-          res.data,
+          response.data,
           {withCredentials: true}
         )
         
