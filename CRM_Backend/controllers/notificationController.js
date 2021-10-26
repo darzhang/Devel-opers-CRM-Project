@@ -36,13 +36,17 @@ const notificationDelete = async (req, res) => {
         `Participants: ${participantsList.join(", ")}\n\n`+
         `Description: ${event.description}\n\n`+
         `Location: ${event.location}`
+
+        console.log(event)
+        console.log(user)
+        console.log(emailText)
         
         sendEmail(`Personal CRM : Notification for Deleting "${event.eventName}"`, emailText, email)
         return res.send(emailText)
 
     } catch (err) { // error occured
         res.status(400);
-        return res.send(err,"Event deletion failed");
+        return res.send("Event deletion failed");
     }
 }
 
