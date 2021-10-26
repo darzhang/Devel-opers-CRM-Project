@@ -22,6 +22,7 @@ const getUser = async(userId) => {
 // send notification to notify the result of deleting an event
 const notificationDelete = async (req, res) => {
     try {
+        const timeFormat = "DD/MM/YY, hh:mm a"
         // store the event from the request body and the user details
         console.log(req.session.userId)
         console.log(req.body)
@@ -53,6 +54,7 @@ const notificationDelete = async (req, res) => {
 // send notification to notify the result of editing an event
 const notificationEdit = async (req, res) => {
     try {
+        const timeFormat = "DD/MM/YY, hh:mm a"
         // store the event from the request body and the user details
         const oldEvent = new Event(req.body.oldEvent)
         const newEvent = new Event(req.body.newEvent)
