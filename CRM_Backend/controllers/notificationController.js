@@ -30,6 +30,8 @@ const notificationDelete = async (req, res) => {
         const user = await getUser(req.session.userId)
         const email = user.email
         const name = user.username
+        //get the name list of the participants
+        const participantsList = await getParticipants(event.participants)
         console.log(email)
         console.log(name)
 
@@ -41,6 +43,7 @@ const notificationDelete = async (req, res) => {
         `Participants: ${participantsList.join(", ")}\n\n`+
         `Description: ${event.description}\n\n`+
         `Location: ${event.location}`
+        console.log(emailText)
         
         sendEmail(`Personal CRM : Notification for Deleting "${event.eventName}"`, emailText, email)
         return res.send(emailText)
@@ -59,11 +62,13 @@ const notificationEdit = async (req, res) => {
         const oldEvent = new Event(req.body.oldEvent)
         const newEvent = new Event(req.body.newEvent)
         const user = await getUser(req.session.userId)
+        //get the name list of the participants
+        const participantsList = await getParticipants(event.participants)
         const email = user.email
         const name = user.username
 
         // Create the notification text
-        const emailText = `Dear ${username},\n\nYou have edited the following Event:\n\n`+
+        const emailText = `Dear ${name},\n\nYou have edited the following Event:\n\n`+
         `Event Name: ${oldEvent.eventName}\n\n`+
         `Start Time: ${momentTimezone(oldEvent.startTime).tz(oldEvent.timezone).format(timeFormat)} (${oldEvent.timezone})\n\n`+
         `End Time: ${momentTimezone(oldEvent.endTime).tz(oldEvent.timezone).format(timeFormat)} (${oldEvent.timezone})\n\n`+
@@ -78,7 +83,7 @@ const notificationEdit = async (req, res) => {
         `Description: ${newEvent.description}\n\n`+
         `Location: ${newEvent.location}`
 
-        sendEmail(`Personal CRM : Notification for Updating "${oldEvent.eventName}"`)
+        sendEmail(`Personal CRM : Notification for Updating "${oldEvent.eventName}"`, emailText, email)
         return res.send(emailText)
         
     } catch (err) { // error occured
