@@ -15,7 +15,7 @@ const getParticipants = async (ids) => {
 
 //get the user
 const getUser = async(userId) => {
-    const user = await Users.findOne({_id: userId}).lean()
+    const user = await Users.findOne({_id: objectId(req.session.userId)}).lean()
     return user
 }
 
@@ -39,7 +39,7 @@ const notificationDelete = async (req, res) => {
         
         sendEmail(`Personal CRM : Notification for Deleting "${event.eventName}"`, emailText, email)
         return res.send(emailText)
-        
+
     } catch (err) { // error occured
         res.status(400);
         return res.send("Event deletion failed");
