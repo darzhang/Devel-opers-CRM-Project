@@ -29,6 +29,8 @@ const notificationDelete = async (req, res) => {
         const user = await getUser(req.session.userId)
         const email = user.email
         const name = user.username
+        console.log(email)
+        console.log(name)
 
         // create the notification text
         const emailText = `Dear ${name},\n\nYou have deleted the following Event:\n\n`+
