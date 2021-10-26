@@ -23,7 +23,7 @@ const getUser = async(userId) => {
 const notificationDelete = async (req, res) => {
     try {
         // store the event from the request body and the user details
-        const event = new Event(req.body)
+        const event = req.body
         const user = await getUser(req.session.userId)
         const email = user.email
         const name = user.username
@@ -42,7 +42,7 @@ const notificationDelete = async (req, res) => {
 
     } catch (err) { // error occured
         res.status(400);
-        return res.send("Event deletion failed");
+        return res.send(err,"Event deletion failed");
     }
 }
 
