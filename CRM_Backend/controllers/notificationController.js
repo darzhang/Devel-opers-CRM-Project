@@ -23,6 +23,8 @@ const getUser = async(userId) => {
 const notificationDelete = async (req, res) => {
     try {
         // store the event from the request body and the user details
+        console.log(req.session.userId)
+        console.log(req.body)
         const event = req.body
         const user = await getUser(req.session.userId)
         const email = user.email
@@ -36,10 +38,6 @@ const notificationDelete = async (req, res) => {
         `Participants: ${participantsList.join(", ")}\n\n`+
         `Description: ${event.description}\n\n`+
         `Location: ${event.location}`
-
-        console.log(event)
-        console.log(user)
-        console.log(emailText)
         
         sendEmail(`Personal CRM : Notification for Deleting "${event.eventName}"`, emailText, email)
         return res.send(emailText)
