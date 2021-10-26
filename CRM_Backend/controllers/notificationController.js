@@ -1,7 +1,7 @@
 // import contact model & nodemailer
-const Events = require('./models/event');
-const Contacts = require('./models/contact');
-const Users = require('./models/users')
+const Events = require('../models/event');
+const Contacts = require('../models/contact');
+const Users = require('../models/users')
 const nodemailer = require('nodemailer')
 const momentTimezone = require('moment-timezone')
 const objectId = require('mongodb').ObjectID;
