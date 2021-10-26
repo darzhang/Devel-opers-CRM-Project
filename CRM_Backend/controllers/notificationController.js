@@ -54,8 +54,8 @@ const notificationEdit = async (req, res) => {
     try {
         const timeFormat = "DD/MM/YY, hh:mm a"
         // store the event from the request body and the user details
-        const oldEvent = new Event(req.body.oldEvent)
-        const newEvent = new Event(req.body.newEvent)
+        const oldEvent = req.body.oldEvent
+        const newEvent = req.body.newEvent
         const user = await getUser(req.session.userId)
         //get the name list of the participants
         const participantsList = await getParticipants(event.participants)

@@ -5,7 +5,7 @@ const notificationRouter = express.Router();
 var notificationController = require('../controllers/notificationController');
 
 // handle the GET request to notify the updated event
-notificationRouter.post('/edit', (req, res) => notificationController.notificationEdit(req, res));
+// notificationRouter.post('/edit', (req, res) => notificationController.notificationEdit(req, res));
 
 // handle the GET request to notify the deleted event
 notificationRouter.post('/delete', (req, res) => notificationController.notificationDelete(req, res));
