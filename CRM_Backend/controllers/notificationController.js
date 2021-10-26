@@ -119,7 +119,7 @@ const periodicCheck = async() => {
         `Description: ${event.description}\n\n`+
         `Location: ${event.location}`
 
-        sendEmail(`Personal CRM : Notification for "${event.eventName}"`, emailText, email)
+        sendEmail(`Personal CRM : Notification for Upcoming "${event.eventName}"`, emailText, email)
 
         await Events.findOneAndUpdate({_id: objectId(event._id)}, {isEmailed: true})
     
