@@ -28,6 +28,7 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
     endTime: moment(new Date()).format("yyyy-MM-DDTHH:mm"),
     description: "",
     location: "",
+    dateAdded: moment(new Date()).format("yyyy-MM-DDTHH:mm")
   };
 
   const [state, setState] = useState(initialState);
@@ -72,7 +73,6 @@ export default function EventDialog({ isOpen, setDialog, onAdd}) {
    */
   const onSubmit = (e) => {
     e.preventDefault();
-    const dateAdded = new Date()
 
     //extract the participantsId from the participant list
     const participantsIdArray = []
