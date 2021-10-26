@@ -190,7 +190,7 @@ const Events = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         //send notification of the deleted event
-        const res = await axios.get(`https://developer-crm-backend.herokuapp.com/event/${id}`,{withCredentials: true})
+        await axios.get(`https://developer-crm-backend.herokuapp.com/event/${id}`,{withCredentials: true})
         await axios.post(`https://developer-crm-backend.herokuapp.com/notify/delete`,
           res.data,
           {withCredentials: true}
