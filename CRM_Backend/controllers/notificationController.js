@@ -38,6 +38,8 @@ const notificationDelete = async (req, res) => {
         `Location: ${event.location}`
         
         sendEmail(`Personal CRM : Notification for Deleting "${event.eventName}"`, emailText, email)
+        return res.send(emailText)
+        
     } catch (err) { // error occured
         res.status(400);
         return res.send("Event deletion failed");
@@ -71,6 +73,7 @@ const notificationEdit = async (req, res) => {
         `Location: ${newEvent.location}`
 
         sendEmail(`Personal CRM : Notification for Updating "${oldEvent.eventName}"`)
+        return res.send(emailText)
         
     } catch (err) { // error occured
         res.status(400);
