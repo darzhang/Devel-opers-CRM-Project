@@ -75,8 +75,9 @@ export default function Home() {
       break
     }
   }
-
-  upcomingEvents.reverse()
+  console.log("Upcoming Events");
+  console.log(upcomingEvents);
+  //upcomingEvents.reverse()
   // Initial values for dates
   let date = new Date();
   let endDate = new Date();
@@ -184,7 +185,6 @@ export default function Home() {
   /* Get the event row for the event table
    */
   upcomingEvents.reverse();
-  console.log(upcomingEvents);
   const eventString = "View"
   const eventRow = (event, i) => (
     <TableRow key={i}>
