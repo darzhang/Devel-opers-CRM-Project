@@ -45,6 +45,7 @@ export default function Home() {
       const list = res.data;
       const sortedList = list.sort((a, b) => (a.startTime > b.startTime) ? 1 : -1)
       setEvents(sortedList);
+      console.log(events);
     }).catch(error => {
       console.log('server error');
       console.log(error);
