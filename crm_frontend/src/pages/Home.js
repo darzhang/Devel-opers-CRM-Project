@@ -45,7 +45,6 @@ export default function Home() {
       const list = res.data;
       const sortedList = list.sort((a, b) => (a.startTime > b.startTime) ? 1 : -1)
       setEvents(sortedList);
-      console.log(events);
     }).catch(error => {
       console.log('server error');
       console.log(error);
@@ -76,9 +75,7 @@ export default function Home() {
       break
     }
   }
-  console.log("Upcoming Events");
-  console.log(upcomingEvents);
-  //upcomingEvents.reverse()
+  upcomingEvents.reverse()
   // Initial values for dates
   let date = new Date();
   let endDate = new Date();
