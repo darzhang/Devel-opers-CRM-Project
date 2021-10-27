@@ -184,6 +184,7 @@ export default function Home() {
   /* Get the event row for the event table
    */
   upcomingEvents.reverse();
+  console.log(upcomingEvents);
   const eventString = "View"
   const eventRow = (event, i) => (
     <TableRow key={i}>
