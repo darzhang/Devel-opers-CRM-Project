@@ -68,7 +68,7 @@ This page contains information about Register.
 ### Login Page
 This page contains information about Login.
 
-* Lgoin have the following functionality :
+* Login have the following functionality :
 
 | Functionality | Description |
 | :---| :---:|
