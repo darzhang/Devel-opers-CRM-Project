@@ -112,7 +112,7 @@ This page contains information about Event.
 | Filter | Filter the event based on the selected field  |
 | Sort | Sort the event based on the selected field  |
 | Export | Export data about the event to a csv file  |
-| Notification | Notify the user for upcoming event 24 hours prior to the start of the event through email  |
+| Notification | Notify the user for upcoming event 24 hours prior to the start of the event and Notify the user for the deletion of an event through email |
 | Add | Create a new event based on the inputs  |
 | Edit | Edit a event based on the inputs  |
 | Delete | Delete a event based on the inputs  |
