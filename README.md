@@ -43,7 +43,47 @@ In this project we are building a WebApp.
 
 ## Implementation
 
+### Register Page
+This page contains information about Register.
+
+* Register have the following functionality :
+
+| Functionality | Description |
+| :---| :---:|
+| Registration | Register a new user to the server, allowing new user to gain full access to the web app  |
+
+* Registration requires the following attributes :
+
+| Attribute | Data type | Description |
+| :---|:---:| :---:|
+| Name | String | The name of the user  |
+| password | String | User chosen password to secure the account  |
+| email | String | The email address of the user  |
+
+
+<p align="center">
+  <img src="screenshots/registerpage.JPG"  width="800" >
+</p>
+
 ### Login Page
+This page contains information about Login.
+
+* Lgoin have the following functionality :
+
+| Functionality | Description |
+| :---| :---:|
+| Login | Allowing exisiting user to login and access the web app  |
+
+* Login requires the following attributes :
+
+| Attribute | Data type | Description |
+| :---|:---:| :---:|
+| password | String | User chosen password to log into the account  |
+| email | String | The email address of the user  |
+
+<p align="center">
+  <img src="screenshots/loginpage.JPG"  width="800" >
+</p>
 
 ### Home Page
 This page contains information about Home.
