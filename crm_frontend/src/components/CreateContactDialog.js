@@ -58,7 +58,8 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
       })
     });
   };
-
+  
+  //close the handle and set the state to initial state
   const handleClose = () => {
     setContactDialog(false);
     setState(initialState);

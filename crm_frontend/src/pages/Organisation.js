@@ -14,6 +14,7 @@ export default function Organisation() {
       axios.get("https://developer-crm-backend.herokuapp.com/organisation", {withCredentials: true})
       .then((data) => data.data)
       .then((data) => {
+        //set the organisation size for all the organisation
         const mappedData = data.map(org =>{
           const orgSize = contact.filter((c) => c.organisationId === org._id).length;
           return {
@@ -35,6 +36,8 @@ export default function Organisation() {
     })
   }, [])
   
+  //this function render the show detail button that when clicked will take the user to 
+  //organisation detail page
   const showDetailColumn = {
     width: 120,
     field:'showDetail',

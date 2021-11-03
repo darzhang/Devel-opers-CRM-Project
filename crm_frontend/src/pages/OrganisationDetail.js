@@ -54,6 +54,8 @@ export default function OrganisationDetail(props) {
     })
   }
 
+  //this function render the show detail button that when clicked will take the user to 
+  //contact detail page
   const showDetailColumn = {
     width: 120,
     field:'showDetail',
