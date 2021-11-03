@@ -24,7 +24,7 @@ Welcome to DEVEL-opers CRM project
 In this project, we are building a CRM WebApp. The main purpose of this CRM is to store contact and the information about the contact. The information can 
 include email, contact number, department, organisation, and description. In addition, it can also store events which acts similar to a to-do-list for the user.
 
-This repository includes 2 main sub-directory, crm_frontend for frontend, and crm_backend for backend. 
+This repository includes 3 main sub-directory, crm_frontend for frontend, crm_backend for backend, and screenshots for README purposes.
 
 
 ## Technologies
