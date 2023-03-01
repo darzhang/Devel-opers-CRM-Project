@@ -3,7 +3,7 @@ import axios from "axios";
 
 const authContext = React.createContext();
 
-function useAuth({history}) {
+function useAuth({ history }) {
   const [authed, setAuthed] = React.useState(false);
 
   return {
@@ -19,86 +19,81 @@ function useAuth({history}) {
           method: "POST",
           data: {
             email: email,
-            password: password
+            password: password,
           },
           withCredentials: true,
-          url: "https://developer-crm-backend.herokuapp.com/login"
-        }).then((response) => {
-          console.log(response)
-          if (response.data){
-            setAuthed(true);
-            window.localStorage.setItem("isAuthenticated", "true")
-            console.log('successful login');
-            history.push('/')
-          } 
-          else {
-            alert('Wrong email or password');
-          }
-        }).catch(error => {
-          console.log('server error');
-          console.log(error);
-        }) 
-        
+          url: "http://localhost:8080/login",
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.data) {
+              setAuthed(true);
+              window.localStorage.setItem("isAuthenticated", "true");
+              console.log("successful login");
+              history.push("/");
+            } else {
+              alert("Wrong email or password");
+            }
+          })
+          .catch((error) => {
+            console.log("server error");
+            console.log(error);
+          });
       });
     },
     register(email, password, username) {
-        return new Promise(() => {
-            // using API function to submit data to Personal CRM API
-            // loginUser({
-            //     email: email,
-            //     password: password
-            // });
-            axios({
-              method: "POST",
-              data: {
-                username: username,
-                email: email,
-                password: password
-              },
-              withCredentials: true,
-              url: "https://developer-crm-backend.herokuapp.com/register"
-            }).then((response) => {
-              if (response.data){
-                console.log('successful login');
-               
-                window.localStorage.setItem("isAuthenticated", "true")
-                history.push('/')
-              } 
-              else {
-                alert('email existing');
-              }
-            }).catch(error => {
-              console.log('server error');
-              console.log(error);
-            })
-        });
-      }
-    ,
+      return new Promise(() => {
+        // using API function to submit data to Personal CRM API
+        // loginUser({
+        //     email: email,
+        //     password: password
+        // });
+        axios({
+          method: "POST",
+          data: {
+            username: username,
+            email: email,
+            password: password,
+          },
+          withCredentials: true,
+          url: "http://localhost:8080/register",
+        })
+          .then((response) => {
+            if (response.data) {
+              console.log("successful login");
+
+              window.localStorage.setItem("isAuthenticated", "true");
+              history.push("/");
+            } else {
+              alert("email existing");
+            }
+          })
+          .catch((error) => {
+            console.log("server error");
+            console.log(error);
+          });
+      });
+    },
     logout() {
       return new Promise(() => {
-        axios.post('https://developer-crm-backend.herokuapp.com/logout', {}, {withCredentials: true});  
+        axios.post(
+          "http://localhost:8080/logout",
+          {},
+          { withCredentials: true }
+        );
         setAuthed(false);
-        history.push('/login');
+        history.push("/login");
       });
-    }
+    },
   };
 }
 
 export function AuthProvider({ children }) {
   const auth = useAuth();
 
-  return (
-    <authContext.Provider value={auth}>
-      {children}
-    </authContext.Provider>
-  );
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
 export default function AuthConsumer() {
   return React.useContext(authContext);
 }
-
-
-
-
-    

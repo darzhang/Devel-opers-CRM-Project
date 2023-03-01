@@ -6,7 +6,6 @@
     "node": "14.x",
     "npm": "6.x"
   },
-  "proxy": "https://developer-crm-backend.herokuapp.com/",
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",

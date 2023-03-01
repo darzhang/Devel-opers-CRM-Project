@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import {
   Dialog,
   DialogTitle,
@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 
 export default function CreateContactDialog({ isOpen, setContactDialog }) {
-
   const initialState = {
     contactName: "",
     phoneHome: "",
@@ -22,7 +21,7 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
     contactLabel: "",
     departmentName: "",
     organisationName: "",
-    description: ""
+    description: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -41,24 +40,49 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
   const onSubmit = (e) => {
     setSubmitted(true);
     e.preventDefault();
-    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
+    const BASE_URL = "http://localhost:8080";
     const url = BASE_URL + "/contact";
-    const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = state;
-    axios.post(url, { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description }, {withCredentials:true})
-    .then(() => {
-      window.location = "/contact";
-      handleClose();
-      Swal.fire({
-        title: "Successful",
-        text: "Contact has been successfully created!",
-        icon: "success",
-        showClass: {
-          icon: ''
-        }
-      })
-    });
+    const {
+      contactName,
+      phoneHome,
+      phoneWork,
+      phoneMobile,
+      email,
+      contactLabel,
+      departmentName,
+      organisationName,
+      description,
+    } = state;
+    axios
+      .post(
+        url,
+        {
+          contactName,
+          phoneHome,
+          phoneWork,
+          phoneMobile,
+          email,
+          contactLabel,
+          departmentName,
+          organisationName,
+          description,
+        },
+        { withCredentials: true }
+      )
+      .then(() => {
+        window.location = "/contact";
+        handleClose();
+        Swal.fire({
+          title: "Successful",
+          text: "Contact has been successfully created!",
+          icon: "success",
+          showClass: {
+            icon: "",
+          },
+        });
+      });
   };
-  
+
   //close the handle and set the state to initial state
   const handleClose = () => {
     setContactDialog(false);
@@ -71,39 +95,46 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
       <DialogTitle>Create Contact</DialogTitle>
       <DialogContent>
         <Grid container>
-
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Contact Name" 
+              label="Contact Name"
               variant="outlined"
               name="contactName"
               value={state.contactName}
               onChange={onChange}
               required
               error={state.contactName === "" && submitted === true}
-              helperText={state.contactName === "" && submitted === true ? 'Empty field!' : ' '}
+              helperText={
+                state.contactName === "" && submitted === true
+                  ? "Empty field!"
+                  : " "
+              }
             />
           </Grid>
 
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Mobile Phone Number" 
+              label="Mobile Phone Number"
               variant="outlined"
               name="phoneMobile"
               value={state.phoneMobile}
               onChange={onChange}
               required
               error={state.phoneMobile === "" && submitted === true}
-              helperText={state.phoneMobile === "" && submitted === true ? 'Empty field!' : ' '}
+              helperText={
+                state.phoneMobile === "" && submitted === true
+                  ? "Empty field!"
+                  : " "
+              }
             />
           </Grid>
 
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Home Phone Number" 
+              label="Home Phone Number"
               variant="outlined"
               name="phoneHome"
               value={state.phoneHome}
@@ -114,76 +145,88 @@ export default function CreateContactDialog({ isOpen, setContactDialog }) {
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Work Phone Number" 
+              label="Work Phone Number"
               variant="outlined"
               name="phoneWork"
               value={state.phoneWork}
               onChange={onChange}
               error={false}
-              helperText={false ? 'Empty field!' : ' '}
+              helperText={false ? "Empty field!" : " "}
             />
           </Grid>
-          
+
           <Grid item xs={6}>
             <TextField
               type="email"
-              label="Email" 
+              label="Email"
               variant="outlined"
               name="email"
               value={state.email}
               onChange={onChange}
               required
               error={state.email === "" && submitted === true}
-              helperText={state.email === "" && submitted === true ? 'Empty field!' : ' '}
+              helperText={
+                state.email === "" && submitted === true ? "Empty field!" : " "
+              }
             />
           </Grid>
 
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Label" 
+              label="Label"
               variant="outlined"
               name="contactLabel"
               value={state.contactLabel}
               onChange={onChange}
               required
               error={state.label === "" && submitted === true}
-              helperText={state.label === "" && submitted === true ? 'Empty field!' : ' '}
+              helperText={
+                state.label === "" && submitted === true ? "Empty field!" : " "
+              }
             />
           </Grid>
 
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Department Name" 
+              label="Department Name"
               variant="outlined"
               name="departmentName"
               value={state.departmentName}
               onChange={onChange}
               required
               error={state.departmentName === "" && submitted === true}
-              helperText={state.departmentName === "" && submitted === true ? 'Empty field!' : ' '}
+              helperText={
+                state.departmentName === "" && submitted === true
+                  ? "Empty field!"
+                  : " "
+              }
             />
           </Grid>
 
           <Grid item xs={6}>
             <TextField
               type="text"
-              label="Organisation Name" 
+              label="Organisation Name"
               variant="outlined"
               name="organisationName"
               value={state.organisationName}
               onChange={onChange}
               required
               error={state.organisationName === "" && submitted === true}
-              helperText={state.organisationName === "" && submitted === true ? 'Empty field!' : ' '}
+              helperText={
+                state.organisationName === "" && submitted === true
+                  ? "Empty field!"
+                  : " "
+              }
             />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
               type="text"
-              label="Description" 
+              label="Description"
               variant="outlined"
               name="description"
               value={state.description}
