@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function CreateContact ({props}) {
-
+export default function CreateContact({ props }) {
   const [state, setState] = useState({
     contactName: "",
     phoneHome: "",
@@ -13,7 +12,7 @@ export default function CreateContact ({props}) {
     contactLabel: "",
     departmentName: "",
     organisationName: "",
-    description: ""
+    description: "",
   });
   const [isLoading, setisLoading] = useState(false);
 
@@ -22,40 +21,64 @@ export default function CreateContact ({props}) {
   const backStyle = { fontSize: "16px", textDecoration: "none" };
   const backDivStyle = { textAlign: "left", marginLeft: "20px" };
   let history = useHistory();
-  
+
   // handle the change for the states
   const onChange = (e) => {
     setState({
       ...state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-  }
+  };
 
   // handle submitting the data to the backend
   const onSubmit = (e) => {
     e.preventDefault();
-    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
+    const BASE_URL = "http://localhost:8080";
     const url = BASE_URL + "/contact";
-    const { contactName, phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, description } = this.state;
-    axios.post(url, {phoneHome, phoneWork, phoneMobile, email, contactLabel, departmentName, organisationName, descriptionCredentials: true}, {withCredentials: true})
-    .then(() => {
-      history.push("/contact");
-      alert("Contact was successfully created!")
-    });
+    const {
+      contactName,
+      phoneHome,
+      phoneWork,
+      phoneMobile,
+      email,
+      contactLabel,
+      departmentName,
+      organisationName,
+      description,
+    } = this.state;
+    axios
+      .post(
+        url,
+        {
+          phoneHome,
+          phoneWork,
+          phoneMobile,
+          email,
+          contactLabel,
+          departmentName,
+          organisationName,
+          descriptionCredentials: true,
+        },
+        { withCredentials: true }
+      )
+      .then(() => {
+        history.push("/contact");
+        alert("Contact was successfully created!");
+      });
   };
 
   return (
     <>
-      {isLoading &&
-        <div style={loadingStyle}>
-          Loading...
-        </div>
-      }
-      {!isLoading &&
+      {isLoading && <div style={loadingStyle}>Loading...</div>}
+      {!isLoading && (
         <div>
-        <div style={backDivStyle}><a href="/contact"><span style={backStyle}>Back</span></a></div>
-        <h1>Create Contact</h1>
-        <form onSubmit={onSubmit}>
+          <div style={backDivStyle}>
+            <a href="/contact">
+              <span style={backStyle}>Back</span>
+            </a>
+          </div>
+          <h1>Create Contact</h1>
+          <form onSubmit={onSubmit}>
             <label>Name </label>
             <input
               type="text"
@@ -63,7 +86,8 @@ export default function CreateContact ({props}) {
               value={state.contactName}
               onChange={onChange}
               required
-            /><br />
+            />
+            <br />
 
             <label>Home Phone Number </label>
             <input
@@ -71,7 +95,8 @@ export default function CreateContact ({props}) {
               name="phoneHome"
               value={state.phoneHome}
               onChange={onChange}
-            /><br />
+            />
+            <br />
 
             <label>Work Phone Number </label>
             <input
@@ -79,7 +104,8 @@ export default function CreateContact ({props}) {
               name="phoneWork"
               value={state.phoneWork}
               onChange={onChange}
-            /><br />
+            />
+            <br />
 
             <label>Mobile Phone Number </label>
             <input
@@ -88,7 +114,8 @@ export default function CreateContact ({props}) {
               value={state.phoneMobile}
               onChange={onChange}
               required
-            /><br />
+            />
+            <br />
 
             <label>Email </label>
             <input
@@ -97,7 +124,8 @@ export default function CreateContact ({props}) {
               value={state.email}
               onChange={onChange}
               required
-            /><br />
+            />
+            <br />
 
             <label>Label </label>
             <input
@@ -106,7 +134,8 @@ export default function CreateContact ({props}) {
               value={state.contactLabel}
               onChange={onChange}
               required
-            /><br />
+            />
+            <br />
 
             <label>Department Name </label>
             <input
@@ -115,7 +144,8 @@ export default function CreateContact ({props}) {
               value={state.departmentName}
               onChange={onChange}
               required
-            /><br />
+            />
+            <br />
 
             <label>Organisation Name </label>
             <input
@@ -124,19 +154,21 @@ export default function CreateContact ({props}) {
               value={state.organisationName}
               onChange={onChange}
               required
-            /><br />
+            />
+            <br />
 
             <label>Description </label>
             <textarea
               name="description"
               value={state.description}
               onChange={onChange}
-            /><br />
+            />
+            <br />
 
             <button type="submit">Submit</button>
-        </form>
+          </form>
         </div>
-      }
+      )}
     </>
-  )
+  );
 }

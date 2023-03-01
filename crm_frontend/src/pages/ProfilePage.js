@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import Autocomplete from '@mui/material/Autocomplete';
-import Swal from 'sweetalert2'
-import CircularProgress from '@mui/material/CircularProgress';
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import Autocomplete from "@mui/material/Autocomplete";
+import Swal from "sweetalert2";
+import CircularProgress from "@mui/material/CircularProgress";
 
 /* Display a contact profile page and can be switched to an edit contact profile page
  *
@@ -22,8 +22,8 @@ export default function ContactProfile(props) {
     phoneMobile: "",
     email: "",
     contactLabel: "",
-    description: ""
-  }
+    description: "",
+  };
 
   // useState hooks
   // const [departmentName, setDepartmentName] = useState("");
@@ -34,32 +34,33 @@ export default function ContactProfile(props) {
   const [showEdit, setShowEdit] = useState(true);
   const [values, setValues] = useState(initialValues);
 
-
   // Load data from the Backend when loading the page
   useEffect(() => {
     // Get contact based on the id
     const getContact = async () => {
-      const BASE_URL = "https://developer-crm-backend.herokuapp.com";
-      await axios.get(BASE_URL + "/profile", {withCredentials: true}).then(res => {
-        const data = res.data;
-        // console.log(data)
-        setValues({
-          username: data.username,
-          email: data.email
-        });
-        
-        setIsLoading(false);
-      })
-    }
-    getContact();
-  }, [])
+      const BASE_URL = "http://localhost:8080";
+      await axios
+        .get(BASE_URL + "/profile", { withCredentials: true })
+        .then((res) => {
+          console.log(res);
+          const data = res.data;
+          // console.log(data)
+          setValues({
+            username: data.username,
+            email: data.email,
+          });
 
+          setIsLoading(false);
+        });
+    };
+    getContact();
+  }, []);
 
   /* Change the contact profile page to edit contact profile page when the 'Edit Contact' button is clicked
    */
   const toggleEdit = () => {
     setShowEdit(!showEdit);
-  }
+  };
 
   /* Handle any changes to the input text fields
    *
@@ -71,7 +72,7 @@ export default function ContactProfile(props) {
       ...values,
       [name]: value,
     });
-  }
+  };
 
   /* Handle saving the changes to text field and sending it to the Backend
    *
@@ -79,37 +80,39 @@ export default function ContactProfile(props) {
    */
   const onSubmit = (e) => {
     e.preventDefault();
-    const BASE_URL = "https://developer-crm-backend.herokuapp.com";
+    const BASE_URL = "http://localhost:8080";
     const url = BASE_URL + "/profile/updatepassword";
-    axios.post(url, {...values},{withCredentials: true})
-    .then((response) => {
-      // console.log(response.status)
-    Swal.fire({
-      title: "Success!",
-      text: "Password has been successfully updated!",
-      icon: "success",
-      showClass: {
-        icon: ''
-      }
-    });
-    props.history.push("/profile");
-    setShowEdit(true);
-    }).catch(error => {
-      Swal.fire({
-        title: "Update Fail!",
-        text: "Password is not updated!",
-        icon: "warning",
-        showClass: {
-          icon: ''
-        }
+    axios
+      .post(url, { ...values }, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.status)
+        Swal.fire({
+          title: "Success!",
+          text: "Password has been successfully updated!",
+          icon: "success",
+          showClass: {
+            icon: "",
+          },
+        });
+        props.history.push("/profile");
+        setShowEdit(true);
       })
-    })
-  }
+      .catch((error) => {
+        Swal.fire({
+          title: "Update Fail!",
+          text: "Password is not updated!",
+          icon: "warning",
+          showClass: {
+            icon: "",
+          },
+        });
+      });
+  };
 
   const onCancel = () => {
     const id = props.match.params.id;
-    window.location = '/profile';
-  }
+    window.location = "/profile";
+  };
 
   // Styles
   // const deleteDivStyle = { textAlign: "right", marginRight: "2%" };
@@ -118,81 +121,115 @@ export default function ContactProfile(props) {
   const marginStyle = { marginTop: "2%", marginLeft: "80px" };
   const profileStyle = { width: "500px", margin: "auto" };
   const textFieldStyle = { minWidth: "400px" };
-  
+
   return (
     <div style={marginStyle}>
-      {isLoading &&
-      <div>
-          <CircularProgress />
-      </div>}
-      {!isLoading &&
-      <div>
-        {showEdit &&
-        <div style={profileStyle}>
-          {/* setOldPassword={oldpassword} setNewPassword={newpassword} setRetypePassword={retypepassword} */}
-          <Profile state={values} />
-        </div>}
-        {!showEdit &&
-        <div style={profileStyle}>
-          <h1>Update Password</h1>
-          <form onSubmit={onSubmit}>
-            <div>
-              {/* <div style={labelStyle}>Name <span style={{color: "red"}}>*</span></div> */}
-              <TextField
-                label="Old Password"
-                name="oldPassword"
-                type="password"
-                variant="outlined"
-                size="small"
-                style={textFieldStyle}
-                value={values.oldpassword}
-                onChange={onChange}
-                required
-              />
-            </div><br />  
-            <div>
-              {/* <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div> */}
-              <TextField
-                label="New Password"
-                name="newPassword"
-                type="password"
-                variant="outlined"
-                size="small"
-                style={textFieldStyle}
-                value={values.newpassword}
-                onChange={onChange}
-                required
-              />
-            </div><br />
-            <div>
-              {/* <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div> */}
-              <TextField
-                label="Re-type Password"
-                name="retypePassword"
-                type="password"
-                variant="outlined"
-                size="small"
-                style={textFieldStyle}
-                value={values.retypepassword}
-                onChange={onChange}
-                required
-              />
-            </div><br />
-            <Button type="submit" variant="contained" color="primary" style={buttonStyle}>update</Button>&nbsp;
-            <Button variant="contained" color="secondary" style={buttonStyle} onClick={onCancel}>Cancel</Button>
-          </form>
-          <div><br /></div>
-        </div>}
-        {showEdit &&
+      {isLoading && (
         <div>
-          <Button variant="contained" color="primary" onClick={toggleEdit} style={buttonStyle}>
-            <EditIcon />&nbsp;Edit Password
-          </Button>&nbsp;
-          <div><br /></div>
-        </div>}
-      </div>}
+          <CircularProgress />
+        </div>
+      )}
+      {!isLoading && (
+        <div>
+          {showEdit && (
+            <div style={profileStyle}>
+              {/* setOldPassword={oldpassword} setNewPassword={newpassword} setRetypePassword={retypepassword} */}
+              <Profile state={values} />
+            </div>
+          )}
+          {!showEdit && (
+            <div style={profileStyle}>
+              <h1>Update Password</h1>
+              <form onSubmit={onSubmit}>
+                <div>
+                  {/* <div style={labelStyle}>Name <span style={{color: "red"}}>*</span></div> */}
+                  <TextField
+                    label="Old Password"
+                    name="oldPassword"
+                    type="password"
+                    variant="outlined"
+                    size="small"
+                    style={textFieldStyle}
+                    value={values.oldpassword}
+                    onChange={onChange}
+                    required
+                  />
+                </div>
+                <br />
+                <div>
+                  {/* <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div> */}
+                  <TextField
+                    label="New Password"
+                    name="newPassword"
+                    type="password"
+                    variant="outlined"
+                    size="small"
+                    style={textFieldStyle}
+                    value={values.newpassword}
+                    onChange={onChange}
+                    required
+                  />
+                </div>
+                <br />
+                <div>
+                  {/* <div style={labelStyle}>Email <span style={{color: "red"}}>*</span></div> */}
+                  <TextField
+                    label="Re-type Password"
+                    name="retypePassword"
+                    type="password"
+                    variant="outlined"
+                    size="small"
+                    style={textFieldStyle}
+                    value={values.retypepassword}
+                    onChange={onChange}
+                    required
+                  />
+                </div>
+                <br />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={buttonStyle}
+                >
+                  update
+                </Button>
+                &nbsp;
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={buttonStyle}
+                  onClick={onCancel}
+                >
+                  Cancel
+                </Button>
+              </form>
+              <div>
+                <br />
+              </div>
+            </div>
+          )}
+          {showEdit && (
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={toggleEdit}
+                style={buttonStyle}
+              >
+                <EditIcon />
+                &nbsp;Edit Password
+              </Button>
+              &nbsp;
+              <div>
+                <br />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
 /* Display a contact profile page
@@ -213,11 +250,10 @@ function Profile(props) {
           size="small"
           style={textFieldStyle}
           value={props.state.email}
-          inputProps={
-            { readOnly: true }
-          }
+          inputProps={{ readOnly: true }}
         />
-      </div><br />
+      </div>
+      <br />
       <div>
         <TextField
           label="Name"
@@ -226,11 +262,10 @@ function Profile(props) {
           size="small"
           style={textFieldStyle}
           value={props.state.username}
-          inputProps={
-            { readOnly: true }
-          }
+          inputProps={{ readOnly: true }}
         />
-      </div><br />
+      </div>
+      <br />
     </div>
-  )
+  );
 }
